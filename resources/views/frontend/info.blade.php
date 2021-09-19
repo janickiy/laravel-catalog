@@ -13,8 +13,6 @@
 
     <div class="row">
 
-
-
         <div class="col-sm-12" style="margin-top:10px;">
             <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
             <!-- top2 -->
@@ -28,7 +26,6 @@
                 (adsbygoogle = window.adsbygoogle || []).push({});
             </script>
         </div>
-
 
 
         <div class="col-sm-12 col-md-8 col-lg-8 bg-white rounded box-shadow" style="margin-top:20px; margin-bottom:10px;">
@@ -45,7 +42,7 @@
 
             <br/>
 
-            Перейти на сайт: <a href="{{ url('redirect/' . $link->id) }}">http://{{ $link->url }}</a>
+            Перейти на сайт: <a href="{{ URL::route('redirect', ['id' => $link->id]) }}">{{ $link->url }}</a>
 
         </div>
 

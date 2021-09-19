@@ -5,9 +5,7 @@ namespace App\Imports;
 use App\Models\Links;
 use App\Models\Catalog;
 use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
-use Carbon\Carbon;
 
 class LinksImport implements ToModel, WithBatchInserts
 {
@@ -31,7 +29,6 @@ class LinksImport implements ToModel, WithBatchInserts
         $name = trim($row[1]);
         $category = trim($row[3]);
         $url = trim($row[5]);
-        $email = trim($row[6]);
         $phone = trim($row[7]);
 
         if ($url && isDomainAvailible($url, 5)) {
@@ -53,8 +50,8 @@ class LinksImport implements ToModel, WithBatchInserts
                     }
                 }
 
-                $keywords = isset($tags['keywords']) ? $tags['keywords'] : '';
-                $description = isset($tags['description']) ? $tags['description'] : '';
+                $keywords = $tags['keywords'] ?? '';
+                $description = $tags['keywords'] ??  '';
 
                 if ($description) {
                     $n++;
@@ -73,16 +70,14 @@ class LinksImport implements ToModel, WithBatchInserts
                     Links::create([
                             'name' => $name,
                             'url' => $url_link,
-                            'email' => $email,
                             'phone' => $phone,
                             'city' => $city,
                             'description' => $description,
                             'keywords' => $keywords,
                             'full_description' => $description,
-                            'catalog_id' => isset($category['id']) ? $category['id'] : 3,
-                            'time_check' => Carbon::now(),
-                            'status' => 1,
-                            'token' => md5($url . time())]
+                            'catalog_id' => $category['id'] ?? 3,
+                            'status' => 1
+                        ]
                     );
 
                     return $n;
@@ -96,12 +91,6 @@ class LinksImport implements ToModel, WithBatchInserts
         return 1000;
     }
 
-    /*
-    public function headingRow(): int
-    {
-        return 6;
-    }
-    */
 
     public function batchSize(): int
     {

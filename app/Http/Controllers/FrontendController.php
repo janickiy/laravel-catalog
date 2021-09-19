@@ -3,20 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use App\Helpers\{SettingsHelpers, StringHelper};
 use App\Models\{Catalog, Links, Feedback};
-use Validator;
 use URL;
-use Mail;
 
 class FrontendController extends Controller
 {
-
     /**
      * Show the application dashboard.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, $id = 0)
+    public function index($id = 0)
     {
         $title = 'Главная страница';
         $description = '';
@@ -38,15 +37,15 @@ class FrontendController extends Controller
         }
 
         $total = count($arraycat);
-        $number = (int)($total / getSetting('COLUMNS_NUMBER'));
+        $number = (int)($total / SettingsHelpers::getSetting('COLUMNS_NUMBER'));
 
-        if ((float)($total / getSetting('COLUMNS_NUMBER')) - $number != 0) $number++;
+        if ((float)($total / SettingsHelpers::getSetting('COLUMNS_NUMBER')) - $number != 0) $number++;
 
         $arr = [];
 
         // Form an array
         for ($i = 0; $i < $number; $i++) {
-            for ($j = 0; $j < getSetting('COLUMNS_NUMBER'); $j++) {
+            for ($j = 0; $j < SettingsHelpers::getSetting('COLUMNS_NUMBER'); $j++) {
                 if (isset($arraycat[$j * $number + $i])) $arr[$i][$j] = $arraycat[$j * $number + $i];
             }
         }
@@ -64,7 +63,7 @@ class FrontendController extends Controller
 
         if ($id > 0) {
             $topbar = [];
-            $arraypathway = topbarMenu($topbar, $id);
+            $arraypathway = Catalog::topbarMenu($topbar, $id);
             $pathway = '<a href="' . URL::route('index') . '">Главная</a> ';
 
             for ($i = 0; $i < count($arraypathway); $i++) {
@@ -92,7 +91,6 @@ class FrontendController extends Controller
      */
     public function info($id)
     {
-        if (!is_numeric($id)) abort(500);
 
         $link = Links::where('id', $id)->where('status', 1)->first();
 
@@ -109,7 +107,7 @@ class FrontendController extends Controller
     public function addurl()
     {
         $options = [];
-        $options = ShowTree($options, 0);
+        $options = Catalog::ShowTree($options, 0);
 
         return view('frontend.addurl', compact('options'))->with('title', 'Добавить сайт');
     }
@@ -123,10 +121,9 @@ class FrontendController extends Controller
         $rules = [
             'name' => 'required',
             'url' => 'required|url|unique:links',
-            'email' => 'required|email',
             'description' => 'required|min:100|max:300',
             'full_description' => 'required|min:200|max:2000',
-            'catalog_id' => 'required|numeric',
+            'catalog_id' => 'required|integer',
             'captcha' => 'required|captcha',
             'agree' => 'required'
         ];
@@ -137,7 +134,6 @@ class FrontendController extends Controller
             'url.url' => 'Не верно указан URL адрес сайта!',
             'url.unique' => 'Этот сайт уже есть в каталоге!',
             'email.required' => 'Не указан Email!',
-            'email.email' => 'Не верно указан Email!',
             'description.required' => 'Не указано описание!',
             'description.min' => 'Количество символов в описание не должно быть меньше :min',
             'description.max' => 'Количество символов в описание не должно быть больше :max',
@@ -156,9 +152,9 @@ class FrontendController extends Controller
             return back()->withErrors($validator)->withInput();
         }
 
-        Links::create(array_merge($request->all(), ['token' => md5($request->url . time()), 'status' => 1]));
+        Links::create(array_merge($request->all(), ['description' => StringHelper::removeHtmlTags($request->input('description')), 'full_description' => StringHelper::removeHtmlTags($request->input('full_description')), 'status' => 1]));
 
-        return redirect('/addurl')->with('success', 'Сайт добавлен в каталог');
+        return redirect(URL::route('addurl'))->with('success', 'Сайт добавлен в каталог');
     }
 
     /**
@@ -167,7 +163,6 @@ class FrontendController extends Controller
      */
     public function redirect($id)
     {
-        if (!is_numeric($id)) abort(500);
 
         $link = Links::where('id', $id)->first();
 
@@ -230,12 +225,14 @@ class FrontendController extends Controller
 
         Feedback::create(array_merge($request->all(), ['ip' => $request->getClientIp()]));
 
+        /**
         Mail::send('emails.feedback', ['email' => $message['email'], 'name' => $message['name'], 'msg' => $message['msg']], function ($message) {
             $message->from('no-reply@' . $_SERVER['SERVER_NAME'], getSetting('SITE_NAME'));
             $message->to(getSetting('EMAIL'), getSetting('SITE_NAME'))->subject('Cообщение с сайта ' . $_SERVER['SERVER_NAME']);
         });
+         * */
 
-        return redirect('/contact')->with('success', 'Спасибо за Ваше сообщение! Вы получите ответ как можно скоро. ');
+        return redirect(URL::route('contact'))->with('success', 'Спасибо за Ваше сообщение! Вы получите ответ как можно скоро. ');
     }
 
     /**
@@ -260,7 +257,6 @@ class FrontendController extends Controller
     {
         $limit = Links::PER_PAGE;
         $offset = Links::PER_PAGE * ($page - 1);
-
         $links = Links::where('status', 1)->limit($limit)->offset($offset)->get();
 
         return response()->view('frontend.maplinks', compact('links'))->header('Content-type', 'text/xml');
@@ -274,7 +270,6 @@ class FrontendController extends Controller
     {
         $limit = Catalog::PER_PAGE;
         $offset = Catalog::PER_PAGE * ($page - 1);
-
         $catalogs = Catalog::limit($limit)->offset($offset)->get();
 
         return response()->view('frontend.mapcatalogs', compact('catalogs'))->header('Content-type', 'text/xml');

@@ -15,13 +15,13 @@
     <!-- #CSS Links -->
     <!-- Basic Styles -->
 
-    {!! Html::style('css/bootstrap.min.css') !!}
+{!! Html::style('css/bootstrap.min.css') !!}
 
-    {!! Html::style('css/font-awesome.min.css') !!}
+{!! Html::style('css/font-awesome.min.css') !!}
 
-    @yield('css')
+@yield('css')
 
-    <!-- #GOOGLE FONT -->
+<!-- #GOOGLE FONT -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700">
 
     <script type="text/javascript">
@@ -29,17 +29,14 @@
     </script>
 
     <style>
-
         html,
         body {
             overflow-x: hidden; /* Prevent scroll on narrow devices */
         }
-
         body {
             padding-top: 50px;
             background-color: #FFFAFA;
         }
-
         @media (max-width: 767.98px) {
             .offcanvas-collapse {
                 position: fixed;
@@ -56,14 +53,11 @@
                 -webkit-transform: translateX(100%);
                 transform: translateX(100%);
             }
-
             .offcanvas-collapse.open {
                 -webkit-transform: translateX(-1rem);
                 transform: translateX(-1rem); /* Account for horizontal padding on navbar */
             }
         }
-
-
         .nav-scroller .nav {
             display: -webkit-box;
             display: -ms-flexbox;
@@ -78,37 +72,28 @@
             white-space: nowrap;
             -webkit-overflow-scrolling: touch;
         }
-
         .nav-underline .nav-link {
             padding-top: .75rem;
             padding-bottom: .75rem;
             font-size: .875rem;
             color: var(--secondary);
         }
-
         .nav-underline .nav-link:hover {
             color: var(--blue);
         }
-
         .nav-underline .active {
             font-weight: 500;
             color: var(--gray-dark);
         }
-
-
         .border-bottom {
             border-bottom: 1px solid #e5e5e5;
         }
-
         .box-shadow {
             box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
         }
-
-
         .bg-white {
             background-color: #FFFFFF;
         }
-
     </style>
 
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -118,21 +103,20 @@
             enable_page_level_ads: true
         });
     </script>
-	
-	<!-- Yandex.Metrika counter -->
-	<script type="text/javascript" >
-	(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
-   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
 
-   ym(65306959, "init", {
-        clickmap:true,
-        trackLinks:true,
-        accurateTrackBounce:true
-   });
-	</script>
-	<noscript><div><img src="https://mc.yandex.ru/watch/65306959" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-	<!-- /Yandex.Metrika counter -->
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript" >
+        (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+            m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+        (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+        ym(65306959, "init", {
+            clickmap:true,
+            trackLinks:true,
+            accurateTrackBounce:true
+        });
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/65306959" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
 
 </head>
 

@@ -8,35 +8,36 @@ class Links extends Model
 {
     const PER_PAGE = 1000;
 
-	protected $table = 'links';
+    protected $table = 'links';
+
     protected $primaryKey = 'id';
 
     protected $fillable = [
         'name',
         'url',
-        'email',
         'city',
         'phone',
-        'reciprocal_link',
         'description',
         'keywords',
         'full_description',
         'htmlcode_banner',
         'catalog_id',
         'status',
-        'token',
-        'check_link',
         'views',
         'comment',
-        'time_check',
-        'number_check'
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function catalog()
     {
         return $this->belongsTo(Catalog::class);
     }
 
+    /**
+     * @return string|void
+     */
     public function getStatusAttribute()
     {
         switch ($this->attributes['status']) {

@@ -4,7 +4,6 @@ namespace App\Imports;
 
 use App\Models\{Links,Catalog};
 use League\Csv\Reader;
-use Carbon\Carbon;
 
 class LinksImportFromCsv
 {
@@ -21,7 +20,6 @@ class LinksImportFromCsv
            $name = isset($row[1]) ?  trim(str_to_utf8($row[1])) : '';
            $category = isset($row[3]) ? trim(str_to_utf8($row[3])) : '';
            $url = isset($row[5]) ? trim($row[5]) : '';
-           $email = isset($row[6]) ? trim($row[6]) : '';
            $phone = isset($row[7]) ? trim($row[7]) : '';
 
            if ($url && isDomainAvailible($url, 5)) {
@@ -43,16 +41,13 @@ class LinksImportFromCsv
                        }
                    }
 
-                   $keywords = isset($tags['keywords']) ? $tags['keywords'] : '';
-                   $description = isset($tags['description']) ? $tags['description'] : '';
+                   $keywords = $tags['keywords'] ?? '';
+                   $description = $tags['description'] ?? '';
 
                    if ($description) {
-
                        $n++;
-
                        $arr = explode('/', $category);
                        $n_arr = [];
-
                        $parent_id = 0;
 
                        for ($i = 0; $i < count($arr); $i++) {
@@ -65,16 +60,14 @@ class LinksImportFromCsv
                         Links::create([
                                'name' => $name,
                                'url' => $url_link,
-                               'email' => $email,
                                'phone' => $phone,
                                'city' => $city,
                                'description' => $description,
                                'keywords' => $keywords,
                                'full_description' => $description,
-                               'catalog_id' => isset($category['id']) ? $category['id'] : 3,
-                               'time_check' => Carbon::now(),
-                               'status' => 1,
-                               'token' => md5($url . time())]
+                               'catalog_id' => $category['id'] ?? 3,
+                               'status' => 1
+                       ]
                        );
                    }
                }

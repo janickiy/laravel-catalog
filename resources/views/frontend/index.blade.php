@@ -6,7 +6,6 @@
 
 @section('css')
 
-
 @endsection
 
 @section('content')
@@ -16,8 +15,8 @@
             <table width="100%" border="0">
                 @for ($i = 0; $i < $number; $i++)
                     <tr>
-                        @for ($j = 0; $j < getSetting('COLUMNS_NUMBER'); $j++)
-                            <td valign="top" width="{{ getSetting('COLUMNS_NUMBER') }}">
+                        @for ($j = 0; $j < \App\Helpers\SettingsHelpers::getSetting('COLUMNS_NUMBER'); $j++)
+                            <td valign="top" width="{{ \App\Helpers\SettingsHelpers::getSetting('COLUMNS_NUMBER') }}">
                                 @if(isset($arr[$i][$j][1]) && isset($arr[$i][$j][0]) && isset($arr[$i][$j][3]))
                                     <table border="0">
                                         <tr>
@@ -29,7 +28,7 @@
                                                 <span>({{ $arr[$i][$j][3] }})</span><br>
                                                 <div class="subcat">
 
-                                                    {!! ShowSubCat($arr[$i][$j][1]) !!}
+                                                    {!! \App\Models\Catalog::ShowSubCat($arr[$i][$j][1]) !!}
 
                                                 </div>
                                             </td>
@@ -49,17 +48,17 @@
     <div class="row">
 
         <div class="col-sm-12">
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-        <!-- top2 -->
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-2243538192217050"
-             data-ad-slot="8369734756"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
+            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+            <!-- top2 -->
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-2243538192217050"
+                 data-ad-slot="8369734756"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
         </div>
 
         <div style="margin:10px" class="col-sm-12 col-md-8 col-lg-8   bg-white rounded box-shadow">
@@ -79,10 +78,10 @@
                 <!-- одна запись -->
                     <tr>
                         <td valign="top" align="right">
-                             {{ $rank++ }}.&nbsp;&nbsp;
+                            {{ $rank++ }}.&nbsp;&nbsp;
                         </td>
                         <td valign="bottom" align="left" width="100%" class="rez-h">
-                           <strong class="text-info">{{ $link->name }}</strong>
+                            <strong class="text-info">{{ $link->name }}</strong>
                         </td>
                     </tr>
                     <tr>
@@ -90,13 +89,13 @@
                         <td style="padding-bottom:25px;">
                             <div class="border-bottom border-gray">
                                 <address ><a href="http://{{ $link->url }}" target="_blank">
-							        {!! isset($link->htmlcode_banner) && $link->htmlcode_banner ? $link->htmlcode_banner : '<img border="0" src="'.url('/img/noimage.gif').'">'; !!}
-                                </a>
-                                {{ $link->description }}
+                                        {!! isset($link->htmlcode_banner) && $link->htmlcode_banner ? $link->htmlcode_banner : '<img border="0" src="'.url('/img/noimage.gif').'">'; !!}
+                                    </a>
+                                    {{ $link->description }}
                                     <br>
                                     <br>
                                     <a href="http://{{ $link->url }}" target="_blank">{{ $link->url }}</a>&nbsp; &nbsp; &nbsp;
-                                   <span class="text-muted">
+                                    <span class="text-muted">
                                     {{ $link->created_at }}
                                     &nbsp; &nbsp; &nbsp;
                                     Количество просмотров - {{ $link->views }}
@@ -157,12 +156,9 @@
 
     </div>
 
-
 @endsection
 
 @section('js')
-    <script>
 
 
-    </script>
 @endsection

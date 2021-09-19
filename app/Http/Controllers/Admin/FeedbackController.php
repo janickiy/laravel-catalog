@@ -6,11 +6,9 @@ use App\Http\Controllers\Controller;
 
 class FeedbackController extends Controller
 {
-    /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function list()
+    public function __invoke()
     {
-        return view('admin.feedback.list')->with('title', 'Сообщения с сайта');
+        return view('cp.feedback.index')->with('title', 'Сообщения с сайта');
     }
+
 }

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-
 use Illuminate\Http\Request;
-use App\Models\{Catalog, Links};
+use App\Models\{Catalog};
 use App\Http\Controllers\Controller;
+use App\Helpers\StringHelper;
 use Validator;
 use Image;
 use URL;
@@ -15,7 +15,7 @@ class CatalogController extends Controller
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function list()
+    public function index()
     {
         $catalogs = Catalog::get();
         $cats = [];
@@ -30,7 +30,7 @@ class CatalogController extends Controller
             }
         }
 
-        return view('admin.catalog.list', compact('cats'))->with('title', 'Категории');
+        return view('cp.catalog.index', compact('cats'))->with('title', 'Категории');
     }
 
     /**
@@ -39,12 +39,12 @@ class CatalogController extends Controller
      */
     public function create($parent_id = 0)
     {
-        if (!is_numeric($parent_id)) abort(500);
-
         $options[0] = 'Выберите';
-        $options = ShowTree($options, 0);
+        $options = Catalog::ShowTree($options, 0);
 
-        return view('admin.catalog.create_edit', compact('parent_id', 'options'));
+        $maxUploadFileSize = StringHelper::maxUploadFileSize();
+
+        return view('cp.catalog.create_edit', compact('parent_id', 'options', 'maxUploadFileSize'))->with('title', 'Добавление категории');
     }
 
     /**
@@ -56,14 +56,12 @@ class CatalogController extends Controller
         $rules = [
             'name' => 'required',
             'image' => 'image|mimes:jpeg,jpg,gif,png|max:2048|nullable',
-            'parent_id' => 'numeric'
+            'parent_id' => 'integer'
         ];
 
         $validator = Validator::make($request->all(), $rules);
 
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        }
+        if ($validator->fails())  return back()->withErrors($validator)->withInput();
 
         $pic = $request->file('image');
 
@@ -77,9 +75,9 @@ class CatalogController extends Controller
             })->save($destinationPath . '/' . $filename);
         }
 
-        Catalog::create(array_merge(array_merge($request->all()), ['image' => isset($filename) ? $filename : null]));
+        Catalog::create(array_merge(array_merge($request->all()), ['image' => $filename ?? null]));
 
-        return redirect(URL::route('admin.catalog.list'))->with('success', 'Информация успешно добавлена');
+        return redirect(URL::route('cp.catalog.index'))->with('success', 'Информация успешно добавлена');
     }
 
     /**
@@ -88,17 +86,18 @@ class CatalogController extends Controller
      */
     public function edit($id)
     {
-        if (!is_numeric($id)) abort(500);
+        $row = Catalog::where('id', $id)->first();
 
-        $catalog = Catalog::where('id', $id)->first();
-
-        if (!$catalog) abort(404);
+        if (!$row) abort(404);
 
         $options[0] = 'Выберите';
-        $options = ShowTree($options, 0);
-        $parent_id = $catalog->parent_id;
+        Catalog::ShowTree($options, 0);
+        $parent_id = $row->parent_id;
+        $maxUploadFileSize = StringHelper::maxUploadFileSize();
 
-        return view('admin.catalog.create_edit', compact('catalog', 'parent_id', 'options'));
+        unset($options[$id]);
+
+        return view('cp.catalog.create_edit', compact('row', 'parent_id', 'options', 'maxUploadFileSize'))->with('title', 'Редактирование категории');
     }
 
     /**
@@ -110,14 +109,12 @@ class CatalogController extends Controller
         $rules = [
             'name' => 'required',
             'image' => 'image|mimes:jpeg,jpg,gif,png|max:2048|nullable',
-            'parent_id' => 'numeric'
+            'parent_id' => 'integer'
         ];
 
         $validator = Validator::make($request->all(), $rules);
 
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        }
+        if ($validator->fails()) return back()->withErrors($validator)->withInput();
 
         $catalog = Catalog::find($request->id);
 
@@ -135,9 +132,9 @@ class CatalogController extends Controller
             $pic1 = $request->pic;
 
             if ($pic1 != NULL) {
-                $dir = public_path("uploads/catalog/$pic1");
+                $dir = public_path("/uploads/catalog/$pic1");
                 if (file_exists($dir)) {
-                    unlink($dir);
+                    @unlink($dir);
                 }
             }
 
@@ -155,37 +152,33 @@ class CatalogController extends Controller
 
         $catalog->save();
 
-        return redirect(URL::route('admin.catalog.list'))->with('success', 'Данные обновлены');
+        return redirect(URL::route('cp.catalog.index'))->with('success', 'Данные обновлены');
     }
 
     /**
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Request $request)
+    public function delete(Request $request)
     {
-        $id = $request->id;
-
-        if (!is_numeric($id)) abort(500);
-
-        $parent = Catalog::findOrFail($id);
+        $parent = Catalog::findOrFail($request->id);
         $array_of_ids = $this->getChildren($parent);
-        array_push($array_of_ids, $id);
+        array_push($array_of_ids, $request->id);
 
-        $pics = $this->getPic($parent);
+        $catalog = Catalog::whereIn('id', $array_of_ids)->get();
 
-        Catalog::destroy($array_of_ids);
-
-        if (is_array($pics)) {
+        if ($catalog) {
+            $pics = $catalog->pluck('image');
             foreach ($pics as $pic) {
-                $image = public_path() . '/catalog/' . $pic;
+                $image = public_path('/uploads/catalog/' . $pic);
+
                 if (file_exists($image)) @unlink($image);
             }
         }
 
-        Links::whereIn('parent_id', $array_of_ids);
+        Catalog::destroy($array_of_ids);
 
-        return redirect(URL::route('admin.catalog.list'))->with('success', 'Данные удалены');
+        return redirect(URL::route('cp.catalog.index'))->with('success', 'Данные удалены');
     }
 
     /**
@@ -195,25 +188,11 @@ class CatalogController extends Controller
     private function getChildren($category)
     {
         $ids = [];
-        foreach ($category->children as $cat) {
-            $ids[] = $cat->id;
-            $ids = array_merge($ids, $this->getChildren($cat));
+        foreach ($category->children as $row) {
+            $ids[] = $row->id;
+            $ids = array_merge($ids, $this->getChildren($row));
         }
         return $ids;
-    }
-
-    /**
-     * @param $category
-     * @return array
-     */
-    private function getPic($category)
-    {
-        $pic = [];
-        foreach ($category->children as $cat) {
-            $cat->image;
-            $pic = array_merge($pic, $this->getPic($cat));
-        }
-        return $pic;
     }
 
 }

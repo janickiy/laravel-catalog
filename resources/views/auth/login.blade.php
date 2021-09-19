@@ -1,77 +1,85 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="{{ app()->getLocale() }}">
+<head>
+    <meta charset="UTF-8">
+    <title>Авторизация</title>
 
-@section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Login</div>
-                <div class="panel-body">
-                    <form class="form-horizontal" role="form" method="POST" action="{{ route('login') }}">
-                        {{ csrf_field() }}
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
+    {!! Html::style('/css/bootstrap.min.css') !!}
 
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
+    {!! Html::style('/css/style.css') !!}
 
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label">Password</label>
+    {!! Html::script('/admin/js/libs/jquery-3.2.1.min.js') !!}
 
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password" required>
+</head>
 
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
+<body class="login-page">
+<main>
+    <div class="login-block">
 
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
 
-                        <div class="form-group">
-                            <div class="col-md-8 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Login
-                                </button>
+        <h1>Панель администратора</h1>
 
-                                <a class="btn btn-link" href="{{ route('password.request') }}">
-                                    Forgot Your Password?
-                                </a>
-                            </div>
-                        </div>
-    <hr>
-    <div class="form-group">
-        <div class="col-md-6 col-md-offset-4">
-            <a href="{{ url('/auth/github') }}" class="btn btn-github"><i class="fa fa-github"></i> Github</a>
-            <a href="{{ url('/auth/twitter') }}" class="btn btn-twitter"><i class="fa fa-twitter"></i> Twitter</a>
-            <a href="{{ url('/auth/facebook') }}" class="btn btn-facebook"><i class="fa fa-facebook"></i> Facebook</a>
+        {!! Form::open(['url' => URL::route('login'), 'method' => 'post']) !!}
+
+        @if ($errors->has('message'))
+            <p class="text-danger">{{ $errors->first('message') }}</p>
+        @endif
+
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-user ti-user"></i></span>
+
+                {!! Form::text('login', old('login'), [ 'placeholder' => "Логин", 'class' => 'form-control']) !!}
+
+                @if ($errors->has('login'))
+                    <p class="text-danger">{{ $errors->first('login') }}</p>
+                @endif
+
+            </div>
         </div>
-    </div>
-                        
-                    </form>
+
+        <hr class="hr-xs">
+
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-lock ti-unlock"></i></span>
+
+                {!! Form::password('password',['class' => 'form-control', 'placeholder' => 'Пароль', 'type' => 'password']) !!}
+
+                @if ($errors->has('password'))
+                    <p class="text-danger">{{ $errors->first('password') }}</p>
+                @endif
+
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-md-6 offset-md-4">
+                <div class="form-check">
+                    <div class="chiller_cb">
+
+                        {!! Form::checkbox('remember', 1, old('remember') ? true : false, ['id' => "myCheckbox"] ) !!}
+
+                        {!! Form::label('myCheckbox', 'Запомнить меня', ['class' => 'form-check-label']) !!}
+
+                        <span></span>
+                    </div>
                 </div>
             </div>
         </div>
+
+        {!! Form::submit('Войти', ['class' => 'btn btn-primary btn-block']) !!}
+
+        {!! Form::close() !!}
+
     </div>
-</div>
-@endsection
+
+</main>
+
+</body>
+</html>

@@ -2,79 +2,33 @@
 
 namespace App\Http\Controllers\Admin;
 
-use DataTables;
-use App\Http\Requests;
-use App\User;
-use App\Models\{Links,Role,Settings,Feedback};
-use App\Http\Start\Helpers;
+use App\Models\{Admin, Links, Settings, Feedback};
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Controller;
+use DataTables;
+use URL;
 
 class DataTableController extends Controller
 {
+
     /**
      * @return mixed
      */
-    public function getUsers()
+    public function getAdmin()
     {
-        $users = User::all();
+        $row = Admin::query();
 
-        return Datatables::of($users)
+        return Datatables::of($row)
+            ->addColumn('action', function ($row) {
+                $editBtn = '<a title="редактировать" class="btn btn-xs btn-primary"  href="' . URL::route('cp.admin.edit', ['id' => $row->id]) . '"><span  class="fa fa-edit"></span></a> &nbsp;';
 
-            ->addColumn('actions', function ($users) {
-                $editBtn = '<a title="Редактировать" class="btn btn-xs btn-primary"  href="' . url("admin/user/edit/$users->id") . '"><span  class="fa fa-edit"></span></a> &nbsp;';
-
-                if ($users->id != Auth::id())
-                    $deleteBtn = '<a class="btn btn-xs btn-danger deleteRow" id="' . $users->id . '"><span class="fa fa-remove"></span></a>';
+                if ($row->id != Auth::id())
+                    $deleteBtn = '<a title="удалить" class="btn btn-xs btn-danger deleteRow" id="' . $row->id . '"><span class="fa fa-remove"></span></a>';
                 else
                     $deleteBtn = '';
 
-                return $editBtn . $deleteBtn;
+                return '<div class="nobr"> ' . $editBtn . $deleteBtn . '</div>';
             })
-
-            ->addColumn('role', function ($users) {
-                return isset($users->role->name) && $users->role->name ? $users->role->name : '';
-            })
-
-            ->rawColumns(['actions'])->make(true);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getRole()
-    {
-        $role = Role::all();
-
-        return Datatables::of($role)
-
-            ->addColumn('actions', function ($role) {
-                $editBtn = Helpers::has_permission(Auth::user()->id, 'edit_role') ? '<a title="Редактировать" class="btn btn-xs btn-primary"  href="' . url("admin/role/edit/$role->id") . '"><span  class="fa fa-edit"></span></a> &nbsp;' : '';
-                $deleteBtn = Helpers::has_permission(Auth::user()->id, 'delete_role') ? '<a class="btn btn-xs btn-danger deleteRow" id="' . $role->id . '"><span class="fa fa-remove"></span></a>' : '';
-
-                return in_array($role->id,[1]) == false ? $editBtn . $deleteBtn : '';
-            })
-
-            ->rawColumns(['actions'])->make(true);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSettings()
-    {
-        $settings = Settings::all();
-
-        return Datatables::of($settings)
-
-            ->addColumn('actions', function ($settings) {
-                $editBtn = '<a title="Редактировать" class="btn btn-xs btn-primary"  href="' . url("admin/settings/edit/$settings->id") . '"><span  class="fa fa-edit"></span></a> &nbsp;';
-                $deleteBtn = '<a class="btn btn-xs btn-danger deleteRow" id="' . $settings->id . '"><span class="fa fa-remove"></span></a>';
-
-                return $editBtn . $deleteBtn;
-            })
-
-            ->rawColumns(['actions'])->make(true);
+            ->rawColumns(['action'])->make(true);
     }
 
     /**
@@ -82,45 +36,56 @@ class DataTableController extends Controller
      */
     public function getLinks()
     {
-        $links = Links::select('*');
 
-        return Datatables::of($links)
+        $row = Links::selectRaw('links.id,links.name,links.url,links.city, links.phone,links.created_at,links.description, links.status, links.views, catalog.name AS catalog')
+            ->leftJoin('catalog', 'catalog.id', '=', 'links.catalog_id')
+            ->groupBy('catalog.name')
+            ->groupBy('links.id')
+            ->groupBy('links.name')
+            ->groupBy('links.url')
+            ->groupBy('links.phone')
+            ->groupBy('links.city')
+            ->groupBy('links.created_at')
+            ->groupBy('catalog.links.status')
+            ->groupBy('links.views')
+            ->groupBy('links.description');
 
-            ->addColumn('checkbox', function ($links) {
-                return '<input type="checkbox" title="Отметить/Снять отметку" value="' . $links->id . '" name="activate[]">';
+        return Datatables::of($row)
+            ->addColumn('action', function ($row) {
+                $editBtn = '<a title="редактировать" class="btn btn-xs btn-primary" href="' . URL::route('cp.links.edit', ['id' => $row->id]) . '"><span  class="fa fa-edit"></span></a> &nbsp;';
+                $deleteBtn = '<a title="удалить" class="btn btn-xs btn-danger deleteRow" id="' . $row->id . '"><span class="fa fa-remove"></span></a>';
+
+                return '<div class="nobr"> ' . $editBtn . $deleteBtn . '</div>';
             })
-
-            ->addColumn('status_link', function ($links) {
-                return $links->status;
-            })
-
-            ->editColumn('catalog', function ($links) {
-                return isset($links->catalog->name) ? $links->catalog->name : '';
-            })
-
-            ->editColumn('status', function ($links) {
-                return linkStatus($links->status);
-            })
-
-            ->addColumn('actions', function ($links) {
-                $editBtn = '<a title="Редактировать" class="btn btn-xs btn-primary"  href="' . url("admin/links/edit/$links->id") . '"><span  class="fa fa-edit"></span></a> &nbsp;';
-                $deleteBtn = '<a class="btn btn-xs btn-danger deleteRow" id="' . $links->id . '"><span class="fa fa-remove"></span></a>';
-
-                return $editBtn . $deleteBtn;
-            })
-
-            ->rawColumns(['actions','checkbox'])->make(true);
+            ->rawColumns(['action'])->make(true);
     }
 
     /**
      * @return mixed
      */
-    public function getMessages()
+    public function getFeedback()
     {
-        $messages = Feedback::select('*');
+       $row  = Feedback::query();
 
-        return Datatables::of($messages)
+        return Datatables::of($row)
 
-           ->make(true);
+            ->make(true);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSettings()
+    {
+        $row = Settings::query();
+
+        return Datatables::of($row)
+            ->addColumn('action', function ($row) {
+                $editBtn = '<a title="редактировать" class="btn btn-xs btn-primary"  href="' . URL::route('cp.settings.edit', ['id' => $row->id]) . '"><span  class="fa fa-edit"></span></a> &nbsp;';
+                $deleteBtn = '<a title="удалить" class="btn btn-xs btn-danger deleteRow" id="' . $row->id . '"><span class="fa fa-remove"></span></a>';
+
+                return '<div class="nobr"> ' . $editBtn . $deleteBtn . '</div>';
+            })
+            ->rawColumns(['action'])->make(true);
     }
 }
