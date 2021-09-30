@@ -46,7 +46,7 @@ class DataTableController extends Controller
             ->groupBy('links.phone')
             ->groupBy('links.city')
             ->groupBy('links.created_at')
-            ->groupBy('catalog.links.status')
+            ->groupBy('links.status')
             ->groupBy('links.views')
             ->groupBy('links.description');
 
@@ -57,6 +57,11 @@ class DataTableController extends Controller
 
                 return '<div class="nobr"> ' . $editBtn . $deleteBtn . '</div>';
             })
+
+            ->editColumn('status', function ($row) {
+                return Links::linkStatus($row->status);
+            })
+
             ->rawColumns(['action'])->make(true);
     }
 

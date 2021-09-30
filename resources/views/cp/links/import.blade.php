@@ -38,8 +38,28 @@
 
                                 </div>
 
+                                <div class="note">
+                                    Максимальный размер: <strong>{{ $maxUploadFileSize }}</strong>
+                                </div>
+
                                 @if ($errors->has('file'))
                                     <span class="text-danger">{{ $errors->first('file') }}</span>
+                                @endif
+
+                            </section>
+
+                            <section>
+
+                                {!! Form::label('catalog_id',  "Категория*", ['class' => 'label']) !!}
+
+                                <label class="input">
+
+                                    {!! Form::select('catalog_id', $options, old('catalog_id', isset($row) ? $row->catalog_id : null), ['placeholder' => 'Выберите', 'class' => 'form-control custom-scroll']) !!}
+
+                                </label>
+
+                                @if ($errors->has('catalog_id'))
+                                    <p class="text-danger">{{ $errors->first('catalog_id') }}</p>
                                 @endif
 
                             </section>

@@ -126,7 +126,8 @@ class FrontendController extends Controller
             'full_description' => 'required|min:200|max:2000',
             'catalog_id' => 'required|integer',
             'captcha' => 'required|captcha',
-            'agree' => 'required'
+            'agree' => 'required',
+            'htmlcode_banner' => 'nullable|regex:/^<a([^>]*)\s+href=(")?http(s)?:\/\/[^>]*>\s*<\s*img[^>]*\s+src=(")?http(s)?:\/\/[^>]*><\/a>$/si',
         ];
 
         $message = [
@@ -143,6 +144,7 @@ class FrontendController extends Controller
             'catalog_id.required' => 'Выберите раздел!',
             'captcha.required' => 'Не указан защитный код!',
             'agree.required' => 'Вы должны принять правила каталога',
+            'htmlcode_banner.regex' => 'HTML код баннера введен неверно!',
         ];
 
         $validator = Validator::make($request->all(), $rules, $message);
@@ -223,7 +225,7 @@ class FrontendController extends Controller
             return back()->withErrors($validator)->withInput();
         }
 
-        Feedback::create(array_merge($request->all(), ['ip' => $request->getClientIp()]));
+        Feedback::create(array_merge($request->all(), ['ip' => $request->ip()]));
 
         $data = new stdClass();
         $data->name = $request->name;

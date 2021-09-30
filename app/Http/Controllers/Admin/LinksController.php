@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\LinksImport;
 use App\Imports\LinksImportFromCsv;
+use App\Helpers\StringHelper;
 use URL;
 use Validator;
 
@@ -21,7 +22,7 @@ class LinksController extends Controller
     {
         $status_list = [];
 
-        foreach (['new' => 0, 'publish' => 1, 'hide' => 2, 'block' => 3] as $key => $value) {
+        foreach (['new' => 0, 'publish' => 1, 'block' => 2] as $key => $value) {
             $status_list[$value] = Links::linkStatus($key);
         }
 
@@ -60,7 +61,7 @@ class LinksController extends Controller
 
         if ($validator->fails()) return back()->withErrors($validator)->withInput();
 
-        Links::create(array_merge($request->all(), ['token' => md5($request->url . time()), 'status' => 1]));
+        Links::create(array_merge($request->all(), ['status' => 1]));
 
         return redirect(URL::route('cp.links.index'))->with('success', 'Информация успешно добавлена');
 
@@ -136,9 +137,17 @@ class LinksController extends Controller
         $link->delete();
     }
 
+    /**
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function importForm()
     {
-        return view('cp.links.import')->with('title', 'Импорт');
+        $options = [];
+        $options = Catalog::ShowTree($options, 0);
+
+        $maxUploadFileSize = StringHelper::maxUploadFileSize();
+
+        return view('cp.links.import', compact('options', 'maxUploadFileSize'))->with('title', 'Импорт');
     }
 
     /**
@@ -151,6 +160,7 @@ class LinksController extends Controller
 
         $rules = [
             'file' => 'required',
+            'catalog_id' => 'required|integer'
         ];
 
         $messages = [
