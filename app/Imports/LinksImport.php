@@ -2,10 +2,10 @@
 
 namespace App\Imports;
 
-use App\Models\Links;
-use App\Models\Catalog;
+use App\Models\{Links,Catalog};
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
+use App\Helpers\StringHelper;
 
 class LinksImport implements ToModel, WithBatchInserts
 {
@@ -31,7 +31,7 @@ class LinksImport implements ToModel, WithBatchInserts
         $url = trim($row[5]);
         $phone = trim($row[7]);
 
-        if ($url && isDomainAvailible($url, 5)) {
+        if ($url && Links::isDomainAvailible($url, 5)) {
 
             $url_link = $url;
 
@@ -46,7 +46,7 @@ class LinksImport implements ToModel, WithBatchInserts
 
                 if ($tags_row) {
                     foreach ($tags_row as $mkey => $mval) {
-                        $tags[$mkey] = str_to_utf8($mval);
+                        $tags[$mkey] = StringHelper::str_to_utf8($mval);
                     }
                 }
 

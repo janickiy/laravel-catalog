@@ -67,4 +67,28 @@ class Links extends Model
                 return $status;
         }
     }
+
+    /**
+     * @param $domain
+     * @param int $timeout
+     * @return bool
+     */
+    public static function isDomainAvailible($domain, $timeout=5){
+
+        if (!filter_var($domain, FILTER_VALIDATE_URL)) {
+            return false;
+        }
+
+        $curlInit = curl_init($domain);
+        curl_setopt($curlInit,CURLOPT_CONNECTTIMEOUT,$timeout);
+        curl_setopt($curlInit,CURLOPT_TIMEOUT       ,$timeout);
+        curl_setopt($curlInit,CURLOPT_HEADER,false);
+        curl_setopt($curlInit,CURLOPT_RETURNTRANSFER,true);
+
+        $response = curl_exec($curlInit);
+
+        curl_close($curlInit);
+
+        return (bool)($response);
+    }
 }

@@ -23,14 +23,14 @@
 
                             <section>
 
-                                {!! Form::label('export_type', trans('frontend.form.format'), ['class' => 'label']) !!}
+                                {!! Form::label('export_type', 'Формат', ['class' => 'label']) !!}
 
                                 <div class="inline-group">
                                     <label class="radio">
 
                                         {{ Form::radio('export_type', 'text', true) }}
 
-                                        <i></i>{{ trans('frontend.form.text') }}
+                                        <i></i>текст
                                     </label>
                                     <label class="radio">
 
@@ -43,14 +43,14 @@
 
                             <section>
 
-                                {!! Form::label('compress', trans('frontend.form.format'), ['class' => 'label']) !!}
+                                {!! Form::label('compress', 'Архивировать', ['class' => 'label']) !!}
 
                                 <div class="inline-group">
                                     <label class="radio">
 
                                         {{ Form::radio('compress', 'none', true) }}
 
-                                        <i></i>{{ trans('frontend.str.no') }}
+                                        <i></i>нет
                                     </label>
                                     <label class="radio">
 
@@ -63,16 +63,16 @@
 
                             <section>
 
-                                {!! Form::label('categoryId[]', trans('frontend.form.subscribers_category'), ['class' => 'label']) !!}
+                                {!! Form::label('catalog_id',  "Категория*", ['class' => 'label']) !!}
 
                                 <label class="input">
 
-                                    {!! Form::select('categoryId[]', $options, null, ['multiple'=>'multiple', 'placeholder' => trans('frontend.form.select_category'), 'class' => 'form-control custom-scroll']) !!}
+                                    {!! Form::select('catalog_id', $options, old('catalog_id', isset($row) ? $row->catalog_id : null), ['placeholder' => 'Выберите', 'class' => 'form-control custom-scroll']) !!}
 
                                 </label>
 
-                                @if ($errors->has('categoryId'))
-                                    <p class="text-danger">{{ $errors->first('categoryId') }}</p>
+                                @if ($errors->has('catalog_id'))
+                                    <p class="text-danger">{{ $errors->first('catalog_id') }}</p>
                                 @endif
 
                             </section>
@@ -81,9 +81,9 @@
                                 <button type="submit" class="btn btn-primary">
                                     Экспортировать
                                 </button>
-                                <button type="button" class="btn btn-default" onclick="window.history.back();">
-                                   Назад
-                                </button>
+                                <a class="btn btn-default" href="{{ URL::route('cp.links.index') }}">
+                                    Назад
+                                </a>
                             </footer>
 
                         </fieldset>

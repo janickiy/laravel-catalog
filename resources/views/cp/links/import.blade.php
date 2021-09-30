@@ -48,22 +48,6 @@
 
                             </section>
 
-                            <section>
-
-                                {!! Form::label('catalog_id',  "Категория*", ['class' => 'label']) !!}
-
-                                <label class="input">
-
-                                    {!! Form::select('catalog_id', $options, old('catalog_id', isset($row) ? $row->catalog_id : null), ['placeholder' => 'Выберите', 'class' => 'form-control custom-scroll']) !!}
-
-                                </label>
-
-                                @if ($errors->has('catalog_id'))
-                                    <p class="text-danger">{{ $errors->first('catalog_id') }}</p>
-                                @endif
-
-                            </section>
-
                             <footer>
                                 <button type="submit" class="btn btn-primary">
                                     Импортировать
