@@ -2,37 +2,8 @@
 
 namespace App\Helpers;
 
-
 class StringHelper
 {
-
-    /**
-     * @param $status
-     * @return string
-     */
-    public static function linkStatus($status)
-    {
-        switch ($status) {
-            case 'new':
-                return 'ожидает проверку';
-                break;
-
-            case 'publish':
-                return 'опубликован';
-                break;
-
-            case 'hide':
-                return 'скрыта';
-                break;
-
-            case 'block':
-                return 'в черном списке';
-                break;
-
-            default:
-                return $status;
-        }
-    }
 
     /**
      * @param $str

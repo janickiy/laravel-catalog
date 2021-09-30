@@ -6,14 +6,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Helpers\{SettingsHelpers, StringHelper};
 use App\Models\{Catalog, Links, Feedback};
+use App\Events\FeedbackMailEvent;
 use URL;
+use stdClass;
 
 class FrontendController extends Controller
 {
     /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function index($id = 0)
     {
@@ -133,7 +134,6 @@ class FrontendController extends Controller
             'url.required' => 'Не указан URL адрес сайта!',
             'url.url' => 'Не верно указан URL адрес сайта!',
             'url.unique' => 'Этот сайт уже есть в каталоге!',
-            'email.required' => 'Не указан Email!',
             'description.required' => 'Не указано описание!',
             'description.min' => 'Количество символов в описание не должно быть меньше :min',
             'description.max' => 'Количество символов в описание не должно быть больше :max',
@@ -143,7 +143,6 @@ class FrontendController extends Controller
             'catalog_id.required' => 'Выберите раздел!',
             'captcha.required' => 'Не указан защитный код!',
             'agree.required' => 'Вы должны принять правила каталога',
-
         ];
 
         $validator = Validator::make($request->all(), $rules, $message);
@@ -152,7 +151,11 @@ class FrontendController extends Controller
             return back()->withErrors($validator)->withInput();
         }
 
-        Links::create(array_merge($request->all(), ['description' => StringHelper::removeHtmlTags($request->input('description')), 'full_description' => StringHelper::removeHtmlTags($request->input('full_description')), 'status' => 1]));
+        Links::create(array_merge($request->all(), [
+            'description' => StringHelper::removeHtmlTags($request->input('description')),
+            'full_description' => StringHelper::removeHtmlTags($request->input('full_description')),
+            'status' => SettingsHelpers::getSetting('ADD_LINKS_WITHOUT_CHECK') == 1 ? 1 : 0
+        ]));
 
         return redirect(URL::route('addurl'))->with('success', 'Сайт добавлен в каталог');
     }
@@ -219,20 +222,17 @@ class FrontendController extends Controller
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
-        $message['email'] = $request->email;
-        $message['name'] = $request->name;
-        $message['msg'] = $request->message;
 
         Feedback::create(array_merge($request->all(), ['ip' => $request->getClientIp()]));
 
-        /**
-        Mail::send('emails.feedback', ['email' => $message['email'], 'name' => $message['name'], 'msg' => $message['msg']], function ($message) {
-            $message->from('no-reply@' . $_SERVER['SERVER_NAME'], getSetting('SITE_NAME'));
-            $message->to(getSetting('EMAIL'), getSetting('SITE_NAME'))->subject('Cообщение с сайта ' . $_SERVER['SERVER_NAME']);
-        });
-         * */
+        $data = new stdClass();
+        $data->name = $request->name;
+        $data->email = $request->email;
+        $data->message = $request->message;
 
-        return redirect(URL::route('contact'))->with('success', 'Спасибо за Ваше сообщение! Вы получите ответ как можно скоро. ');
+        event(new FeedbackMailEvent($data));
+
+        return redirect(URL::route('contact'))->with('success', 'Ваше сообщение успешно отправлено');
     }
 
     /**

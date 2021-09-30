@@ -51,4 +51,24 @@ class Links extends Model
                 return 'black';
         }
     }
+
+    /**
+     * @param $status
+     * @return string
+     */
+    public static function linkStatus($status)
+    {
+        switch ($status) {
+            case 'new':
+                return 'ожидает проверку';
+            case 'publish':
+                return 'опубликован';
+            case 'hide':
+                return 'скрыта';
+            case 'block':
+                return 'в черном списке';
+            default:
+                return $status;
+        }
+    }
 }

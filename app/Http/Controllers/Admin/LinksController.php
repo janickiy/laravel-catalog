@@ -8,7 +8,6 @@ use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\LinksImport;
 use App\Imports\LinksImportFromCsv;
-use App\Helpers\{StringHelper};
 use URL;
 use Validator;
 
@@ -23,7 +22,7 @@ class LinksController extends Controller
         $status_list = [];
 
         foreach (['new' => 0, 'publish' => 1, 'hide' => 2, 'block' => 3] as $key => $value) {
-            $status_list[$value] = StringHelper::linkStatus($key);
+            $status_list[$value] = Links::linkStatus($key);
         }
 
         return view('cp.links.index', compact('status_list'))->with('title', 'Ссылки');

@@ -67,7 +67,7 @@
         <div class="form-group">
             {!! Form::label('phone', 'Телефон', ['class'=> 'control-label col-sm-2']) !!}
             <div class="col-sm-10">
-                {!! Form::text('phone', old('phone', null), ['class' => 'form-control', 'placeholder'=>'Email']) !!}
+                {!! Form::text('phone', old('phone', null), ['class' => 'form-control', 'placeholder'=>'Телефон']) !!}
 
                 @if ($errors->has('phone'))
                     <span class="text-danger">{{ $errors->first('phone') }}</span>
