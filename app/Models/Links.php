@@ -46,8 +46,6 @@ class Links extends Model
             case 1:
                 return 'publish';
             case 2:
-                return 'hide';
-            case 3:
                 return 'black';
         }
     }
@@ -63,8 +61,6 @@ class Links extends Model
                 return 'ожидает проверку';
             case 'publish':
                 return 'опубликован';
-            case 'hide':
-                return 'скрыта';
             case 'block':
                 return 'в черном списке';
             default:
