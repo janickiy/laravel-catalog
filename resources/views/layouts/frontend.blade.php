@@ -128,9 +128,9 @@
                 <a class="navbar-brand" href="/">Белый каталог сайтов</a></div>
             <div id="w1-collapse" class="collapse navbar-collapse">
                 <ul id="w2" class="navbar-nav navbar-right nav">
-                    <li class="active"><a href="{{  URL::route('index') }}">Главная</a></li>
-                    <li><a href="{{ URL::route('rules') }}">Правила каталога</a></li>
-                    <li><a href="{{ URL::route('contact') }}">Обратная связь</a></li>
+                    <li {!! Request::is('/') ? 'class="active"' : '' !!}><a href="{{  URL::route('index') }}">Главная</a></li>
+                    <li {!! Request::is('rules*') ? 'class="active"' : '' !!}><a href="{{ URL::route('rules') }}">Правила каталога</a></li>
+                    <li {!! Request::is('contact*') ? 'class="active"' : '' !!}><a href="{{ URL::route('contact') }}">Обратная связь</a></li>
                     <li style="top: 9px; padding-left: 20px">
                         <span>
                             <a class="btn btn-success" href="{{ URL::route('addurl') }}">Добавить сайт</a>
@@ -145,7 +145,7 @@
 
         @yield('content')
 
-        <p>© Copyright {{ date("Y") }}, Белый каталог сайтов</p>
+        <p>© {{ date("Y") }}, Белый каталог сайтов</p>
 
     </div>
 
