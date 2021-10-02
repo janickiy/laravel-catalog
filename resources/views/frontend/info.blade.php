@@ -44,7 +44,7 @@
 
             @if($link->city)<p>Город: {{ $link->city }}</p>@endif
 
-            <p>Всего посещений сайта:{{ $link->views }} =</p>
+            <p>Всего посещений сайта: {{ $link->views }}</p>
 
             <p>Адрес сайта: <a href="{{ URL::route('redirect', ['id' => $link->id]) }}">{{ $link->url }}</a></p>
 
