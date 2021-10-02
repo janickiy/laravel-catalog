@@ -98,12 +98,11 @@ class AdminController extends Controller
         return redirect(URL::route('cp.admin.index'))->with('success', trans('message.data_updated'));
     }
 
-
     /**
-     * @param $id
+     * @param Request $request
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        if ($id != Auth::id())  Admin::where('id', $id)->delete();
+        if ($request->id != Auth::id())  Admin::where('id', $request->id)->delete();
     }
 }
