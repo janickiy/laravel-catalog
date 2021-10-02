@@ -36,15 +36,17 @@
 
             <p>{!! $link->full_description !!}</p>
 
-            <p>Раздел: {!! $link->catalog->name !!}</p>
+            <p>Раздел каталога: {{ $link->catalog->name }}</p>
 
-            @if($link->phone)<p>Тел.: {!! $link->phone !!}</p>@endif
+            @if($link->phone)<p>Тел.: {{ $link->phone }}</p>@endif
 
-            @if($link->city)<p>Город: {!! $link->city !!}</p>@endif
+            @if($link->email)<p>Email: {{ $link->email }}</p>@endif
 
-            <br/>
+            @if($link->city)<p>Город: {{ $link->city }}</p>@endif
 
-            Перейти на сайт: <a href="{{ URL::route('redirect', ['id' => $link->id]) }}">{{ $link->url }}</a>
+            <p>Всего посещений сайта:{{ $link->views }} =</p>
+
+            <p>Адрес сайта: <a href="{{ URL::route('redirect', ['id' => $link->id]) }}">{{ $link->url }}</a></p>
 
         </div>
 
