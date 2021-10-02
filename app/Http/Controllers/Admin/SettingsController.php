@@ -88,6 +88,6 @@ class SettingsController extends Controller
      */
     public function destroy(Request $request)
     {
-        Settings::where(['id' => $request->id])->delete();
+        Settings::find($request->id)->delete();
     }
 }

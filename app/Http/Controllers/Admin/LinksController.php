@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use App\Models\{Links,Catalog};
+use App\Models\{Links, Catalog, Settings};
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\{LinksImport,LinksImportFromCsv};
@@ -132,13 +132,9 @@ class LinksController extends Controller
     /**
      * @param Request $request
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        $link = Links::find($id);
-
-        if (!$link) abort(404);
-
-        $link->delete();
+        Links::find($request->id)->delete();
     }
 
     /**

@@ -176,9 +176,10 @@
                     function (isConfirm) {
                         if (!isConfirm) return;
                         $.ajax({
-                            url: SITE_URL + "/links/destroy/" + rowid,
-                            type: "DELETE",
+                            url: '{{ URL::route('cp.links.destroy') }}',
+                            type: "POST",
                             dataType: "html",
+                            data: {id: rowid},
                             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                             success: function () {
                                 $("#rowid_" + rowid).remove();
