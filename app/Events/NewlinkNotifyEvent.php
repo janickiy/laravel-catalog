@@ -2,23 +2,23 @@
 
 namespace App\Events;
 
-use stdClass;
+use App\Models\Links;
 use Illuminate\Queue\SerializesModels;
 
-class FeedbackMailEvent
+class NewlinkNotifyEvent
 {
-
     use SerializesModels;
 
-    public $data;
+    public Links $links;
 
     /**
-     * Create a new event instance.
+     * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(stdClass $data) {
-        $this->data = $data;
+    public function __construct(Links $links)
+    {
+        $this->links = $links;
     }
 
     /**
@@ -26,7 +26,8 @@ class FeedbackMailEvent
      *
      * @return \Illuminate\Broadcasting\Channel|array
      */
-    public function broadcastOn() {
+    public function broadcastOn()
+    {
         return [];
     }
 }

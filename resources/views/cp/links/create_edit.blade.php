@@ -136,6 +136,22 @@
 
                             <section>
 
+                                {!! Form::label('email', 'Email', ['class' => 'label']) !!}
+
+                                <label class="input">
+
+                                    {!! Form::text('email', old('email', isset($row) ? $row->email : ''), ['class' => 'form-control', 'autocomplete' => 'off']) !!}
+
+                                </label>
+
+                                @if ($errors->has('email'))
+                                    <p class="text-danger">{{ $errors->first('email') }}</p>
+                                @endif
+
+                            </section>
+
+                            <section>
+
                                 {!! Form::label('city', 'Город', ['class' => 'label']) !!}
 
                                 <label class="input">

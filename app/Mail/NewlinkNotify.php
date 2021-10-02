@@ -2,25 +2,27 @@
 
 namespace App\Mail;
 
-use stdClass;
+use App\Helpers\SettingsHelpers;
+use App\Models\Links;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailable;
-use App\Helpers\{SettingsHelpers};
 
-class FeedbackMailer extends Mailable implements ShouldQueue
+class NewlinkNotify extends Mailable implements ShouldQueue
 {
-    use Queueable;
+    use Queueable, SerializesModels;
 
-    private $data;
+    public Links $links;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(stdClass $data) {
-        $this->data = $data;
+    public function __construct(Links $links)
+    {
+        $this->links = $links;
     }
 
     /**
@@ -35,15 +37,15 @@ class FeedbackMailer extends Mailable implements ShouldQueue
         return ['mail'];
     }
 
-
     /**
-     * @return FeedbackMailer
+     * Build the message.
+     *
+     * @return $this
      */
-    public function build() {
+    public function build()
+    {
         return $this->from(SettingsHelpers::getSetting('FROM'), SettingsHelpers::getSetting('SITE_NAME'))
-            ->subject('Форма обратной связи')
-            ->view('mail.feedback', ['data' => $this->data]);
+            ->subject('Добавлена новая ссылка')
+            ->view('mail.newlink', ['data' => $this->links]);
     }
-
-
 }

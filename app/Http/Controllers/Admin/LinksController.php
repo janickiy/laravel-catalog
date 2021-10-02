@@ -47,6 +47,7 @@ class LinksController extends Controller
         $rules = [
             'name' => 'required',
             'url' => 'required|url|unique:links',
+            'email' => 'email',
             'description' => 'required',
             'full_description' => 'required',
             'catalog_id' => 'required|integer'
@@ -94,6 +95,7 @@ class LinksController extends Controller
         $rules = [
             'name' => 'required',
             'url' => 'required|unique:links,url,' . $request->id,
+            'email' => 'email',
             'description' => 'required',
             'full_description' => 'required',
             'catalog_id' => 'required|integer'
@@ -113,13 +115,14 @@ class LinksController extends Controller
 
         if (!$link) abort(404);
 
-        $link->name = $request->name;
-        $link->url = $request->url;
-        $link->description = $request->description;
-        $link->keywords = $request->keywords;
-        $link->full_description = $request->full_description;
-        $link->htmlcode_banner = $request->htmlcode_banner;
-        $link->catalog_id = $request->catalog_id;
+        $link->name = $request->input('name');
+        $link->url = $request->input('url');
+        $link->email = $request->input('email');
+        $link->description = $request->input('description');
+        $link->keywords = $request->input('keywords');
+        $link->full_description = $request->input('full_description');
+        $link->htmlcode_banner = $request->input('htmlcode_banner');
+        $link->catalog_id = $request->input('catalog_id');
         $link->save();
 
         return redirect(URL::route('cp.links.index'))->with('success', 'Данные обновлены');
@@ -213,10 +216,11 @@ class LinksController extends Controller
                 foreach ($linksList as $link) {
                     $city = $link->city ?? '';
                     $name = $link->name;
-                    $category = $link->category;
+                    $category = $link->catalog->name ?? '';
                     $url = $link->url;
                     $phone = $link->phone ?? '';
-                    $contents .= "" . $city . ";" . $name . ";" .  $category . ";" . $url . ";" . $phone . "\r\n";
+                    $email = $link->email ?? '';
+                    $contents .= "" . $city . ";" . $name . ";" .  $category . ";" . $url . ";" . $phone . ";" . $email . "\r\n";
                 }
             }
         } elseif ($request->export_type == 'excel') {
@@ -226,12 +230,12 @@ class LinksController extends Controller
             $oSpreadsheet_Out = new Spreadsheet();
 
             $oSpreadsheet_Out->getProperties()->setCreator('Alexander Yanitsky')
-                ->setLastModifiedBy('PHP Newsletter')
+                ->setLastModifiedBy('My links manager')
                 ->setTitle('Office 2007 XLSX Document')
                 ->setSubject('Office 2007 XLSX Document')
                 ->setDescription('Document for Office 2007 XLSX, generated using PHP classes.')
                 ->setKeywords('office 2007 openxml php')
-                ->setCategory('Email export file');
+                ->setCategory('Links export file');
 
 
             // Add some data
@@ -240,26 +244,31 @@ class LinksController extends Controller
                 ->setCellValue('B1', 'Название')
                 ->setCellValue('C1', 'Категория')
                 ->setCellValue('D1', 'URL')
-                ->setCellValue('E1', 'Телефон');
+                ->setCellValue('E1', 'Телефон')
+                ->setCellValue('F1', 'Email')
+            ;
 
             $i = 1;
 
-            foreach ($linksList as $subscriber) {
+            foreach ($linksList as $row) {
                 $i++;
 
                 $oSpreadsheet_Out->setActiveSheetIndex(0)
-                    ->setCellValue('A' . $i, $subscriber->city)
-                    ->setCellValue('B' . $i, $subscriber->name)
-                    ->setCellValue('C' . $i, $subscriber->name)
-                    ->setCellValue('D' . $i, $subscriber->name)
-                    ->setCellValue('E' . $i, $subscriber->name);
+                    ->setCellValue('A' . $i, $row->city ?? '')
+                    ->setCellValue('B' . $i, $row->name)
+                    ->setCellValue('C' . $i, $row->catalog->name ?? '')
+                    ->setCellValue('D' . $i, $row->url)
+                    ->setCellValue('E' . $i, $row->phone)
+                    ->setCellValue('F' . $i, $row->email ?? '')
+                ;
             }
 
             $oSpreadsheet_Out->getActiveSheet()->getColumnDimension('A')->setWidth(30);
-            $oSpreadsheet_Out->getActiveSheet()->getColumnDimension('B')->setWidth(30);
+            $oSpreadsheet_Out->getActiveSheet()->getColumnDimension('B')->setWidth(60);
             $oSpreadsheet_Out->getActiveSheet()->getColumnDimension('C')->setWidth(30);
             $oSpreadsheet_Out->getActiveSheet()->getColumnDimension('D')->setWidth(30);
             $oSpreadsheet_Out->getActiveSheet()->getColumnDimension('E')->setWidth(30);
+            $oSpreadsheet_Out->getActiveSheet()->getColumnDimension('F')->setWidth(30);
 
             $oWriter = IOFactory::createWriter($oSpreadsheet_Out, 'Xlsx');
             ob_start();
@@ -342,32 +351,12 @@ class LinksController extends Controller
     private function getLinksList($catalog_id)
     {
         if ($catalog_id) {
-            $links = Links::selectRaw('links.name, links.id, links.name, links.url, links.phone, links.city, catalog.name AS catalog')
-                ->leftJoin('catalog', function ($join) {
-                    $join->on('links.catalog_id', '=', 'catalog.id');
-                })
-                ->where('links.status', 1)
-                ->where('links.catalog_id', $catalog_id)
-                ->groupBy('catalog.name')
-                ->groupBy('links.id')
-                ->groupBy('links.name')
-                ->groupBy('links.url')
-                ->groupBy('links.phone')
-                ->groupBy('links.city')
+            $links = Links::where('status', 1)
+                ->where('catalog_id', $catalog_id)
+                ->groupBy('name')
                 ->get();
         } else {
-            $links = Links::selectRaw('links.name, links.id, links.name, links.url, links.phone, links.city, catalog.name AS catalog')
-            ->where('active', '=', 1)
-                ->leftJoin('catalog', function ($join) {
-                    $join->on('links.catalog_id', '=', 'catalog.id');
-                })
-                ->groupBy('catalog.name')
-                ->groupBy('links.id')
-                ->groupBy('links.name')
-                ->groupBy('links.url')
-                ->groupBy('links.phone')
-                ->groupBy('links.city')
-                ->get();
+            $links = Links::where('status', 1) ->groupBy('name')->get();
         }
 
         return $links;

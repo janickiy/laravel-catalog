@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Helpers\{SettingsHelpers, StringHelper};
 use App\Models\{Catalog, Links, Feedback};
-use App\Events\FeedbackMailEvent;
+use App\Events\{FeedbackMailEvent, NewlinkNotifyEvent};
 use URL;
 use stdClass;
 
@@ -124,6 +124,7 @@ class FrontendController extends Controller
             'url' => 'required|url|unique:links',
             'description' => 'required|min:100|max:300',
             'full_description' => 'required|min:200|max:2000',
+            'email' => 'email',
             'catalog_id' => 'required|integer',
             'captcha' => 'required|captcha',
             'agree' => 'required',
@@ -135,6 +136,7 @@ class FrontendController extends Controller
             'url.required' => 'Не указан URL адрес сайта!',
             'url.url' => 'Не верно указан URL адрес сайта!',
             'url.unique' => 'Этот сайт уже есть в каталоге!',
+            'email.email' => 'Не верно указан email!',
             'description.required' => 'Не указано описание!',
             'description.min' => 'Количество символов в описание не должно быть меньше :min',
             'description.max' => 'Количество символов в описание не должно быть больше :max',
@@ -153,13 +155,17 @@ class FrontendController extends Controller
             return back()->withErrors($validator)->withInput();
         }
 
-        Links::create(array_merge($request->all(), [
+        $link = Links::create(array_merge($request->all(), [
             'description' => StringHelper::removeHtmlTags($request->input('description')),
             'full_description' => StringHelper::removeHtmlTags($request->input('full_description')),
             'status' => SettingsHelpers::getSetting('ADD_LINKS_WITHOUT_CHECK') == 1 ? 1 : 0
         ]));
 
-        return redirect(URL::route('addurl'))->with('success', 'Сайт добавлен в каталог');
+        event(new NewlinkNotifyEvent($link));
+
+        $msg = SettingsHelpers::getSetting('ADD_LINKS_WITHOUT_CHECK') == 1 ? 'Сайт добавлен в каталог' : 'Сайт добавлен в каталог и после проверки будет доступен в каталоге';
+
+        return redirect(URL::route('addurl'))->with('success', $msg);
     }
 
     /**
@@ -233,6 +239,7 @@ class FrontendController extends Controller
         $data->message = $request->message;
 
         event(new FeedbackMailEvent($data));
+
 
         return redirect(URL::route('contact'))->with('success', 'Ваше сообщение успешно отправлено');
     }

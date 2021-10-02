@@ -8,9 +8,9 @@
     Сообщение с сайта
 </h1>
 
-<p>Имя: {!! $data->name !!}</p>
-<p>Email: {!! $data->email !!}</p>
-<p>Сообщение: {!! $data->message !!}</p>
+<p>Имя: {{ $data->name }}</p>
+<p>Email: {{ $data->email }}</p>
+<p>Сообщение: {{ $data->message }}</p>
 
 </p>
 </body>

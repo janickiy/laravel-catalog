@@ -16,6 +16,7 @@ class Links extends Model
         'name',
         'url',
         'city',
+        'email',
         'phone',
         'description',
         'keywords',
@@ -24,7 +25,6 @@ class Links extends Model
         'catalog_id',
         'status',
         'views',
-        'comment',
     ];
 
     /**
@@ -32,7 +32,7 @@ class Links extends Model
      */
     public function catalog()
     {
-        return $this->belongsTo(Catalog::class);
+        return $this->hasOne(Catalog::class,'id','catalog_id');
     }
 
     /**

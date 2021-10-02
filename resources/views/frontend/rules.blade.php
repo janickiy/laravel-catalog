@@ -1,7 +1,9 @@
 @extends('layouts.frontend')
 
 @section('title', $title)
+
 @section('description', '')
+
 @section('keywords', '')
 
 

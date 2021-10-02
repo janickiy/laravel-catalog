@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Events\FeedbackMailEvent;
-use App\Listeners\FeedbackMailListener;
+use App\Events\{FeedbackMailEvent,NewlinkNotifyEvent};
+use App\Listeners\{FeedbackMailListener,NewlinkNotifyEventListener};
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
 
@@ -15,8 +15,12 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        FeedbackMailEvent::class => [ // событие при отправке формы
-            FeedbackMailListener::class, // слушатель этого события
+        FeedbackMailEvent::class => [
+            FeedbackMailListener::class,
+        ],
+
+        NewlinkNotifyEvent::class => [
+            NewlinkNotifyEventListener::class,
         ],
     ];
 
