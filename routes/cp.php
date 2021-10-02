@@ -32,7 +32,7 @@ Route::group(['prefix' => 'cp'], function () {
         Route::post('store', [LinksController::class, 'store'])->name('cp.links.store');
         Route::get('edit/{id}', [LinksController::class, 'edit'])->name('cp.links.edit')->where('id', '[0-9]+');
         Route::put('update', [LinksController::class, 'update'])->name('cp.links.update');
-        Route::delete('delete/{id}', [LinksController::class, 'destroy'])->name('cp.links.destroy')->where('id', '[0-9]+');
+        Route::delete('destroy/{id}', [LinksController::class, 'destroy'])->name('cp.links.destroy')->where('id', '[0-9]+');
         Route::get('import', [LinksController::class, 'importForm'])->name('cp.links.import');
         Route::post('importLink', [LinksController::class, 'importLink'])->name('cp.links.importlink');
         Route::get('export', [LinksController::class, 'export'])->name('cp.links.export');
