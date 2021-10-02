@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\{Admin};
 use Illuminate\Support\Facades\Validator;
 use Hash;
+use Auth;
 use URL;
 
 class AdminController extends Controller
