@@ -132,9 +132,9 @@ class LinksController extends Controller
     /**
      * @param Request $request
      */
-    public function destroy(Request $request)
+    public function destroy($id)
     {
-        $link = Links::find($request->id);
+        $link = Links::find($id);
 
         if (!$link) abort(404);
 
