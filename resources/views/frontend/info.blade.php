@@ -46,7 +46,7 @@
 
             <p>Всего посещений сайта: {{ $link->views }}</p>
 
-            <p>Адрес сайта: <a href="{{ URL::route('redirect', ['id' => $link->id]) }}">{{ $link->url }}</a></p>
+            <noindex><p>Адрес сайта: <a rel="nofollow" href="{{ URL::route('redirect', ['id' => $link->id]) }}">{{ $link->url }}</a></p></noindex>
 
         </div>
 
