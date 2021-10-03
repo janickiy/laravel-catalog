@@ -78,8 +78,7 @@
                 </div>
             </div>
 
-            <h2 style="padding-bottom: 20px">@if(isset($catalog_name) && $catalog_name) {{ $catalog_name }} @else Новые
-                сайты@endif</h2>
+            <h2 style="padding-bottom: 20px">@if(isset($catalog_name) && $catalog_name) {{ $catalog_name }} @elseНедавно добавленные сайты@endif</h2>
 
             <table class="table table-responsive table-borderless">
 
