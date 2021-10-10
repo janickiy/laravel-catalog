@@ -60,7 +60,7 @@ class FrontendController extends Controller
      * @param $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function catalog($id)
+    public function catalog($id = 0)
     {
         $title = 'Разное';
         $description = 'Белый каталог сайтов';

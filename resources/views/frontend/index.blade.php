@@ -36,7 +36,7 @@
                                                          src="{{ isset($arr[$i][$j][2]) && $arr[$i][$j][2] ? url('uploads/catalog/' . $arr[$i][$j][2]) : url('/img/folder.jpg') }}">
                                                 </td>
                                                 <td style="padding:6px">
-                                                    <strong><a href="{{ URL::route('catalog', ['id' => $arr[$i][$j][1]]) }}">{{ $arr[$i][$j][0] }}</a></strong>
+                                                    <strong><a href="{{ URL::route('catalog', ['id' => $arr[$i][$j][1] > 0 ? $arr[$i][$j][1] : '']) }}">{{ $arr[$i][$j][0] }}</a></strong>
                                                     @if($arr[$i][$j][1] > 0)
                                                         <br>
                                                         <div class="subcat">

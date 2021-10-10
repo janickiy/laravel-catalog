@@ -22,7 +22,7 @@ Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('', [FrontendController::class, 'index'])->name('index');
 
-Route::get('catalog/{id}', [FrontendController::class, 'catalog'])->name('catalog')->where('id', '[0-9]+');
+Route::get('catalog/{id?}', [FrontendController::class, 'catalog'])->name('catalog')->where('id', '[0-9]+');
 
 Route::get('info/{id}', [FrontendController::class,'info'])->name('info')->where('id', '[0-9]+');
 Route::get('addurl', [FrontendController::class,'addurl'])->name('addurl');
