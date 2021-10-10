@@ -36,7 +36,7 @@
 
             <p>{{ $link->full_description }}</p>
 
-            <p>Раздел каталога: {{ $link->catalog->name }}</p>
+            <p>Раздел каталога: {{ $link->catalog->name ?? 'Разное' }}</p>
 
             @if($link->phone)<p>Тел.: {{ $link->phone }}</p>@endif
 
