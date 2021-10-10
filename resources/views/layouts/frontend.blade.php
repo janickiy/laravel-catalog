@@ -141,14 +141,13 @@
         </div>
     </nav>
 
-    <div class="container">
+    <div class="container" >
 
         @yield('content')
 
-        <p>© {{ date("Y") }}, Белый каталог сайтов</p>
+        <p style="margin-bottom: 15px; margin-top: 15px;">© {{ date("Y") }}, Белый каталог сайтов</p>
 
     </div>
-
 
 </div>
 
@@ -168,7 +167,6 @@
 </script>
 
 @yield('js')
-
 
 
 </body>

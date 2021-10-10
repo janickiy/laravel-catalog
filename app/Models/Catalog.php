@@ -70,7 +70,7 @@ class Catalog extends Model
 
         if ($catalogs) {
             foreach ($catalogs as $catalog) {
-                $sub_category_list[] = '<a href="' . url('/' . $catalog->id) . '">' . $catalog->name . '</a> <span>(' . $catalog->number_links . ')</span>';
+                $sub_category_list[] = '<a href="' . URL::route('catalog', ['id' => $catalog->id]) . '">' . $catalog->name . '</a> <span>(' . $catalog->number_links . ')</span>';
             }
         }
 

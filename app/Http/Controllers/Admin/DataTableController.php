@@ -37,7 +37,7 @@ class DataTableController extends Controller
     public function getLinks()
     {
 
-        $row = Links::selectRaw('links.id,links.name,links.url,links.city, links.phone,links.created_at,links.description, links.status, links.views, catalog.name AS catalog')
+        $row = Links::selectRaw('links.id,links.name,links.catalog_id,links.url,links.city, links.phone,links.created_at,links.description, links.status, links.views, catalog.name AS catalog')
             ->leftJoin('catalog', 'catalog.id', '=', 'links.catalog_id')
             ->groupBy('catalog.name')
             ->groupBy('links.id')
@@ -47,6 +47,7 @@ class DataTableController extends Controller
             ->groupBy('links.city')
             ->groupBy('links.created_at')
             ->groupBy('links.status')
+            ->groupBy('links.catalog_id')
             ->groupBy('links.views')
             ->groupBy('links.description');
 
@@ -56,6 +57,10 @@ class DataTableController extends Controller
                 $deleteBtn = '<a title="удалить" class="btn btn-xs btn-danger deleteRow" id="' . $row->id . '"><span class="fa fa-remove"></span></a>';
 
                 return '<div class="nobr"> ' . $editBtn . $deleteBtn . '</div>';
+            })
+
+            ->editColumn('catalog', function ($row) {
+                return $row->catalog_id == 0 ? 'Разное' : $row->catalog;
             })
 
             ->editColumn('status', function ($row) {

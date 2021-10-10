@@ -12,78 +12,133 @@ use stdClass;
 
 class FrontendController extends Controller
 {
+
     /**
-     * @param int $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function index($id = 0)
+    public function index()
     {
         $title = 'Главная страница';
-        $description = '';
-        $keywords = '';
+        $description = 'Белый каталог сайтов';
+        $keywords = 'белый каталог сайтов, добавить сайт';
 
         $catalogs = Catalog::selectRaw('catalog.name,catalog.id,catalog.image,COUNT(links.status) AS number_links')
             ->leftJoin('links', 'links.catalog_id', '=', 'catalog.id')
-            ->where('catalog.parent_id', $id)
+            ->where('catalog.parent_id', 0)
             ->groupBy('catalog.id')
             ->groupBy('catalog.name')
             ->groupBy('catalog.image')
             ->orderBy('catalog.name')
             ->get();
 
-        $arraycat = [];
-
-        foreach ($catalogs as $catalog) {
-            $arraycat[] = array($catalog->name, $catalog->id, $catalog->image, $catalog->number_links);
+        $arr = [];
+        $arrayCatalog = [];
+        foreach ($catalogs as $row) {
+            $arrayCatalog[] = [$row->name, $row->id, $row->image, $row->number_links];
         }
 
-        $total = count($arraycat);
+        $arrayCatalog[] = ['Разное', 0, null, 0];
+
+        $total = count($arrayCatalog);
         $number = (int)($total / SettingsHelpers::getSetting('COLUMNS_NUMBER'));
 
         if ((float)($total / SettingsHelpers::getSetting('COLUMNS_NUMBER')) - $number != 0) $number++;
 
-        $arr = [];
-
-        // Form an array
         for ($i = 0; $i < $number; $i++) {
             for ($j = 0; $j < SettingsHelpers::getSetting('COLUMNS_NUMBER'); $j++) {
-                if (isset($arraycat[$j * $number + $i])) $arr[$i][$j] = $arraycat[$j * $number + $i];
+                if (isset($arrayCatalog[$j * $number + $i])) $arr[$i][$j] = $arrayCatalog[$j * $number + $i];
             }
         }
 
-        if ($id) {
-            $links = Links::where('catalog_id', $id)->where('status', 1)->paginate(10);
-            $rank = $links->firstItem();
-        } else {
-            $links = Links::orderBy('id', 'DESC')->where('status', 1)->take(5)->get();
-            $rank = 1;
-        }
+        $links = Links::orderBy('id', 'DESC')->where('status', 1)->take(5)->get();
+        $rank = 1;
 
-        $pathway = '';
-        $catalog_name = '';
+        return view('frontend.index', compact('arr', 'number', 'links', 'rank', 'description', 'keywords'))->with('title', $title);
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function catalog($id)
+    {
+        $title = 'Разное';
+        $description = 'Белый каталог сайтов';
+        $keywords = 'белый каталог сайтов, добавить сайт';
+        $catalog_name = 'Разное';
+        $paginator = null;
+        $arr = [];
+        $number = 0;
 
         if ($id > 0) {
-            $topbar = [];
-            $arraypathway = Catalog::topbarMenu($topbar, $id);
-            $pathway = '<a href="' . URL::route('index') . '">Главная</a> ';
 
-            for ($i = 0; $i < count($arraypathway); $i++) {
-                if ($arraypathway[$i][0] == $id) {
-                    $pathway .= '» ' . $arraypathway[$i][1];
-                } else {
-                    $pathway .= '» <a href="' . URL::route('index', ['id' => $arraypathway[$i][0]]) . '">' . $arraypathway[$i][1] . '</a>';
+            $topbar = [];
+
+            $catalogs = Catalog::selectRaw('catalog.name,catalog.id,catalog.image,COUNT(links.status) AS number_links')
+                ->leftJoin('links', 'links.catalog_id', '=', 'catalog.id')
+                ->where('catalog.parent_id', $id)
+                ->groupBy('catalog.id')
+                ->groupBy('catalog.name')
+                ->groupBy('catalog.image')
+                ->orderBy('catalog.name')
+                ->get();
+
+            $arrayCatalog = [];
+            $catalogIds = [];
+
+            foreach ($catalogs as $row) {
+                $arrayCatalog[] = [$row->name, $row->id, $row->image, $row->number_links];
+                $catalogIds[] = $row->id;
+            }
+
+            $total = count($arrayCatalog);
+            $number = (int)($total / SettingsHelpers::getSetting('COLUMNS_NUMBER'));
+
+            if ((float)($total / SettingsHelpers::getSetting('COLUMNS_NUMBER')) - $number != 0) $number++;
+
+            for ($i = 0; $i < $number; $i++) {
+                for ($j = 0; $j < SettingsHelpers::getSetting('COLUMNS_NUMBER'); $j++) {
+                    if (isset($arrayCatalog[$j * $number + $i])) $arr[$i][$j] = $arrayCatalog[$j * $number + $i];
                 }
             }
 
-            $catalogRow = Catalog::select('name')->where('id', $id)->first();
-            $catalog_name = $catalogRow->name;
+            $arrayPathWay = Catalog::topbarMenu($topbar, $id);
+            $pathway = '<a href="' . URL::route('index') . '">Главная</a>';
 
-            $title = $catalogRow->name;
-            $description = $catalogRow->description ? $catalogRow->description : $description;
-            $keywords = $catalogRow->keywords ? $catalogRow->keywords : $keywords;
+            for ($i = 0; $i < count($arrayPathWay); $i++) {
+                if ($arrayPathWay[$i][0] == $id) {
+                    $pathway .= '» ' . $arrayPathWay[$i][1];
+                } else {
+                    $pathway .= '» <a href="' . URL::route('catalog', ['id' => $arrayPathWay[$i][0]]) . '">' .$arrayPathWay[$i][1] . '</a>';
+                }
+            }
+
+            $catalog = Catalog::find($id);
+
+            if (!$catalog) abort(404);
+
+            if ($catalog->parent_id == 0) {
+                $links = Links::where('status', 1)->whereIn('catalog_id', $catalogIds)->orderBy('id', 'DESC')->take(5)->get();
+                $rank = 1;
+            } else {
+                $links = Links::where('catalog_id', $id)->where('status', 1)->paginate(10);
+                $rank = $links->firstItem();
+                $paginator = $links->links();
+            }
+
+            $catalog_name = $catalog->name;
+            $title = $catalog->name;
+            $description = $catalog->description ?? $description;
+            $keywords = $catalog->keywords ?? $keywords;
+        } else {
+            $pathway = '<a href="' . URL::route('index') . '">Главная</a>» Разное';
+            $links = Links::where('catalog_id', $id)->where('status', 1)->paginate(10);
+            $rank = $links->firstItem();
+            $paginator = $links->links();
         }
 
-        return view('frontend.index', compact('arr', 'number', 'links', 'id', 'pathway', 'rank', 'catalog_name', 'description', 'keywords'))->with('title', $title);
+        return view('frontend.index', compact('links', 'arr', 'number', 'paginator', 'pathway', 'rank', 'catalog_name', 'description', 'keywords'))->with('title', $title);
+
     }
 
     /**
@@ -107,7 +162,8 @@ class FrontendController extends Controller
      */
     public function addurl()
     {
-        $options = [];
+
+        $options = [0 => '-Разное'];
         $options = Catalog::ShowTree($options, 0);
 
         return view('frontend.addurl', compact('options'))->with('title', 'Добавить сайт');

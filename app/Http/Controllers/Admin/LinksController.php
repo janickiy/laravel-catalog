@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use App\Models\{Links, Catalog, Settings};
+use App\Models\{Links, Catalog};
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\{LinksImport,LinksImportFromCsv};
@@ -32,7 +32,7 @@ class LinksController extends Controller
 
     public function create()
     {
-        $options = [];
+        $options = [0 => '-Разное'];
         $options = Catalog::ShowTree($options, 0);
 
         return view('cp.links.create_edit', compact('options'))->with('title', 'Добавление ссылки');
@@ -79,7 +79,7 @@ class LinksController extends Controller
 
         if (!$row) abort(404);
 
-        $options = [];
+        $options = [0 => '-Разное'];
         $options = Catalog::ShowTree($options, 0);
 
         return view('cp.links.create_edit', compact('row', 'options'))->with('title', 'Редактирование ссылки');
