@@ -38,6 +38,8 @@
 
             <p>Раздел каталога: {{ $link->catalog->name ?? 'Разное' }}</p>
 
+            @if($link->contact)<p>Контакты: {{ $link->contact }}</p>@endif
+
             @if($link->phone)<p>Тел.: {{ $link->phone }}</p>@endif
 
             @if($link->email)<p>Email: {{ $link->email }}</p>@endif
