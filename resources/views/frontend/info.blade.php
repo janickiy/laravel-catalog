@@ -34,7 +34,7 @@
 
             <h1>{{ $link->name }}</h1>
 
-            <p>{{ $link->full_description }}</p>
+            <p>{!! $link->full_description !!}</p>
 
             <p>Раздел каталога: {{ $link->catalog->name ?? 'Разное' }}</p>
 
