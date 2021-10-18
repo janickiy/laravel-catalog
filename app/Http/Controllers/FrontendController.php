@@ -115,7 +115,7 @@ class FrontendController extends Controller
 
             $catalog = Catalog::find($id);
 
-            if (!$catalog)  return redirect()->away(URL::route('index'));;
+            if (!$catalog)  abort(404);
 
             if ($catalog->parent_id == 0) {
                 $links = Links::where('status', 1)->whereIn('catalog_id', $catalogIds)->orderBy('id', 'DESC')->take(5)->get();
@@ -150,7 +150,7 @@ class FrontendController extends Controller
 
         $link = Links::where('id', $id)->where('status', 1)->first();
 
-        if (!$link) return redirect()->away(URL::route('index'));;
+        if (!$link) abort(404);
 
         Links::where('id', $id)->update(['views' => $link->views + 1]);
 
@@ -233,7 +233,7 @@ class FrontendController extends Controller
 
         $link = Links::where('id', $id)->first();
 
-        if (!$link) return redirect()->away(URL::route('index'));
+        if (!$link) abort(404);
 
         if (substr($link->url, 0, 7) == "http://" or substr($link->url, 0, 8) == "https://")
             $redirect = $link->url;
