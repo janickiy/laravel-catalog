@@ -45,9 +45,13 @@
                     </div>
 
                     <div class="table-responsive">
+
+                        {!! Form::open(['url' => URL::route('cp.statuslinks.update'), 'method' => 'put']) !!}
+
                         <table id="itemList" class="table table-striped table-bordered table-hover" width="100%">
                             <thead>
                             <tr>
+                                <th><span><input type="checkbox" title="Отметить все/Снять отметку у всех"  id="checkAll"></span></th>
                                 <th>Название</th>
                                 <th>Описание</th>
                                 <th>Сайт</th>
@@ -63,6 +67,26 @@
                             <tbody>
                             </tbody>
                         </table>
+
+                        <div class="row">
+                            <div class="col-sm-12 padding-bottom-10">
+                                <div class="form-inline">
+                                    <div class="control-group">
+
+                                        {!! Form::select('action', $status_list, null, ['class' => 'span3 form-control', 'placeholder' => 'выберите', 'id' => 'select_action']) !!}
+
+                                        <span class="help-inline">
+
+                                        {!! Form::submit( 'Применить', ['class' => 'btn btn-success']) !!}
+
+                                    </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {!! Form::close() !!}
+
                     </div>
 
                 </div>
@@ -140,13 +164,18 @@
                 },
                 'createdRow': function (row, data, dataIndex) {
                     $(row).attr('id', 'rowid_' + data['id']);
+                    if (data['status_link'] == 'block') $(row).attr('class', 'danger');
+                    else if (data['status_link'] == 'new') $(row).attr('class', 'warning');
+
                 },
+                aaSorting: [[1, 'asc']],
                 processing: true,
                 serverSide: true,
                 ajax: {
                     url: '{{ URL::route('cp.datatable.links') }}'
                 },
                 columns: [
+                    {data: 'checkbox', name: 'checkbox', orderable: false, searchable: false},
                     {data: 'name', name: 'name'},
                     {data: 'description', name: 'description', orderable: false, searchable: false},
                     {data: 'url', name: 'url'},
@@ -190,6 +219,10 @@
                             }
                         });
                     });
+            });
+
+            $("#checkAll").click(function () {
+                $('input:checkbox').not(this).prop('checked', this.checked);
             });
 
         })

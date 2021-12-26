@@ -63,11 +63,19 @@ class DataTableController extends Controller
                 return $row->catalog_id == 0 ? 'Разное' : $row->catalog;
             })
 
+            ->addColumn('status_link', function ($links) {
+                return $links->status;
+            })
+
             ->editColumn('status', function ($row) {
                 return Links::linkStatus($row->status);
             })
 
-            ->rawColumns(['action'])->make(true);
+            ->addColumn('checkbox', function ($links) {
+                return '<input type="checkbox" title="Отметить/Снять отметку" value="' . $links->id . '" name="activate[]">';
+            })
+
+            ->rawColumns(['action','checkbox'])->make(true);
     }
 
     /**
