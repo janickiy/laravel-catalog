@@ -30,7 +30,8 @@
         </div>
 
 
-        <div class="col-sm-12 col-md-8 col-lg-8 bg-white rounded box-shadow" style="margin-top:20px; margin-bottom:10px;">
+        <div class="col-sm-12 col-md-8 col-lg-8 bg-white rounded box-shadow"
+             style="margin-top:20px; margin-bottom:10px;">
 
             <h1>{{ $link->name }}</h1>
 
@@ -48,10 +49,61 @@
 
             <p>Всего посещений сайта: {{ $link->views }}</p>
 
-            <noindex><p>Адрес сайта: <a rel="nofollow" href="{{ URL::route('redirect', ['id' => $link->id]) }}">{{ $link->url }}</a></p></noindex>
+            <noindex><p>Адрес сайта: <a rel="nofollow"
+                                        href="{{ URL::route('redirect', ['id' => $link->id]) }}">{{ $link->url }}</a>
+                </p></noindex>
+
 
         </div>
 
+        @if($similar_links)
+
+            <div class="col-sm-12 col-md-8 col-lg-8 bg-white rounded box-shadow"
+                 style="margin-top:20px; margin-bottom:10px;">
+
+                <h2 style="padding-bottom: 20px">Похожие сайты</h2>
+
+                <table class="table table-responsive table-borderless">
+
+                    @foreach($similar_links as $link)
+
+                        <tr>
+                            <td>
+                                <table class="table-borderless">
+                                    <tr>
+                                        <td style="width: 100px" class="margin-15">
+                                            <a href="http://{{ $link->url }}" target="_blank">
+                                                {!! isset($link->htmlcode_banner) && $link->htmlcode_banner ? $link->htmlcode_banner : '<img border="0" src="'.url('/img/noimage.gif').'">'; !!}
+                                            </a>
+                                        </td>
+                                        <td style="vertical-align: top;">
+                                            <h5><strong class="text-info">{{ $link->name }}</strong></h5>
+
+                                            {{ $link->description }}
+
+                                            <p class="text-right">
+                                                <a style="margin-bottom: 20px"
+                                                   href="{{ URL::route('info',['id' => $link->id]) }}">подробно...</a>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                       <span class="text-muted">
+                                            Дата публикации: {{ \App\Helpers\StringHelper::mysql_russian_date($link->created_at) }}
+                                        </span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+
+                    @endforeach
+                </table>
+
+            </div>
+
+        @endif
 
         <div style="margin:10px" class="col-sm-12 col-md-3 col-lg-3">
             <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>

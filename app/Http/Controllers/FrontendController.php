@@ -152,9 +152,11 @@ class FrontendController extends Controller
 
         if (!$link) abort(404);
 
+        $similar_links = Links::where('catalog_id', $link->catalog_id)->where('status', 1)->take(5)->orderByRaw("RAND()")->get();
+
         Links::where('id', $id)->update(['views' => $link->views + 1]);
 
-        return view('frontend.info', compact('link'))->with('title', $link->name);
+        return view('frontend.info', compact('link', 'similar_links'))->with('title', $link->name);
     }
 
     /**

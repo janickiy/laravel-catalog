@@ -87,7 +87,6 @@
 
         <div style="margin:10px" class="col-sm-12 col-md-8 col-lg-8 bg-white rounded box-shadow">
 
-
             <h2 style="padding-bottom: 20px">@if(isset($catalog_name) && $catalog_name) {{ $catalog_name }} @elseНедавно
                 добавленные сайты@endif</h2>
 
