@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Helpers\{SettingsHelpers, StringHelper};
+use App\Helpers\{FileHelper, SettingsHelpers, StringHelper};
 use App\Models\{Catalog, Links, Feedback};
 use App\Events\{FeedbackMailEvent, NewlinkNotifyEvent};
 use URL;
@@ -33,6 +33,7 @@ class FrontendController extends Controller
 
         $arr = [];
         $arrayCatalog = [];
+
         foreach ($catalogs as $row) {
             $arrayCatalog[] = [$row->name, $row->id, $row->image, $row->number_links];
         }
@@ -109,13 +110,13 @@ class FrontendController extends Controller
                 if ($arrayPathWay[$i][0] == $id) {
                     $pathway .= '» ' . $arrayPathWay[$i][1];
                 } else {
-                    $pathway .= '» <a href="' . URL::route('catalog', ['id' => $arrayPathWay[$i][0]]) . '">' .$arrayPathWay[$i][1] . '</a>';
+                    $pathway .= '» <a href="' . URL::route('catalog', ['id' => $arrayPathWay[$i][0]]) . '">' . $arrayPathWay[$i][1] . '</a>';
                 }
             }
 
             $catalog = Catalog::find($id);
 
-            if (!$catalog)  abort(404);
+            if (!$catalog) abort(404);
 
             if ($catalog->parent_id == 0) {
                 $links = Links::where('status', 1)->whereIn('catalog_id', $catalogIds)->orderBy('id', 'DESC')->take(5)->get();
@@ -186,7 +187,6 @@ class FrontendController extends Controller
             'catalog_id' => 'required|integer',
             'captcha' => 'required|captcha',
             'agree' => 'required',
-            'htmlcode_banner' => 'nullable|regex:/^<a([^>]*)\s+href=(")?http(s)?:\/\/[^>]*>\s*<\s*img[^>]*\s+src=(")?http(s)?:\/\/[^>]*><\/a>$/si',
         ];
 
         $message = [
@@ -204,7 +204,6 @@ class FrontendController extends Controller
             'catalog_id.required' => 'Выберите раздел!',
             'captcha.required' => 'Не указан защитный код!',
             'agree.required' => 'Вы должны принять правила каталога',
-            'htmlcode_banner.regex' => 'HTML код баннера введен неверно!',
         ];
 
         $validator = Validator::make($request->all(), $rules, $message);
@@ -213,10 +212,13 @@ class FrontendController extends Controller
             return back()->withErrors($validator)->withInput();
         }
 
+        $result = FileHelper::getScreenShot($request->url, "1024x768", "1024", "jpg");
+
         $link = Links::create(array_merge($request->all(), [
             'description' => StringHelper::removeHtmlTags($request->input('description')),
             'full_description' => StringHelper::removeHtmlTags($request->input('full_description')),
-            'status' => SettingsHelpers::getSetting('ADD_LINKS_WITHOUT_CHECK') == 1 ? 1 : 0
+            'status' => SettingsHelpers::getSetting('ADD_LINKS_WITHOUT_CHECK') == 1 ? 1 : 0,
+            'image' => isset($result['name']) ?? ''
         ]));
 
         event(new NewlinkNotifyEvent($link));

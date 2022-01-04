@@ -21,7 +21,7 @@ class Links extends Model
         'description',
         'keywords',
         'full_description',
-        'htmlcode_banner',
+        'image',
         'catalog_id',
         'status',
         'views',

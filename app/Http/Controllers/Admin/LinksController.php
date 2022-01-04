@@ -7,9 +7,9 @@ use App\Models\{Links, Catalog};
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\{LinksImport,LinksImportFromCsv};
-use App\Helpers\StringHelper;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use App\Helpers\{FileHelper,StringHelper};
 use URL;
 use Validator;
 
@@ -63,7 +63,9 @@ class LinksController extends Controller
 
         if ($validator->fails()) return back()->withErrors($validator)->withInput();
 
-        Links::create(array_merge($request->all(), ['status' => 1]));
+        $result = FileHelper::getScreenShot($request->url,"1024x768", "1024", "jpg");
+
+        Links::create(array_merge($request->all(), ['status' => 1, 'image' => isset($result['name']) ?? '']));
 
         return redirect(URL::route('cp.links.index'))->with('success', 'Информация успешно добавлена');
 
@@ -115,13 +117,15 @@ class LinksController extends Controller
 
         if (!$link) abort(404);
 
+        $result = FileHelper::getScreenShot($request->url,"1024x768", "1024", "jpg");
+
         $link->name = $request->input('name');
         $link->url = $request->input('url');
         $link->email = $request->input('email');
         $link->description = $request->input('description');
         $link->keywords = $request->input('keywords');
         $link->full_description = $request->input('full_description');
-        $link->htmlcode_banner = $request->input('htmlcode_banner');
+        $link->image = isset($result['name']) ? $result['name'] : '';
         $link->catalog_id = $request->input('catalog_id');
         $link->save();
 
@@ -357,7 +361,5 @@ class LinksController extends Controller
 
         return $links;
     }
-
-
 
 }
