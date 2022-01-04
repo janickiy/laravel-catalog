@@ -36,31 +36,33 @@ class ScreenShot extends Command
     {
         @set_time_limit(0);
 
-        $fh = fopen(__FILE__, 'r');
 
-        if (!flock($fh, LOCK_EX | LOCK_NB)) {
-            exit('Script is already running');
-        }
 
         $this->line('start updating images');
 
-        $links = Links::whereNull('image')->take(50)->get();
 
-        foreach ($links as $row) {
-            $link = Links::find($row->id);
+        for($i=0; $i<1000; $i++) {
+            $links = Links::whereNull('image')->take(10)->get();
 
-            if (FileHelper::url_exists($row->url) === true) {
-                $result = FileHelper::getScreenShot($row->url, "1024x768", "1024", "jpg");
+            foreach ($links as $row) {
 
-                if (isset($result['name'])) {
-                    $link->image = $result['name'];
-                    $this->line($result['name']);
+                sleep(10);
+
+                $link = Links::find($row->id);
+
+                if (FileHelper::url_exists($row->url) === true) {
+                    $result = FileHelper::getScreenShot($row->url, "1024x768", "1024", "jpg");
+
+                    if (isset($result['name'])) {
+                        $link->image = $result['name'];
+                        $this->line($result['name']);
+                    }
+                } else {
+                    $link->image = '';
                 }
-            } else {
-                $link->image = '';
-            }
 
-            $link->save();
+                $link->save();
+            }
         }
 
         $this->line("end updating images");
