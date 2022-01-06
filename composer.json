@@ -10,6 +10,7 @@
         "bonecms/laravel-captcha": "^2.2",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
+        "gumlet/php-image-resize": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "intervention/image": "^2.6",
         "ixudra/curl": "^6.21",
