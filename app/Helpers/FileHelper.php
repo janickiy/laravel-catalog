@@ -36,7 +36,7 @@ class FileHelper
         $pic = $googledata["lighthouseResult"]["audits"]["full-page-screenshot"]["details"]["screenshot"]["data"];
         $pic = str_replace('data:image/jpeg;base64,', '', $pic);
 
-        $filename = time() . '.jpg';
+        $filename = md5(uniqid()) . '.jpg';
 
         $image = ImageResize::createFromString(base64_decode($pic));
         $image->crop(1200, 800, true, ImageResize::CROPTOP);
