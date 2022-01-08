@@ -47,7 +47,7 @@ class ScreenShot extends Command
             if (FileHelper::url_exists($row->url) === true) {
                 $result = FileHelper::getScreenShot($row->url);
 
-                if (isset($result["data"])) {
+                if (isset($result["name"])) {
                     $link->image = $result["name"];
                     $this->line($result["name"]);
                 }
