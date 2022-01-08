@@ -72,8 +72,8 @@
                                 <table class="table-borderless">
                                     <tr>
                                         <td style="width: 100px" class="margin-15">
-                                            <a href="http://{{ $link->url }}" target="_blank">
-                                                {!! isset($link->htmlcode_banner) && $link->htmlcode_banner ? $link->htmlcode_banner : '<img border="0" src="'.url('/img/noimage.gif').'">'; !!}
+                                            <a href="{{ \App\Helpers\StringHelper::urlWithPrefix($link->url) }}" target="_blank">
+                                                {!! $link->image and file_exists(public_path('/uploads/url/') . '/' . $link->image) ? '<img border="0" src="'.url('/uploads/url/' . $link->image).'">' : '<img border="0" src="'.url('/img/noimage.gif').'">'; !!}
                                             </a>
                                         </td>
                                         <td style="vertical-align: top;">

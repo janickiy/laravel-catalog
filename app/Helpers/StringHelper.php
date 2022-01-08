@@ -14,6 +14,17 @@ class StringHelper
         return mb_substr(mb_strtoupper($str, 'utf-8'), 0, 1, 'utf-8') . mb_substr($str, 1, mb_strlen($str) - 1, 'utf-8');
     }
 
+    /**
+     * @param $url
+     * @return mixed|string
+     */
+    public static function urlWithPrefix($url)
+    {
+        if (substr($url, 0, 7) == "http://" or substr($url, 0, 8) == "https://")
+            return $url;
+        else
+            return 'http://' . $url;
+    }
 
     /**
      * @param $originalDate
