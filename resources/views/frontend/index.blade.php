@@ -102,7 +102,7 @@
                                     <tr>
                                         <td style="width: 120px" class="margin-15">
                                             <a href="{{ \App\Helpers\StringHelper::urlWithPrefix($link->url) }}" target="_blank">
-                                                {!! $link->image && file_exists(public_path('/uploads/url/') . '/' . $link->image) ? '<img border="0" width="100px" src="'.url('/uploads/url/' . $link->image).'">' : '<img border="0" src="'.url('/img/noimage.gif').'">'; !!}
+                                                {!! $link->image && file_exists(public_path('/uploads/url/') . '/' . $link->image) ? '<img border="0" alt="' . $link->name . '" width="100px" src="'.url('/uploads/url/' . $link->image).'">' : '<img border="0" src="'.url('/img/noimage.gif').'">'; !!}
                                             </a>
                                         </td>
                                         <td style="vertical-align: top;">
