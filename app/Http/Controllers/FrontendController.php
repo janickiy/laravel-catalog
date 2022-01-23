@@ -212,7 +212,7 @@ class FrontendController extends Controller
             return back()->withErrors($validator)->withInput();
         }
 
-        $result = FileHelper::getScreenShot($request->url, "1024x768", "1024", "jpg");
+        $result = FileHelper::getScreenShotMini($request->url, "1024x768", "1024", "jpg");
 
         $link = Links::create(array_merge($request->all(), [
             'description' => StringHelper::removeHtmlTags($request->input('description')),

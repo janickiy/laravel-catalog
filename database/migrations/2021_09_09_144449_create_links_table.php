@@ -23,7 +23,7 @@ class CreateLinksTable extends Migration
             $table->text('description');
             $table->text('keywords')->nullable();
             $table->text('full_description');
-            $table->text('htmlcode_banner')->nullable();
+            $table->text('image')->nullable();
             $table->integer('catalog_id')->index('catalog_id');
             $table->string('status', 10);
             $table->integer('views')->default(0);
