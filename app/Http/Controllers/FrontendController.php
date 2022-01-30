@@ -218,7 +218,7 @@ class FrontendController extends Controller
             'description' => StringHelper::removeHtmlTags($request->input('description')),
             'full_description' => StringHelper::removeHtmlTags($request->input('full_description')),
             'status' => SettingsHelpers::getSetting('ADD_LINKS_WITHOUT_CHECK') == 1 ? 1 : 0,
-            'image' => isset($result['name']) ?? ''
+            'image' => $result['name'] ?? ''
         ]));
 
         event(new NewlinkNotifyEvent($link));
