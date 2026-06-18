@@ -191,7 +191,7 @@ textarea:focus {
 .section-heading h1,
 .section-heading h2 {
     color: var(--mlm-ink);
-    font-size: 1.55rem;
+    font-size: 28px;
     font-weight: 750;
     line-height: 1.25;
     margin: 0;
@@ -199,13 +199,14 @@ textarea:focus {
 
 .section-heading p {
     color: var(--mlm-muted);
+    font-size: 18px;
     margin: .35rem 0 0;
 }
 
 .eyebrow {
     color: var(--mlm-cyan);
     display: block;
-    font-size: .78rem;
+    font-size: 13px;
     font-weight: 750;
     letter-spacing: .08em;
     margin-bottom: .25rem;
@@ -215,7 +216,7 @@ textarea:focus {
 .category-grid {
     display: grid;
     gap: .85rem;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 }
 
 .category-card {
@@ -250,15 +251,15 @@ textarea:focus {
 
 .category-card__title {
     color: var(--mlm-ink);
-    font-size: 1.08rem;
+    font-size: 17px;
     font-weight: 750;
     line-height: 1.35;
 }
 
 .category-card__children {
     color: var(--mlm-muted);
-    font-size: .96rem;
-    line-height: 1.65;
+    font-size: 14px;
+    line-height: 1.7;
     margin-top: .35rem;
 }
 
@@ -336,7 +337,7 @@ textarea:focus {
 }
 
 .link-card__title {
-    font-size: 1.12rem;
+    font-size: 16px;
     font-weight: 750;
     line-height: 1.25;
     margin: 0 0 .4rem;
@@ -353,6 +354,7 @@ textarea:focus {
 
 .link-card__description {
     color: #475569;
+    font-size: 14px;
     margin-bottom: .75rem;
 }
 
@@ -366,7 +368,7 @@ textarea:focus {
 
 .link-card__date {
     color: var(--mlm-muted);
-    font-size: .88rem;
+    font-size: 13px;
 }
 
 .link-card__more {
@@ -374,6 +376,7 @@ textarea:focus {
     border: 1px solid rgba(13, 110, 253, .22);
     border-radius: var(--mlm-radius);
     display: inline-flex;
+    font-size: 14px;
     font-weight: 700;
     gap: .35rem;
     padding: .35rem .65rem;

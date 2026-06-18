@@ -8,7 +8,7 @@
 
 @section('content')
     @if(isset($arr) && $arr)
-        <section class="content-card">
+        <section class="content-card catalog-section">
             <div class="section-heading">
                 <div>
                     <span class="eyebrow">Каталог</span>
@@ -21,9 +21,14 @@
                 @for ($i = 0; $i < $number; $i++)
                     @for ($j = 0; $j < \App\Helpers\SettingsHelpers::getSetting('COLUMNS_NUMBER'); $j++)
                         @if(isset($arr[$i][$j][1], $arr[$i][$j][0], $arr[$i][$j][3]))
+                            @php
+                                $categoryImage = $arr[$i][$j][2] ?? null;
+                                $categoryImageExists = $categoryImage && file_exists(public_path('uploads/catalog/' . $categoryImage));
+                                $categoryImageUrl = $categoryImageExists ? url('uploads/catalog/' . $categoryImage) : url('/img/catalog-placeholder.svg');
+                            @endphp
                             <article class="category-card">
                                 <a class="category-card__icon" href="{{ URL::route('catalog', ['id' => $arr[$i][$j][1] > 0 ? $arr[$i][$j][1] : '']) }}">
-                                    <img src="{{ isset($arr[$i][$j][2]) && $arr[$i][$j][2] ? url('uploads/catalog/' . $arr[$i][$j][2]) : url('/img/catalog-placeholder.svg') }}" alt="{{ $arr[$i][$j][0] }}">
+                                    <img src="{{ $categoryImageUrl }}" alt="{{ $arr[$i][$j][0] }}" decoding="async">
                                 </a>
 
                                 <div>
