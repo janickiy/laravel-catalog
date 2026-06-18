@@ -30,6 +30,7 @@ Route::group(['prefix' => 'cp'], function () {
         Route::get('', [LinksController::class, 'index'])->name('cp.links.index');
         Route::get('create', [LinksController::class, 'create'])->name('cp.links.create');
         Route::post('store', [LinksController::class, 'store'])->name('cp.links.store');
+        Route::get('show/{id}', [LinksController::class, 'show'])->name('cp.links.show')->where('id', '[0-9]+');
         Route::get('edit/{id}', [LinksController::class, 'edit'])->name('cp.links.edit')->where('id', '[0-9]+');
         Route::put('update', [LinksController::class, 'update'])->name('cp.links.update');
         Route::delete('destroy/{id}', [LinksController::class, 'destroy'])->name('cp.links.destroy')->where('id', '[0-9]+');
@@ -79,7 +80,6 @@ Route::group(['prefix' => 'cp'], function () {
     });
 
 });
-
 
 
 

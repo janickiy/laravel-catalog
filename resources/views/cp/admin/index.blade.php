@@ -22,8 +22,9 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <a href="{{ URL::route('cp.admin.create') }}"
-                                   class="btn btn-info btn-sm pull-left">
-                                    <span class="fa fa-plus"> &nbsp;</span> Добавить
+                                   class="btn btn-primary btn-sm d-inline-flex align-items-center gap-1">
+                                    <i class="bi bi-plus-lg"></i>
+                                    Добавить
                                 </a>
                             </div>
                         </div>

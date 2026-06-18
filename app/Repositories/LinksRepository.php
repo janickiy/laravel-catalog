@@ -57,6 +57,30 @@ class LinksRepository extends BaseRepository
         return $this->model->query()->where('status', $this->statusValue($status))->count();
     }
 
+    public function countAll(): int
+    {
+        return $this->model->query()->count();
+    }
+
+    public function latestForDashboard(int $limit): Collection
+    {
+        return $this->model->query()
+            ->with('catalog')
+            ->orderByDesc('id')
+            ->take($limit)
+            ->get();
+    }
+
+    public function topViewed(int $limit): Collection
+    {
+        return $this->model->query()
+            ->with('catalog')
+            ->orderByDesc('views')
+            ->orderByDesc('id')
+            ->take($limit)
+            ->get();
+    }
+
     public function publishedForExport(?int $catalogId): Collection
     {
         $query = $this->model->query()
@@ -113,6 +137,16 @@ class LinksRepository extends BaseRepository
             : $query->whereNull('catalog_id');
 
         return $query->paginate($perPage);
+    }
+
+    public function findForAdmin(int $id): ?Links
+    {
+        $link = $this->model->query()
+            ->with('catalog')
+            ->whereKey($id)
+            ->first();
+
+        return $link instanceof Links ? $link : null;
     }
 
     public function findPublished(int $id): ?Links

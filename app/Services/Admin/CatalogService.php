@@ -91,7 +91,7 @@ class CatalogService
 
     private function actionsHtml(int $catalogId): string
     {
-        return '<a title="Добавить подкатегорию" href="' . URL::route('cp.catalog.create', ['parent_id' => $catalogId]) . '"> <span class="fa fa-plus"></span> </a> '
+        return '<a title="Добавить подкатегорию" class="btn btn-xs btn-primary" href="' . URL::route('cp.catalog.create', ['parent_id' => $catalogId]) . '"><span class="bi bi-plus-lg"></span></a> '
             . '<a title="Редактировать" href="' . URL::route('cp.catalog.edit', ['id' => $catalogId]) . '"> <span class="fa fa-pencil"></span> </a> '
             . '<a title="Удалить" href="' . URL::route('cp.catalog.delete', $catalogId) . '"> <span class="fa fa-trash-o"></span> </a>';
     }

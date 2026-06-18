@@ -115,13 +115,6 @@
             white-space: nowrap;
         }
 
-        .table tr.danger > * {
-            --bs-table-bg: #f8d7da;
-        }
-
-        .table tr.warning > * {
-            --bs-table-bg: #fff3cd;
-        }
     </style>
 
     @yield('css')

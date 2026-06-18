@@ -26,6 +26,15 @@ enum LinkStatus: int
         };
     }
 
+    public function cssColor(): string
+    {
+        return match ($this) {
+            self::Pending => 'text-bg-success',
+            self::Published => 'text-bg-primary',
+            self::Blocked => 'text-bg-danger',
+        };
+    }
+
     public static function fromCode(string $code): ?self
     {
         return match ($code) {
@@ -61,6 +70,11 @@ enum LinkStatus: int
     public static function labelFor(self|int|string|null $status): string
     {
         return self::fromValue($status)?->label() ?? (string) $status;
+    }
+
+    public static function cssColorFor(self|int|string|null $status): string
+    {
+        return self::fromValue($status)?->cssColor() ?? 'text-bg-secondary';
     }
 
     public static function options(): array

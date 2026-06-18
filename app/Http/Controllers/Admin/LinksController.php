@@ -47,6 +47,14 @@ class LinksController extends Controller
         return redirect(URL::route('cp.links.index'))->with('success', 'Информация успешно добавлена');
     }
 
+    public function show(int $id)
+    {
+        $link = $this->links->findForAdmin($id);
+        abort_if(! $link, 404);
+
+        return view('cp.links.show', compact('link'))->with('title', 'Просмотр ссылки');
+    }
+
     public function edit(int $id)
     {
         $row = $this->links->find($id);

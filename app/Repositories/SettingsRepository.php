@@ -19,6 +19,11 @@ class SettingsRepository extends BaseRepository
         return $this->model->newQuery();
     }
 
+    public function countAll(): int
+    {
+        return $this->model->query()->count();
+    }
+
     public function createFromData(SettingsData $data): Builder|Model
     {
         return $this->create($data->toArray());

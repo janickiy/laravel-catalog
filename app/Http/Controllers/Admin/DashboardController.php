@@ -13,6 +13,6 @@ class DashboardController extends Controller
 
     public function index()
     {
-        return view('cp.dashboard.index', $this->dashboard->counters())->with('title', 'Главная');
+        return view('cp.dashboard.index', $this->dashboard->data())->with('title', 'Главная');
     }
 }
