@@ -6,6 +6,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
+    <link rel="icon" href="{{ asset('img/my-links-manager-icon.svg') }}" type="image/svg+xml">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@4.0.0/dist/css/adminlte.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -30,12 +32,43 @@
             font-weight: 600;
         }
 
+        .sidebar-brand {
+            min-height: 4.25rem;
+            padding: .7rem .75rem;
+        }
+
         .sidebar-brand .brand-link {
+            align-items: center;
+            display: flex;
+            justify-content: flex-start;
+            padding: 0;
             text-decoration: none;
+        }
+
+        .sidebar-brand .brand-logo {
+            display: block;
+            height: auto;
+            max-width: 100%;
+            width: 13.25rem;
         }
 
         .sidebar-menu .nav-link {
             gap: .55rem;
+        }
+
+        .admin-user-label {
+            align-items: center;
+            color: var(--bs-secondary-color);
+            display: inline-flex;
+            font-size: .95rem;
+            gap: .45rem;
+            max-width: 16rem;
+        }
+
+        .admin-user-label span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .jarviswidget {
@@ -136,6 +169,15 @@
             </ul>
 
             <ul class="navbar-nav ms-auto">
+                @php($currentAdmin = auth('admin')->user())
+                @if ($currentAdmin)
+                    <li class="nav-item d-flex align-items-center">
+                        <span class="navbar-text admin-user-label" title="{{ $currentAdmin->login ?: $currentAdmin->name }}">
+                            <i class="bi bi-person-circle"></i>
+                            <span>{{ $currentAdmin->login ?: ($currentAdmin->name ?: 'Администратор') }}</span>
+                        </span>
+                    </li>
+                @endif
                 <li class="nav-item">
                     <a class="nav-link" href="{{ URL::route('logout') }}" title="Выйти">
                         <i class="bi bi-box-arrow-right"></i>
@@ -147,8 +189,8 @@
 
     <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
         <div class="sidebar-brand">
-            <a href="{{ URL::route('cp.dashbaord.index') }}" class="brand-link">
-                <span class="brand-text fw-light">My Links Manager</span>
+            <a href="{{ URL::route('index') }}" class="brand-link">
+                <img src="{{ asset('img/my-links-manager-admin-logo.svg') }}" class="brand-logo" alt="My Links Manager Admin Panel">
             </a>
         </div>
 

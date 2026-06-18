@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="96" viewBox="0 0 420 96" role="img" aria-labelledby="title desc">
+    <title id="title">My Links Manager</title>
+    <desc id="desc">Logo for a catalog and link management application.</desc>
+    <defs>
+        <linearGradient id="markGradient" x1="12" y1="12" x2="84" y2="84" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#0d6efd"/>
+            <stop offset="0.55" stop-color="#0aa2c0"/>
+            <stop offset="1" stop-color="#20c997"/>
+        </linearGradient>
+        <linearGradient id="lineGradient" x1="112" y1="67" x2="370" y2="67" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#0d6efd"/>
+            <stop offset="1" stop-color="#20c997"/>
+        </linearGradient>
+        <filter id="softShadow" x="-20%" y="-20%" width="140%" height="150%" color-interpolation-filters="sRGB">
+            <feDropShadow dx="0" dy="6" stdDeviation="5" flood-color="#0d2238" flood-opacity="0.14"/>
+        </filter>
+    </defs>
+
+    <g filter="url(#softShadow)">
+        <rect x="12" y="12" width="72" height="72" rx="18" fill="url(#markGradient)"/>
+        <path d="M32 30h13l6 7h18a7 7 0 0 1 7 7v21a7 7 0 0 1-7 7H27a7 7 0 0 1-7-7V37a7 7 0 0 1 7-7h5Z" fill="#ffffff" opacity="0.96"/>
+        <path d="M27 40h42a3 3 0 0 1 3 3v4H24v-4a3 3 0 0 1 3-3Z" fill="#d7f6ef"/>
+        <path d="M35.5 58.5h10.8M51.7 58.5h8.8" fill="none" stroke="#0d6efd" stroke-width="5.5" stroke-linecap="round"/>
+        <circle cx="35.5" cy="58.5" r="6.5" fill="#0d6efd"/>
+        <circle cx="60.5" cy="58.5" r="6.5" fill="#20c997"/>
+        <circle cx="48" cy="58.5" r="4.5" fill="#0aa2c0"/>
+    </g>
+
+    <g aria-hidden="true">
+        <text x="108" y="43" fill="#172b4d" font-family="Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="28" font-weight="750" letter-spacing="0">
+            My Links
+        </text>
+        <text x="245" y="43" fill="#334155" font-family="Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="28" font-weight="650" letter-spacing="0">
+            Manager
+        </text>
+        <text x="108" y="63" fill="#64748b" font-family="Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="600" letter-spacing="0">
+            catalog, links, control
+        </text>
+        <rect x="108" y="72" width="260" height="4" rx="2" fill="url(#lineGradient)" opacity="0.86"/>
+        <circle cx="386" cy="74" r="4" fill="#0d6efd"/>
+        <circle cx="400" cy="74" r="4" fill="#0aa2c0"/>
+        <circle cx="414" cy="74" r="4" fill="#20c997"/>
+    </g>
+</svg>

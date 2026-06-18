@@ -6,126 +6,113 @@
 
 @section('keywords', $link->keywords)
 
-
-@section('css')
-
-@endsection
-
 @section('content')
-
-    <div class="row">
-
-        <div class="col-sm-12" style="margin-top:10px;">
-            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-            <!-- top2 -->
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-client="ca-pub-2243538192217050"
-                 data-ad-slot="8369734756"
-                 data-ad-format="auto"
-                 data-full-width-responsive="true"></ins>
-            <script>
-                (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-        </div>
-
-
-        <div class="col-sm-12 col-md-8 col-lg-8 bg-white rounded box-shadow"
-             style="margin-top:20px; margin-bottom:10px;">
-
-            <h1>{{ $link->name }}</h1>
-
-            <p>{!! $link->full_description !!}</p>
-
-            <p>Раздел каталога: {{ $link->catalog->name ?? 'Разное' }}</p>
-
-            @if($link->contact)<p>Контакты: {{ $link->contact }}</p>@endif
-
-            @if($link->phone)<p>Тел.: {{ $link->phone }}</p>@endif
-
-            @if($link->email)<p>Email: {{ $link->email }}</p>@endif
-
-            @if($link->city)<p>Город: {{ $link->city }}</p>@endif
-
-            <p>Всего посещений сайта: {{ $link->views }}</p>
-
-            <noindex><p>Адрес сайта: <a rel="nofollow"
-                                        href="{{ URL::route('redirect', ['id' => $link->id]) }}">{{ $link->url }}</a>
-                </p></noindex>
-
-
-        </div>
-
-        @if($similar_links)
-
-            <div class="col-sm-12 col-md-8 col-lg-8 bg-white rounded box-shadow"
-                 style="margin-top:20px; margin-bottom:10px;">
-
-                <h2 style="padding-bottom: 20px">Похожие сайты</h2>
-
-                <table class="table table-responsive table-borderless">
-
-                    @foreach($similar_links as $link)
-
-                        <tr>
-                            <td>
-                                <table class="table-borderless">
-                                    <tr>
-                                        <td style="width: 120px" class="margin-15">
-                                            <a href="{{ \App\Helpers\StringHelper::urlWithPrefix($link->url) }}" target="_blank">
-                                                {!! $link->image && file_exists(public_path('/uploads/url/') . '/' . $link->image) ? '<img border="0" alt="' . $link->name . '" width="100px" src="'.url('/uploads/url/' . $link->image).'">' : '<img border="0" src="'.url('/img/noimage.gif').'">'; !!}
-                                            </a>
-                                        </td>
-                                        <td style="vertical-align: top;">
-                                            <h5><strong class="text-info">{{ $link->name }}</strong></h5>
-
-                                            {{ $link->description }}
-
-                                            <p class="text-right">
-                                                <a style="margin-bottom: 20px"
-                                                   href="{{ URL::route('info',['id' => $link->id]) }}">подробно...</a>
-                                            </p>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2">
-                                       <span class="text-muted">
-                                            Дата публикации: {{ \App\Helpers\StringHelper::mysql_russian_date($link->created_at) }}
-                                        </span>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-
-                    @endforeach
-                </table>
-
-            </div>
-
-        @endif
-
-        <div style="margin:10px" class="col-sm-12 col-md-3 col-lg-3">
-            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-            <!-- left-block -->
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-client="ca-pub-2243538192217050"
-                 data-ad-slot="6522655839"
-                 data-ad-format="auto"
-                 data-full-width-responsive="true"></ins>
-            <script>
-                (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-        </div>
-
-
+    <div class="ad-card">
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-2243538192217050"
+             data-ad-slot="8369734756"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
     </div>
 
-@endsection
+    <div class="content-layout">
+        <div class="content-main">
+            <article class="content-card">
+                <div class="section-heading">
+                    <div>
+                        <span class="eyebrow">Карточка сайта</span>
+                        <h1>{{ $link->name }}</h1>
+                    </div>
+                </div>
 
-@section('js')
+                @if($link->full_description)
+                    <div class="rich-text">{!! $link->full_description !!}</div>
+                @endif
 
+                <div class="details-list">
+                    <div class="details-list__item">
+                        <span class="details-list__label">Раздел каталога</span>
+                        <span>{{ $link->catalog->name ?? 'Разное' }}</span>
+                    </div>
 
+                    @if($link->contact)
+                        <div class="details-list__item">
+                            <span class="details-list__label">Контакты</span>
+                            <span>{{ $link->contact }}</span>
+                        </div>
+                    @endif
 
+                    @if($link->phone)
+                        <div class="details-list__item">
+                            <span class="details-list__label">Телефон</span>
+                            <span>{{ $link->phone }}</span>
+                        </div>
+                    @endif
+
+                    @if($link->email)
+                        <div class="details-list__item">
+                            <span class="details-list__label">Email</span>
+                            <span>{{ $link->email }}</span>
+                        </div>
+                    @endif
+
+                    @if($link->city)
+                        <div class="details-list__item">
+                            <span class="details-list__label">Город</span>
+                            <span>{{ $link->city }}</span>
+                        </div>
+                    @endif
+
+                    <div class="details-list__item">
+                        <span class="details-list__label">Посещений</span>
+                        <span>{{ $link->views }}</span>
+                    </div>
+
+                    <div class="details-list__item">
+                        <span class="details-list__label">Адрес сайта</span>
+                        <noindex>
+                            <a rel="nofollow" href="{{ URL::route('redirect', ['id' => $link->id]) }}">{{ $link->url }}</a>
+                        </noindex>
+                    </div>
+                </div>
+            </article>
+
+            @if($similar_links && count($similar_links))
+                <section class="content-card">
+                    <div class="section-heading">
+                        <div>
+                            <span class="eyebrow">Еще в разделе</span>
+                            <h2>Похожие сайты</h2>
+                        </div>
+                    </div>
+
+                    <div class="link-list">
+                        @foreach($similar_links as $link)
+                            @include('frontend.partials.link-card', ['link' => $link])
+                        @endforeach
+                    </div>
+                </section>
+            @endif
+        </div>
+
+        <aside class="content-sidebar">
+            <div class="ad-card">
+                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-2243538192217050"
+                     data-ad-slot="6522655839"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+        </aside>
+    </div>
 @endsection

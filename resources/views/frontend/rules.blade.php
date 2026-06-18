@@ -12,16 +12,19 @@
 @endsection
 
 @section('content')
-    <div class="row">
-        <div class="col-sm-12 bg-white rounded box-shadow" style="margin:10px">
+    <article class="content-card article-card rich-text">
+        <div class="section-heading">
+            <div>
+                <span class="eyebrow">Условия</span>
+                <h1>{{ $title }}</h1>
+            </div>
+        </div>
 
-            <h1>{{ $title }}</h1>
-
-            <p>Правила каталога сайтов. Перед добавлением сайта в каталог и в процессе работы необходимо
+        <p>Правила каталога сайтов. Перед добавлением сайта в каталог и в процессе работы необходимо
                 руководствоваться
                 настоящими правилами, описанными ниже.</p>
 
-            <ol>
+        <ol>
                 <li>Общие положения
                     <ol>
                         <li>catalog.janicky.com обязуется предоставлять возможность добавления сайтов в каталог.</li>
@@ -164,9 +167,8 @@
                         <li>Не рассматриваются анонимные или не конкретные претензии.</li>
                     </ol>
                 </li>
-            </ol>
-        </div>
-    </div>
+        </ol>
+    </article>
 
 @endsection
 

@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="244" height="56" viewBox="0 0 244 56" role="img" aria-labelledby="title desc">
+    <title id="title">My Links Manager Admin Panel</title>
+    <desc id="desc">Admin panel logo for My Links Manager.</desc>
+    <defs>
+        <linearGradient id="adminMarkGradient" x1="6" y1="6" x2="50" y2="50" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#60a5fa"/>
+            <stop offset="0.5" stop-color="#22d3ee"/>
+            <stop offset="1" stop-color="#34d399"/>
+        </linearGradient>
+        <linearGradient id="adminAccentGradient" x1="72" y1="43" x2="214" y2="43" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#60a5fa"/>
+            <stop offset="1" stop-color="#34d399"/>
+        </linearGradient>
+        <filter id="adminMarkShadow" x="-24%" y="-24%" width="148%" height="158%" color-interpolation-filters="sRGB">
+            <feDropShadow dx="0" dy="5" stdDeviation="4" flood-color="#000000" flood-opacity="0.25"/>
+        </filter>
+    </defs>
+
+    <g filter="url(#adminMarkShadow)">
+        <rect x="6" y="7" width="42" height="42" rx="11" fill="url(#adminMarkGradient)"/>
+        <path d="M18.8 18h8.8l4 5h11.8a4.2 4.2 0 0 1 4.2 4.2v12.2a4.2 4.2 0 0 1-4.2 4.2H15.6a4.2 4.2 0 0 1-4.2-4.2V22.2a4.2 4.2 0 0 1 4.2-4.2h3.2Z" fill="#f8fafc"/>
+        <path d="M15.8 25h27.1a2 2 0 0 1 2 2v2H14v-2a2 2 0 0 1 1.8-2Z" fill="#d7f6ef"/>
+        <path d="M20.5 35h7.2M31.2 35h6.8" fill="none" stroke="#2563eb" stroke-width="3.5" stroke-linecap="round"/>
+        <circle cx="20.5" cy="35" r="4.2" fill="#2563eb"/>
+        <circle cx="38" cy="35" r="4.2" fill="#34d399"/>
+        <circle cx="29.3" cy="35" r="3" fill="#0891b2"/>
+    </g>
+
+    <g aria-hidden="true">
+        <text x="64" y="25" fill="#f8fafc" font-family="Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="17" font-weight="750" letter-spacing="0">
+            My Links Manager
+        </text>
+        <text x="64" y="39" fill="#cbd5e1" font-family="Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="9" font-weight="700" letter-spacing="1.4">
+            ADMIN PANEL
+        </text>
+        <rect x="64" y="45" width="122" height="3" rx="1.5" fill="url(#adminAccentGradient)" opacity="0.9"/>
+        <circle cx="197" cy="46.5" r="2.6" fill="#60a5fa"/>
+        <circle cx="207" cy="46.5" r="2.6" fill="#22d3ee"/>
+        <circle cx="217" cy="46.5" r="2.6" fill="#34d399"/>
+    </g>
+</svg>

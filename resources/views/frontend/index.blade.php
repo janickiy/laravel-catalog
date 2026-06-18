@@ -6,179 +6,105 @@
 
 @section('keywords', $keywords)
 
-@section('css')
-
-    <style>
-        .borderless tr, .borderless td, .borderless th {
-            border: none !important;
-        }
-    </style>
-
-@endsection
-
 @section('content')
-
     @if(isset($arr) && $arr)
-        <div class="row">
-
-            <div class="col-sm-12 bg-white rounded box-shadow">
-
-                <table class="table table-responsive borderless">
-                    @for ($i = 0; $i < $number; $i++)
-                        <tr>
-                            @for ($j = 0; $j < \App\Helpers\SettingsHelpers::getSetting('COLUMNS_NUMBER'); $j++)
-                                <td style="vertical-align: top; width: {{ 100/\App\Helpers\SettingsHelpers::getSetting('COLUMNS_NUMBER') }}%">
-                                    @if(isset($arr[$i][$j][1]) && isset($arr[$i][$j][0]) && isset($arr[$i][$j][3]))
-                                        <table class="table table-responsive borderless">
-                                            <tr>
-                                                <td style="width: 80px; padding:6px; vertical-align: top;">
-                                                    <img style="border: 0; border-width: 0;" width="50px"
-                                                         src="{{ isset($arr[$i][$j][2]) && $arr[$i][$j][2] ? url('uploads/catalog/' . $arr[$i][$j][2]) : url('/img/folder.jpg') }}">
-                                                </td>
-                                                <td style="padding:6px">
-                                                    <strong><a href="{{ URL::route('catalog', ['id' => $arr[$i][$j][1] > 0 ? $arr[$i][$j][1] : '']) }}">{{ $arr[$i][$j][0] }}</a></strong>
-                                                    @if($arr[$i][$j][1] > 0)
-                                                        <br>
-                                                        <div class="subcat">
-
-                                                            {!! $arr[$i][$j][4] ?? '' !!}
-
-                                                        </div>
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    @endif
-                                </td>
-                            @endfor
-                        </tr>
-                    @endfor
-                </table>
-
+        <section class="content-card">
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">Каталог</span>
+                    <h1>{{ $title }}</h1>
+                    <p>Выберите раздел и найдите подходящие сайты в структурированном каталоге.</p>
+                </div>
             </div>
-        </div>
+
+            <div class="category-grid">
+                @for ($i = 0; $i < $number; $i++)
+                    @for ($j = 0; $j < \App\Helpers\SettingsHelpers::getSetting('COLUMNS_NUMBER'); $j++)
+                        @if(isset($arr[$i][$j][1], $arr[$i][$j][0], $arr[$i][$j][3]))
+                            <article class="category-card">
+                                <a class="category-card__icon" href="{{ URL::route('catalog', ['id' => $arr[$i][$j][1] > 0 ? $arr[$i][$j][1] : '']) }}">
+                                    <img src="{{ isset($arr[$i][$j][2]) && $arr[$i][$j][2] ? url('uploads/catalog/' . $arr[$i][$j][2]) : url('/img/folder.jpg') }}" alt="{{ $arr[$i][$j][0] }}">
+                                </a>
+
+                                <div>
+                                    <a class="category-card__title" href="{{ URL::route('catalog', ['id' => $arr[$i][$j][1] > 0 ? $arr[$i][$j][1] : '']) }}">
+                                        {{ $arr[$i][$j][0] }}
+                                    </a>
+
+                                    @if($arr[$i][$j][1] > 0)
+                                        <div class="category-card__children">
+                                            {!! $arr[$i][$j][4] ?? '' !!}
+                                        </div>
+                                    @endif
+                                </div>
+                            </article>
+                        @endif
+                    @endfor
+                @endfor
+            </div>
+        </section>
     @endif
 
-    <div class="row">
-        <div class="col-sm-12" style="margin-top:10px">{!! isset($pathway) ? $pathway : '' !!} </div>
+    @if(isset($pathway) && $pathway)
+        <div class="breadcrumb-panel">{!! $pathway !!}</div>
+    @endif
+
+    <div class="ad-card">
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-2243538192217050"
+             data-ad-slot="8369734756"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
     </div>
 
-    <div class="row">
-
-        <div class="col-sm-12">
-            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-            <!-- top2 -->
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-client="ca-pub-2243538192217050"
-                 data-ad-slot="8369734756"
-                 data-ad-format="auto"
-                 data-full-width-responsive="true"></ins>
-            <script>
-                (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-        </div>
-
-        @if(isset($paginator) && $paginator)
-            <div class="col-sm-12 col-md-8 col-lg-8">
+    <div class="content-layout">
+        <div class="content-main">
+            @if(isset($paginator) && $paginator)
                 {!! $paginator !!}
-            </div>
-        @endif
+            @endif
 
-        <div style="margin:10px" class="col-sm-12 col-md-8 col-lg-8 bg-white rounded box-shadow">
+            <section class="content-card">
+                <div class="section-heading">
+                    <div>
+                        <span class="eyebrow">Сайты</span>
+                        <h2>@if(isset($catalog_name) && $catalog_name) {{ $catalog_name }} @else Недавно добавленные сайты @endif</h2>
+                    </div>
+                </div>
 
-            <h2 style="padding-bottom: 20px">@if(isset($catalog_name) && $catalog_name) {{ $catalog_name }} @elseНедавно
-                добавленные сайты@endif</h2>
+                @if($links && count($links))
+                    <div class="link-list">
+                        @foreach($links as $link)
+                            @include('frontend.partials.link-card', ['link' => $link])
+                        @endforeach
+                    </div>
+                @else
+                    <p class="text-muted">Нет ссылок</p>
+                @endif
+            </section>
 
-            @if($links)
-
-                <table class="table table-responsive table-borderless">
-
-                    @foreach($links as $link)
-
-                        <tr>
-                            <td>
-                                <table class="table-borderless">
-                                    <tr>
-                                        <td style="width: 120px" class="margin-15">
-                                            <a href="{{ \App\Helpers\StringHelper::urlWithPrefix($link->url) }}" target="_blank">
-                                                {!! $link->image && file_exists(public_path('/uploads/url/') . '/' . $link->image) ? '<img border="0" alt="' . $link->name . '" width="100px" src="'.url('/uploads/url/' . $link->image).'">' : '<img border="0" src="'.url('/img/noimage.gif').'">'; !!}
-                                            </a>
-                                        </td>
-                                        <td style="vertical-align: top;">
-                                            <h5><strong class="text-info">{{ $link->name }}</strong></h5>
-
-                                            {{ $link->description }}
-
-                                            <p class="text-right">
-                                                <a style="margin-bottom: 20px"
-                                                   href="{{ URL::route('info',['id' => $link->id]) }}">подробно...</a>
-                                            </p>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2">
-                                       <span class="text-muted">
-                                            Дата публикации: {{ \App\Helpers\StringHelper::mysql_russian_date($link->created_at) }}
-                                        </span>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-
-                    @endforeach
-                </table>
-            @else
-                <p>Нет ссылок</p>
+            @if(isset($paginator) && $paginator)
+                {!! $paginator !!}
             @endif
         </div>
 
-        <div style="margin:10px" class="col-sm-12 col-md-3 col-lg-3">
-
-            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-            <!-- 180x150, создано 13.01.09 -->
-            <ins class="adsbygoogle"
-                 style="display:inline-block;width:200px;height:200px"
-                 data-ad-client="ca-pub-2243538192217050"
-                 data-ad-slot="0787053397"></ins>
-            <script>
-                (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-
-            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-            <!-- 180x150, создано 13.01.09 -->
-            <ins class="adsbygoogle"
-                 style="display:inline-block;width:200px;height:200px"
-                 data-ad-client="ca-pub-2243538192217050"
-                 data-ad-slot="0787053397"></ins>
-            <script>
-                (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-
-            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-            <!-- 180x150, создано 13.01.09 -->
-            <ins class="adsbygoogle"
-                 style="display:inline-block;width:200px;height:200px"
-                 data-ad-client="ca-pub-2243538192217050"
-                 data-ad-slot="0787053397"></ins>
-            <script>
-                (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-
-        </div>
-
-        @if(isset($paginator) && $paginator)
-            <div class="col-sm-12 col-md-8 col-lg-8">
-                {!! $paginator !!}
-            </div>
-        @endif
-
+        <aside class="content-sidebar">
+            @for ($i = 0; $i < 3; $i++)
+                <div class="ad-card">
+                    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                    <ins class="adsbygoogle"
+                         style="display:inline-block;width:200px;height:200px"
+                         data-ad-client="ca-pub-2243538192217050"
+                         data-ad-slot="0787053397"></ins>
+                    <script>
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                </div>
+            @endfor
+        </aside>
     </div>
-
-@endsection
-
-@section('js')
-
-
 @endsection
