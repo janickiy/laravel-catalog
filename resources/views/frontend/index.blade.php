@@ -41,7 +41,7 @@
                                                         <br>
                                                         <div class="subcat">
 
-                                                            {!! \App\Models\Catalog::ShowSubCat($arr[$i][$j][1]) !!}
+                                                            {!! $arr[$i][$j][4] ?? '' !!}
 
                                                         </div>
                                                     @endif

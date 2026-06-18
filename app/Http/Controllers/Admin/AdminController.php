@@ -2,108 +2,58 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
-use App\Models\{Admin};
-use Illuminate\Support\Facades\Validator;
-use Hash;
-use Auth;
-use URL;
+use App\DTO\Admin\AdminData;
+use App\Http\Requests\Admin\DestroyAdminRequest;
+use App\Http\Requests\Admin\StoreAdminRequest;
+use App\Http\Requests\Admin\UpdateAdminRequest;
+use App\Repositories\AdminRepository;
+use App\Services\Admin\AdminService;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\URL;
 
 class AdminController extends Controller
 {
-    /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
-     */
+    public function __construct(
+        private readonly AdminRepository $admins,
+        private readonly AdminService $service,
+    ) {
+        parent::__construct();
+    }
+
     public function index()
     {
         return view('cp.admin.index')->with('title', 'Администраторы');
     }
 
-    /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
-     */
     public function create()
     {
         return view('cp.admin.create_edit')->with('title', 'Добавление администратора');
     }
 
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
-    public function store(Request $request)
+    public function store(StoreAdminRequest $request)
     {
-        $rules = [
-            'login' => 'required|unique:admin|max:255',
-            'name' => 'required',
-            'password' => 'required|min:6',
-            'password_again' => 'required|min:6|same:password',
-        ];
-
-        $validator = Validator::make($request->all(), $rules);
-
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        }
-
-        Admin::create(array_merge($request->all(), ['password' => Hash::make($request->password)]));
+        $this->service->create(AdminData::fromArray($request->validated()));
 
         return redirect(URL::route('cp.admin.index'))->with('success', trans('message.information_successfully_added'));
     }
 
-    /**
-     * @param $id
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
-     */
-    public function edit($id)
+    public function edit(int $id)
     {
-        $row = Admin::where('id', $id)->first();
-
-        if (!$row) abort(404);
+        $row = $this->admins->find($id);
+        abort_if(! $row, 404);
 
         return view('cp.admin.create_edit', compact('row'))->with('title', 'Редактирование администратора');
     }
 
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
-    public function update(Request $request)
+    public function update(UpdateAdminRequest $request)
     {
-        $rules = [
-            'login' => 'required|max:255|unique:admin,login,' . $request->id,
-            'name' => 'required',
-            'password' => 'min:6|nullable',
-            'password_again' => 'min:6|same:password|nullable',
-        ];
-
-        $validator = Validator::make($request->all(), $rules);
-
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        }
-
-        $row = Admin::find($request->id);
-
-        if (!$row) abort(404);
-
-        $row->login = $request->input('login');
-        $row->name = $request->input('name');
-
-        if (!empty($request->password)) {
-            $row->password = Hash::make($request->password);
-        }
-
-        $row->save();
+        $this->service->update(AdminData::fromArray($request->validated()));
 
         return redirect(URL::route('cp.admin.index'))->with('success', trans('message.data_updated'));
     }
 
-    /**
-     * @param Request $request
-     */
-    public function destroy(Request $request)
+    public function destroy(DestroyAdminRequest $request): void
     {
-        if ($request->id != Auth::id())  Admin::where('id', $request->id)->delete();
+        $this->service->deleteExceptCurrent((int) $request->validated('id'), (int) Auth::id());
     }
 }

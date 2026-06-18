@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
-
-use App\Models\{Links, Catalog};
+use App\Services\Admin\DashboardService;
 
 class DashboardController extends Controller
 {
+    public function __construct(private readonly DashboardService $dashboard)
+    {
+        parent::__construct();
+    }
+
     public function index()
     {
-        $new = Links::where('status', 0)->count();
-        $publish = Links::where('status', 1)->count();
-        $black = Links::where('status', 2)->count();
-
-        return view('cp.dashboard.index', compact('new', 'publish', 'black'))->with('title', 'Главная');
+        return view('cp.dashboard.index', $this->dashboard->counters())->with('title', 'Главная');
     }
 }

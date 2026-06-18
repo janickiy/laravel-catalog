@@ -37,7 +37,7 @@ Route::group(['prefix' => 'cp'], function () {
         Route::post('importLink', [LinksController::class, 'importLink'])->name('cp.links.importlink');
         Route::get('export', [LinksController::class, 'export'])->name('cp.links.export');
         Route::post('exportLink', [LinksController::class, 'exportLink'])->name('cp.links.export_link');
-        Route::put('statuslinks', [LinksController::class, 'statuslinks'])->name('cp.statuslinks.update');
+        Route::put('statuslinks', [LinksController::class, 'statusLinks'])->name('cp.statuslinks.update');
     });
 
     Route::group(['prefix' => 'catalog'], function () {
@@ -79,7 +79,6 @@ Route::group(['prefix' => 'cp'], function () {
     });
 
 });
-
 
 
 

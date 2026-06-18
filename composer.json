@@ -5,35 +5,27 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "php": "^7.4|^8.0",
-        "barryvdh/laravel-ide-helper": "^2.10",
-        "bonecms/laravel-captcha": "^2.2",
-        "fideloper/proxy": "^4.4",
-        "fruitcake/laravel-cors": "^2.0",
+        "php": "^8.3",
         "gumlet/php-image-resize": "^2.0",
-        "guzzlehttp/guzzle": "^7.0.1",
-        "intervention/image": "^2.6",
-        "ixudra/curl": "^6.21",
-        "knuckleswtf/scribe": "^2.6",
-        "laravel/framework": "^8.12",
-        "laravel/tinker": "^2.5",
-        "laravelcollective/html": "^6.2",
-        "laravelcollective/remote": "^6.2",
+        "guzzlehttp/guzzle": "^7.8",
+        "intervention/image-laravel": "^4.0",
+        "laravel/framework": "^13.0",
+        "laravel/tinker": "^3.0",
         "league/csv": "^9.7",
-        "maatwebsite/excel": "^3.1",
-        "nesbot/carbon": "^2.46",
-        "watson/rememberable": "^5.0",
-        "yajra/laravel-datatables-buttons": "^4.13",
-        "yajra/laravel-datatables-html": "^4.36",
-        "yajra/laravel-datatables-oracle": "^9.18"
+        "maatwebsite/excel": "^3.1.69",
+        "mews/captcha": "^3.5",
+        "nesbot/carbon": "^3.8",
+        "yajra/laravel-datatables-oracle": "^13.1",
+      "ext-zip": "*"
     },
     "require-dev": {
-        "facade/ignition": "^2.5",
-        "fakerphp/faker": "^1.9.1",
-        "laravel/sail": "^1.0.1",
-        "mockery/mockery": "^1.4.2",
-        "nunomaduro/collision": "^5.0",
-        "phpunit/phpunit": "^9.3.3"
+        "barryvdh/laravel-ide-helper": "^3.7",
+        "fakerphp/faker": "^1.24",
+        "laravel/pint": "^1.29",
+        "laravel/sail": "^1.62",
+        "mockery/mockery": "^1.6",
+        "nunomaduro/collision": "^8.9",
+        "phpunit/phpunit": "^12.0"
     },
     "autoload": {
         "psr-4": {
@@ -72,7 +64,8 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "allow-plugins": {
-            "composer/package-versions-deprecated": true
+            "composer/package-versions-deprecated": true,
+            "pestphp/pest-plugin": true
         }
     },
     "minimum-stability": "dev",

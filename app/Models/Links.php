@@ -10,8 +10,6 @@ class Links extends Model
 
     protected $table = 'links';
 
-    protected $primaryKey = 'id';
-
     protected $fillable = [
         'name',
         'url',

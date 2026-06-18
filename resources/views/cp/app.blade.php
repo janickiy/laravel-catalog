@@ -1,337 +1,286 @@
 <!DOCTYPE html>
-<html lang="ru-ru">
+<html lang="ru">
 <head>
     <meta charset="utf-8">
     <title>Панель управления | @yield('title')</title>
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@4.0.0/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.11/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.15.10/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="/admin/js/plugin/jquery-treeview-master/jquery.treeview.css">
+    <link rel="stylesheet" href="/admin/js/plugin/datetimepicker/jquery.datetimepicker.css">
 
-    <!-- #CSS Links -->
-    <!-- Basic Styles -->
+    <style>
+        :root {
+            --lte-sidebar-width: 17rem;
+        }
 
-{!! Html::style('/css/bootstrap.min.css') !!}
+        .app-main {
+            min-height: calc(100vh - 7rem);
+        }
 
-{!! Html::style('/admin/css/font-awesome.min.css') !!}
+        .app-content-header h2,
+        .app-content-header h3 {
+            margin: 0;
+            font-size: 1.35rem;
+            font-weight: 600;
+        }
 
-{!! Html::style('/admin/css/admin.css') !!}
+        .sidebar-brand .brand-link {
+            text-decoration: none;
+        }
 
-<!-- SmartAdmin Styles : Caution! DO NOT change the order -->
+        .sidebar-menu .nav-link {
+            gap: .55rem;
+        }
 
-{!! Html::style('/admin/css/smartadmin-production-plugins.min.css') !!}
+        .jarviswidget {
+            background: var(--bs-body-bg);
+            border: 1px solid var(--bs-border-color);
+            border-radius: .5rem;
+            box-shadow: 0 .125rem .5rem rgba(0, 0, 0, .04);
+            padding: 1rem;
+        }
 
-{!! Html::style('/admin/css/smartadmin-production.min.css') !!}
+        .box-header {
+            margin-bottom: .75rem;
+        }
 
-{!! Html::style('/admin/css/smartadmin-skins.min.css') !!}
+        .smart-form header {
+            border-bottom: 1px solid var(--bs-border-color);
+            color: var(--bs-secondary-color);
+            font-size: .95rem;
+            margin-bottom: 1rem;
+            padding-bottom: .75rem;
+        }
 
-<!-- SmartAdmin RTL Support -->
+        .smart-form fieldset {
+            border: 0;
+            margin: 0;
+            padding: 0;
+        }
 
-{!! Html::style('/admin/css/smartadmin-rtl.min.css') !!}
+        .smart-form section {
+            margin-bottom: 1rem;
+        }
 
-{!! Html::style('/admin/js/plugin/daterangepicker/daterangepicker.css') !!}
+        .smart-form .label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: .35rem;
+        }
 
-<!-- We recommend you use "your_style.css" to override SmartAdmin
-         specific styles this will also ensure you retrain your customization with each SmartAdmin update.
-    <link rel="stylesheet" type="text/css" media="screen" href="css/your_style.css"> -->
+        .smart-form label.input,
+        .smart-form label.textarea {
+            display: block;
+            margin: 0;
+        }
 
-{!! Html::style('/admin/js/plugin/sweetalert/sweetalert.css') !!}
+        .smart-form textarea,
+        .smart-form .custom-scroll {
+            width: 100%;
+        }
 
-{!! Html::style('/admin/js/plugin/jquery-treeview-master/jquery.treeview.css') !!}
+        .smart-form footer {
+            border-top: 1px solid var(--bs-border-color);
+            display: flex;
+            gap: .5rem;
+            margin-top: 1.25rem;
+            padding-top: 1rem;
+        }
 
-{!! Html::style('/admin/js/plugin/datetimepicker/jquery.datetimepicker.css') !!}
+        .pull-left {
+            float: left !important;
+        }
 
-{!! Html::style('/admin/js/plugin/jquery-treeview-master/jquery.treeview.css') !!}
+        .btn-default {
+            --bs-btn-color: #212529;
+            --bs-btn-bg: #f8f9fa;
+            --bs-btn-border-color: #ced4da;
+            --bs-btn-hover-bg: #e9ecef;
+            --bs-btn-hover-border-color: #ced4da;
+        }
 
-<!-- #GOOGLE FONT -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700">
+        .btn-xs {
+            --bs-btn-padding-y: .125rem;
+            --bs-btn-padding-x: .35rem;
+            --bs-btn-font-size: .75rem;
+        }
+
+        .nobr {
+            white-space: nowrap;
+        }
+
+        .table tr.danger > * {
+            --bs-table-bg: #f8d7da;
+        }
+
+        .table tr.warning > * {
+            --bs-table-bg: #fff3cd;
+        }
+    </style>
 
     @yield('css')
 
-    <script type="text/javascript">
-        var SITE_URL = "{{ url('/') }}";
+    <script>
+        window.SITE_URL = "{{ url('/') }}";
     </script>
-
-    @yield('css')
-
-    <script type="text/javascript">
-        var SITE_URL = "{{ url('/') }}";
-    </script>
-
 </head>
+<body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
+<div class="app-wrapper">
+    <nav class="app-header navbar navbar-expand bg-body">
+        <div class="container-fluid">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-lte-toggle="sidebar" href="#" role="button">
+                        <i class="bi bi-list"></i>
+                    </a>
+                </li>
+            </ul>
 
-<!--
-
-TABLE OF CONTENTS.
-
-Use search to find needed section.
-
-===================================================================
-
-|  01. #CSS Links                |  all CSS links and file paths  |
-|  02. #FAVICONS                 |  Favicon links and file paths  |
-|  03. #GOOGLE FONT              |  Google font link              |
-|  04. #APP SCREEN / ICONS       |  app icons, screen backdrops   |
-|  05. #BODY                     |  body tag                      |
-|  06. #HEADER                   |  header tag                    |
-|  07. #PROJECTS                 |  project lists                 |
-|  08. #TOGGLE LAYOUT BUTTONS    |  layout buttons and actions    |
-|  09. #MOBILE                   |  mobile view dropdown          |
-|  10. #SEARCH                   |  search field                  |
-|  11. #NAVIGATION               |  left panel & navigation       |
-|  12. #MAIN PANEL               |  main panel                    |
-|  13. #MAIN CONTENT             |  content holder                |
-|  14. #PAGE FOOTER              |  page footer                   |
-|  15. #SHORTCUT AREA            |  dropdown shortcuts area       |
-|  16. #PLUGINS                  |  all scripts and plugins       |
-
-===================================================================
-
--->
-
-<!-- #BODY -->
-<!-- Possible Classes
-
-    * 'smart-style-{SKIN#}'
-    * 'smart-rtl'         - Switch theme mode to RTL
-    * 'menu-on-top'       - Switch to top navigation (no DOM change required)
-    * 'no-menu'			  - Hides the menu completely
-    * 'hidden-menu'       - Hides the main menu but still accessable by hovering over left edge
-    * 'fixed-header'      - Fixes the header
-    * 'fixed-navigation'  - Fixes the main menu
-    * 'fixed-ribbon'      - Fixes breadcrumb
-    * 'fixed-page-footer' - Fixes footer
-    * 'container'         - boxed layout mode (non-responsive: will not work with fixed-navigation & fixed-ribbon)
--->
-<body class="smart-style-0 fixed-header">
-
-<!-- #HEADER -->
-<header id="header">
-    <div id="logo-group">
-
-        <!-- PLACE YOUR LOGO HERE -->
-        <span id="logo"> <img src="{{ url('/images/logo.png') }}" alt=""> </span>
-        <!-- END LOGO PLACEHOLDER -->
-    </div>
-
-    <!-- #TOGGLE LAYOUT BUTTONS -->
-    <!-- pulled right: nav area -->
-    <div class="pull-right">
-
-        <div id="fullscreen" class="btn-header transparent pull-right">
-            <span> <a href="{{ URL::route('logout') }}" data-action="userLogout" title="Выйти"><i
-                        class="fa fa-sign-out fa-lg"></i></a>
-            </span>
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ URL::route('logout') }}" title="Выйти">
+                        <i class="bi bi-box-arrow-right"></i>
+                    </a>
+                </li>
+            </ul>
         </div>
-        <!-- end fullscreen button -->
-
-
-        <!-- collapse menu button -->
-        <div id="hide-menu" class="btn-header pull-right">
-            <span> <a href="javascript:void(0);" data-action="toggleMenu" title="Свернуть меню"><i
-                            class="fa fa-reorder"></i></a> </span>
-        </div>
-        <!-- end collapse menu -->
-
-        <!-- fullscreen button -->
-        <div id="fullscreen" class="btn-header transparent pull-right">
-            <span> <a href="javascript:void(0);" data-action="launchFullscreen" title="Развернуть на весь экран"><i
-                            class="fa fa-arrows-alt"></i></a>
-            </span>
-        </div>
-        <!-- end fullscreen button -->
-
-
-
-    </div>
-    <!-- end pulled right: nav area -->
-
-</header>
-<!-- END HEADER -->
-
-<!-- #NAVIGATION -->
-<!-- Left panel : Navigation area -->
-<!-- Note: This width of the aside area can be adjusted through LESS/SASS variables -->
-<aside id="left-panel">
-
-    <!-- User info -->
-    <div class="login-info">
-        <span> <!-- User image size is adjusted inside CSS, it should stay as is -->
-
-            <a  id="show-shortcut" data-action="toggleShortcut">
-                <span>
-
-                </span>
-            </a>
-        </span>
-    </div>
-    <!-- end user info -->
-
-    <!-- NAVIGATION : This navigation is also responsive
-
-    To make this navigation dynamic please make sure to link the node
-    (the reference to the nav > ul) after page load. Or the navigation
-    will not initialize.
-    -->
-    <nav>
-        <!--
-        NOTE: Notice the gaps after each icon usage <i></i>..
-        Please note that these links work a bit different than
-        traditional href="" links. See documentation for details.
-        -->
-
-        <ul>
-            <li {!! Request::is('/') ? ' class="active"' : '' !!}>
-                <a href="{{URL::route('cp.dashbaord.index')}}"><i class="fa fa-fw fa-home"></i> <span class="menu-item-parent"> Главная </span></a>
-            </li>
-
-            <li {!! Request::is('links*') ? ' class="active"' : '' !!}>
-                <a href="{{URL::route('cp.links.index')}}"><i class="fa fa-fw fa-link"></i> <span class="menu-item-parent"> Ссылки</span></a>
-            </li>
-
-            <li {!! Request::is('catalog*') ? ' class="active"' : '' !!}>
-                <a href="{{URL::route('cp.catalog.index')}}"><i class="fa fa-fw fa-th-list"></i> <span class="menu-item-parent"> Категории</span></a>
-            </li>
-
-            <li {!! Request::is('feedback*') ? ' class="active"' : '' !!}>
-                <a href="{{URL::route('cp.feedback.index')}}"><i class="fa fa-fw fa-envelope"></i> <span class="menu-item-parent"> Сообщения с сайта</span></a>
-            </li>
-
-            <li {!! Request::is('admin*') ? ' class="active"' : '' !!}>
-                <a href="{{URL::route('cp.admin.index')}}"><i class="fa fa-fw fa-users"></i> <span class="menu-item-parent"> Администраторы</span></a>
-            </li>
-
-            <li {!! Request::is('settings*') ? ' class="active"' : '' !!}>
-                <a href="{{URL::route('cp.settings.index')}}"><i class="fa fa-fw fa-gear"></i> <span class="menu-item-parent"> Настройки</span></a>
-            </li>
-
-        </ul>
-
     </nav>
 
-    <span class="minifyme" data-action="minifyMenu"> <i class="fa fa-arrow-circle-left hit"></i></span>
+    <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
+        <div class="sidebar-brand">
+            <a href="{{ URL::route('cp.dashbaord.index') }}" class="brand-link">
+                <span class="brand-text fw-light">My Links Manager</span>
+            </a>
+        </div>
 
-</aside>
-<!-- END NAVIGATION -->
+        <div class="sidebar-wrapper">
+            <nav class="mt-2">
+                <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
+                    <li class="nav-item">
+                        <a href="{{ URL::route('cp.dashbaord.index') }}" class="nav-link {{ request()->routeIs('cp.dashbaord.index') ? 'active' : '' }}">
+                            <i class="nav-icon bi bi-speedometer2"></i>
+                            <p>Главная</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ URL::route('cp.links.index') }}" class="nav-link {{ request()->is('cp/links*') ? 'active' : '' }}">
+                            <i class="nav-icon bi bi-link-45deg"></i>
+                            <p>Ссылки</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ URL::route('cp.catalog.index') }}" class="nav-link {{ request()->is('cp/catalog*') ? 'active' : '' }}">
+                            <i class="nav-icon bi bi-list-ul"></i>
+                            <p>Категории</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ URL::route('cp.feedback.index') }}" class="nav-link {{ request()->is('cp/feedback*') ? 'active' : '' }}">
+                            <i class="nav-icon bi bi-envelope"></i>
+                            <p>Сообщения с сайта</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ URL::route('cp.admin.index') }}" class="nav-link {{ request()->is('cp/admins*') ? 'active' : '' }}">
+                            <i class="nav-icon bi bi-people"></i>
+                            <p>Администраторы</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ URL::route('cp.settings.index') }}" class="nav-link {{ request()->is('cp/settings*') ? 'active' : '' }}">
+                            <i class="nav-icon bi bi-gear"></i>
+                            <p>Настройки</p>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </aside>
 
-<!-- #MAIN PANEL -->
-<div id="main" role="main">
+    <main class="app-main">
+        <div class="app-content-header">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col-sm-6">
+                        @if (isset($title))
+                            <h2>{!! $title !!}</h2>
+                        @endif
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-end mb-0">
+                            <li class="breadcrumb-item">Панель управления</li>
+                            <li class="breadcrumb-item active" aria-current="page">@yield('title')</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <!-- RIBBON -->
-    <div id="ribbon">
-
-        <!-- breadcrumb -->
-        <ol class="breadcrumb">
-            <li>Панель управления</li>
-            <li>@yield('title')</li>
-        </ol>
-        <!-- end breadcrumb -->
-
-        <!-- You can also add more buttons to the
-        ribbon for further usability
-
-        Example below:
-
-        <span class="ribbon-button-alignment pull-right" style="margin-right:25px">
-            <a href="#" id="search" class="btn btn-ribbon hidden-xs" data-title="search"><i class="fa fa-grid"></i> Change Grid</a>
-            <span id="add" class="btn btn-ribbon hidden-xs" data-title="add"><i class="fa fa-plus"></i> Add</span>
-            <button id="search" class="btn btn-ribbon" data-title="search"><i class="fa fa-search"></i> <span class="hidden-mobile">Search</span></button>
-        </span> -->
-
-    </div>
-    <!-- END RIBBON -->
-
-    <!-- #MAIN CONTENT -->
-
-    <div id="content">
-
-        @if (isset($title))<h2>{!! $title !!}</h2>@endif
-
-        @include('layouts.notifications')
-
-        <!-- col -->
-        <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="app-content">
+            <div class="container-fluid">
+                @include('layouts.notifications')
                 @yield('content')
             </div>
         </div>
-        <!-- end col -->
+    </main>
 
-        <!-- end row -->
-    </div>
-    <!-- END #MAIN CONTENT -->
-
+    <footer class="app-footer">
+        <strong>© {{ date('Y') }} My Links Manager</strong>
+    </footer>
 </div>
-<!-- END #MAIN PANEL -->
 
-<!-- #PAGE FOOTER -->
-<div class="page-footer">
-    <div class="row">
-        <div class="col-xs-12 col-sm-6">
-            <span class="txt-color-white"><span class="hidden-xs"></span> © {{ date('Y') }} My Links Manager</span>
-        </div>
-    </div>
-    <!-- end row -->
-</div>
-<!-- END FOOTER -->
-
-<!-- PACE LOADER - turn this on if you want ajax loading to show (caution: uses lots of memory on iDevices)-->
-<script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script>
-
-    if (!window.jQuery) {
-        document.write('<script src="{{ url('/js/libs/jquery-3.2.1.min.js') }}"><\/script>');
-    }
-
-</script>
-
-<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.3/jquery-ui.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/admin-lte@4.0.0/dist/js/adminlte.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.11/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.11/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.15.10/dist/sweetalert2.all.min.js"></script>
+<script src="/admin/js/plugin/datetimepicker/jquery.datetimepicker.full.js"></script>
+<script src="/admin/js/plugin/jquery-treeview-master/jquery.treeview.js"></script>
 
 <script>
-    if (!window.jQuery.ui) {
-        document.write('<script src="{{ url('/js/libs/jquery-ui.min.js') }}"><\/script>');
-    }
+    window.pageSetUp = window.pageSetUp || function () {};
+
+    window.ResponsiveDatatablesHelper = window.ResponsiveDatatablesHelper || function () {
+        return {
+            createExpandIcon: function () {},
+            respond: function () {}
+        };
+    };
+
+    window.swal = function (options, callbackOrText, type) {
+        if (typeof options === 'object') {
+            return Swal.fire({
+                title: options.title,
+                text: options.text,
+                icon: options.type || options.icon,
+                showCancelButton: options.showCancelButton || false,
+                confirmButtonText: options.confirmButtonText || 'OK',
+                cancelButtonText: options.cancelButtonText || 'Cancel',
+                confirmButtonColor: options.confirmButtonColor
+            }).then(function (result) {
+                if (typeof callbackOrText === 'function') {
+                    callbackOrText(result.isConfirmed);
+                }
+            });
+        }
+
+        return Swal.fire({
+            title: options,
+            text: callbackOrText,
+            icon: type
+        });
+    };
 </script>
-
-<!-- IMPORTANT: APP CONFIG -->
-
-{!! Html::script('/admin/js/app.config.js') !!}
-
-<!-- BOOTSTRAP JS -->
-
-{!! Html::script('/admin/js/bootstrap/bootstrap.min.js') !!}
-
-<!--[if IE 8]>
-<h1>Your browser is out of date, please update your browser by going to www.microsoft.com/download</h1>
-<![endif]-->
-
-<!-- MAIN APP JS FILE -->
-
-{!! Html::script('/admin/js/app.min.js') !!}
-
-{!! Html::script('/admin/js/plugin/datatables/jquery.dataTables.min.js') !!}
-
-{!! Html::script('/admin/js/plugin/datatables/dataTables.colVis.min.js') !!}
-
-{!! Html::script('/admin/js/plugin/datatables/dataTables.tableTools.min.js') !!}
-
-{!! Html::script('/admin/js/plugin/datatables/dataTables.bootstrap.min.js') !!}
-
-{!! Html::script('/admin/js/plugin/datatable-responsive/datatables.responsive.min.js') !!}
-
-{!! Html::script('/admin/js/plugin/sweetalert/sweetalert-dev.js') !!}
-
-{!! Html::script('/admin/js/plugin/datetimepicker/jquery.datetimepicker.full.js') !!}
-
-{!! Html::script('/admin/js/plugin/jquery-treeview-master/jquery.treeview.js') !!}
-
-{!! Html::script('/admin/js/plugin/cookie/jquery.cookie.js') !!}
 
 @yield('js')
 
 </body>
-
 </html>

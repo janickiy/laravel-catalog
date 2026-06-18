@@ -2,92 +2,57 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
-use App\Models\{Settings};
-use Illuminate\Support\Facades\Validator;
-use URL;
+use App\DTO\Settings\SettingsData;
+use App\Http\Requests\Admin\DestroySettingsRequest;
+use App\Http\Requests\Admin\StoreSettingsRequest;
+use App\Http\Requests\Admin\UpdateSettingsRequest;
+use App\Repositories\SettingsRepository;
+use App\Services\Admin\SettingsService;
+use Illuminate\Support\Facades\URL;
 
 class SettingsController extends Controller
 {
-    /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
-     */
+    public function __construct(
+        private readonly SettingsRepository $settings,
+        private readonly SettingsService $service,
+    ) {
+        parent::__construct();
+    }
+
     public function index()
     {
         return view('cp.settings.index')->with('title', 'Настройки');
     }
 
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function create()
     {
         return view('cp.settings.create_edit')->with('title', 'Добавление настроек');
     }
 
-    /**
-     * @param Request $request
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
-    public function store(Request $request)
+    public function store(StoreSettingsRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|max:255|unique:settings',
-            'value' => 'required',
-        ]);
-
-        if ($validator->fails()) return back()->withErrors($validator)->withInput();
-
-        Settings::create($request->all());
+        $this->service->create(SettingsData::fromArray($request->validated()));
 
         return redirect(URL::route('cp.settings.index'))->with('success', 'Информация успешно добавлена');
-
     }
 
-    /**
-     * @param $id
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function edit($id)
+    public function edit(int $id)
     {
-        $row = Settings::find($id);
-
-        if (!$row) abort(404);
+        $row = $this->settings->find($id);
+        abort_if(! $row, 404);
 
         return view('cp.settings.create_edit', compact('row'))->with('title', 'Редактирование настроек');
     }
 
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function update(Request $request)
+    public function update(UpdateSettingsRequest $request)
     {
-        $rules = [
-            'name' => 'required|max:255|unique:settings,name,' . $request->id . ',id',
-            'value' => 'required',
-        ];
-
-        $validator = Validator::make($request->all(), $rules);
-
-        if ($validator->fails()) return back()->withErrors($validator)->withInput();
-
-        $settings = Settings::find($request->id);
-        $settings->name = $request->name;
-        $settings->description = $request->description;
-        $settings->value = $request->value;
-        $settings->save();
+        $this->service->update(SettingsData::fromArray($request->validated()));
 
         return redirect(URL::route('cp.settings.index'))->with('success', 'Данные обновлены');
-
     }
 
-    /**
-     * @param Request $request
-     */
-    public function destroy(Request $request)
+    public function destroy(DestroySettingsRequest $request): void
     {
-        Settings::find($request->id)->delete();
+        $this->service->delete((int) $request->validated('id'));
     }
 }
