@@ -16,7 +16,8 @@
         "mews/captcha": "^3.5",
         "nesbot/carbon": "^3.8",
         "yajra/laravel-datatables-oracle": "^13.1",
-      "ext-zip": "*"
+      "ext-zip": "*",
+      "ext-curl": "*"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.7",
