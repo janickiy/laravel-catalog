@@ -8,11 +8,9 @@ use Illuminate\Support\ServiceProvider;
 class BroadcastServiceProvider extends ServiceProvider
 {
     /**
-     * Bootstrap any application services.
-     *
-     * @return void
+     * Регистрирует маршруты broadcast-каналов приложения.
      */
-    public function boot()
+    public function boot(): void
     {
         Broadcast::routes();
 

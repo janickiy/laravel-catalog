@@ -2,21 +2,29 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Models\Catalog;
+use App\Models\Links;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 class StoreLinkRequest extends FormRequest
 {
+    /**
+     * Разрешает создание ссылки авторизованному администратору.
+     */
     public function authorize(): bool
     {
         return true;
     }
 
+    /**
+     * Возвращает правила валидации создания ссылки.
+     */
     public function rules(): array
     {
         return [
             'name' => 'required',
-            'url' => 'required|url|unique:links',
+            'url' => 'required|url|unique:'.Links::getTableName(),
             'city' => 'nullable|string',
             'phone' => 'nullable|string',
             'email' => 'nullable|email',
@@ -26,11 +34,14 @@ class StoreLinkRequest extends FormRequest
             'catalog_id' => [
                 'required',
                 'integer',
-                Rule::when((int) $this->input('catalog_id') > 0, ['exists:catalog,id']),
+                Rule::when((int) $this->input('catalog_id') > 0, ['exists:'.Catalog::getTableName().',id']),
             ],
         ];
     }
 
+    /**
+     * Возвращает пользовательские сообщения ошибок создания ссылки.
+     */
     public function messages(): array
     {
         return [

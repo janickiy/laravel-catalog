@@ -11,9 +11,14 @@ final readonly class SettingsData implements DataTransferObject
         private string $name,
         private string $value,
         private ?string $description,
-    ) {
-    }
+    ) {}
 
+    /**
+     * Создает DTO настройки из валидированного массива формы.
+     *
+     * @param array $data
+     * @return self
+     */
     public static function fromArray(array $data): self
     {
         return new self(
@@ -24,11 +29,17 @@ final readonly class SettingsData implements DataTransferObject
         );
     }
 
+    /**
+     * Возвращает идентификатор настройки для операций обновления.
+     */
     public function id(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * Преобразует DTO в массив атрибутов настройки.
+     */
     public function toArray(): array
     {
         return [

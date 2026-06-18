@@ -32,10 +32,11 @@ class ScreenShot extends Command
         parent::__construct();
     }
 
-    public function handle()
+    /**
+     * Обновляет скриншоты сайтов, у которых еще нет изображения.
+     */
+    public function handle(): int
     {
-        @set_time_limit(0);
-
         $this->line('start updating images');
 
         $links = Links::whereNull('image')->inRandomOrder()->take(10)->get();
@@ -47,9 +48,9 @@ class ScreenShot extends Command
             if (FileHelper::url_exists($row->url) === true) {
                 $result = FileHelper::getScreenShot($row->url);
 
-                if (isset($result["name"])) {
-                    $link->image = $result["name"];
-                    $this->line($result["name"]);
+                if (isset($result['name'])) {
+                    $link->image = $result['name'];
+                    $this->line($result['name']);
                 }
             } else {
                 $link->image = '';
@@ -58,8 +59,8 @@ class ScreenShot extends Command
             $link->save();
         }
 
-        $this->line("end updating images");
+        $this->line('end updating images');
+
+        return self::SUCCESS;
     }
-
-
 }

@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use App\Http\Traits\StaticTableName;
 use App\Enums\LinkStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Links extends Model
 {
+    use StaticTableName;
+
     const PER_PAGE = 1000;
 
     protected $table = 'links';
@@ -27,6 +30,7 @@ class Links extends Model
         'views',
     ];
 
+
     /**
      * @return BelongsTo
      */
@@ -39,7 +43,7 @@ class Links extends Model
      * @param mixed $value
      * @return string
      */
-    public function getStatusAttribute($value): string
+    public function getStatusAttribute(mixed $value): string
     {
         return LinkStatus::codeFor($value);
     }

@@ -3,16 +3,14 @@
 namespace App\Listeners;
 
 use App\Events\NewlinkNotifyEvent;
-use App\Mail\NewlinkNotify;
 use App\Helpers\SettingsHelpers;
+use App\Mail\NewlinkNotify;
 use Illuminate\Support\Facades\Mail;
 
 class NewlinkNotifyEventListener
 {
     /**
-     * Create the event listener.
-     *
-     * @return void
+     * Создает обработчик события новой ссылки.
      */
     public function __construct()
     {
@@ -20,12 +18,9 @@ class NewlinkNotifyEventListener
     }
 
     /**
-     * Handle the event.
-     *
-     * @param  NewlinkNotifyEvent  $event
-     * @return void
+     * Отправляет письмо администрации о новой ссылке.
      */
-    public function handle(NewlinkNotifyEvent $event)
+    public function handle(NewlinkNotifyEvent $event): void
     {
         Mail::to(SettingsHelpers::getSetting('EMAIL'))->send(new NewlinkNotify($event->links));
     }

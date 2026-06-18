@@ -2,7 +2,6 @@
 
 namespace App\Repositories;
 
-
 use App\DTO\DataTransferObject;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -10,21 +9,13 @@ use Illuminate\Support\Collection;
 
 abstract class BaseRepository implements RepositoryInterface
 {
-
     /**
      * Сохраняет Eloquent-модель, с которой работает конкретный репозиторий.
-     *
-     * @param Model $model
      */
-    public function __construct(protected Model $model)
-    {
-    }
+    public function __construct(protected Model $model) {}
 
     /**
      * Создает новую запись из массива атрибутов; базовая операция для всех наследников.
-     *
-     * @param array $data
-     * @return Builder|Model
      */
     public function create(array $data): Builder|Model
     {
@@ -42,7 +33,7 @@ abstract class BaseRepository implements RepositoryInterface
     /**
      * Обновляет запись по id переданными атрибутами; возвращает false, если запись не найдена.
      *
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      */
     public function update(int|string $id, array $data): bool
     {
@@ -65,8 +56,6 @@ abstract class BaseRepository implements RepositoryInterface
 
     /**
      * Возвращает все записи таблицы модели; используется только для простых выборок без фильтров.
-     *
-     * @return Collection
      */
     public function all(): Collection
     {
@@ -75,8 +64,6 @@ abstract class BaseRepository implements RepositoryInterface
 
     /**
      * Ищет запись по первичному ключу и возвращает null, если запись отсутствует.
-     *
-     * @return Model|null
      */
     public function find(int|string $id): ?Model
     {
@@ -91,8 +78,10 @@ abstract class BaseRepository implements RepositoryInterface
         $model = $this->model->find($id);
         if ($model) {
             $model->delete();
+
             return true;
         }
+
         return false;
     }
 
@@ -111,5 +100,4 @@ abstract class BaseRepository implements RepositoryInterface
     {
         $this->model->truncate();
     }
-
 }

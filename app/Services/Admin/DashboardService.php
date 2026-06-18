@@ -8,7 +8,6 @@ use App\Repositories\CatalogRepository;
 use App\Repositories\FeedbackRepository;
 use App\Repositories\LinksRepository;
 use App\Repositories\SettingsRepository;
-use Illuminate\Support\Facades\URL;
 
 class DashboardService
 {
@@ -18,9 +17,11 @@ class DashboardService
         private readonly FeedbackRepository $feedback,
         private readonly AdminRepository $admins,
         private readonly SettingsRepository $settings,
-    ) {
-    }
+    ) {}
 
+    /**
+     * Собирает все данные для dashboard административной панели.
+     */
     public function data(): array
     {
         $linkStatuses = $this->linkStatuses();
@@ -36,6 +37,9 @@ class DashboardService
         ];
     }
 
+    /**
+     * Формирует карточки со сводными показателями dashboard.
+     */
     private function summaryCards(array $linkStatuses): array
     {
         return [
@@ -44,46 +48,49 @@ class DashboardService
                 'value' => $this->links->countAll(),
                 'icon' => 'bi-link-45deg',
                 'variant' => 'primary',
-                'url' => URL::route('cp.links.index'),
+                'url' => route('cp.links.index'),
             ],
             [
                 'label' => 'Категории',
                 'value' => $this->catalogs->countAll(),
                 'icon' => 'bi-list-ul',
                 'variant' => 'success',
-                'url' => URL::route('cp.catalog.index'),
+                'url' => route('cp.catalog.index'),
             ],
             [
                 'label' => 'Сообщения',
                 'value' => $this->feedback->countAll(),
                 'icon' => 'bi-envelope',
                 'variant' => 'warning',
-                'url' => URL::route('cp.feedback.index'),
+                'url' => route('cp.feedback.index'),
             ],
             [
                 'label' => 'Администраторы',
                 'value' => $this->admins->countAll(),
                 'icon' => 'bi-people',
                 'variant' => 'info',
-                'url' => URL::route('cp.admin.index'),
+                'url' => route('cp.admin.index'),
             ],
             [
                 'label' => 'Настройки',
                 'value' => $this->settings->countAll(),
                 'icon' => 'bi-gear',
                 'variant' => 'secondary',
-                'url' => URL::route('cp.settings.index'),
+                'url' => route('cp.settings.index'),
             ],
             [
                 'label' => 'Ожидают проверки',
                 'value' => $linkStatuses['pending']['count'],
                 'icon' => 'bi-hourglass-split',
                 'colorClass' => LinkStatus::Pending->cssColor(),
-                'url' => URL::route('cp.links.index'),
+                'url' => route('cp.links.index'),
             ],
         ];
     }
 
+    /**
+     * Собирает статистику ссылок по статусам.
+     */
     private function linkStatuses(): array
     {
         $total = max(1, $this->links->countAll());
@@ -95,6 +102,9 @@ class DashboardService
         ];
     }
 
+    /**
+     * Рассчитывает количество и процент ссылок для одного статуса.
+     */
     private function statusStat(LinkStatus $status, int $total): array
     {
         $count = $this->links->countByStatus($status);
@@ -107,27 +117,30 @@ class DashboardService
         ];
     }
 
+    /**
+     * Возвращает список быстрых действий dashboard.
+     */
     private function quickActions(): array
     {
         return [
             [
                 'label' => 'Добавить ссылку',
-                'url' => URL::route('cp.links.create'),
+                'url' => route('cp.links.create'),
                 'icon' => 'bi-plus-circle',
             ],
             [
                 'label' => 'Импорт ссылок',
-                'url' => URL::route('cp.links.import'),
+                'url' => route('cp.links.import'),
                 'icon' => 'bi-download',
             ],
             [
                 'label' => 'Экспорт ссылок',
-                'url' => URL::route('cp.links.export'),
+                'url' => route('cp.links.export'),
                 'icon' => 'bi-upload',
             ],
             [
                 'label' => 'Добавить категорию',
-                'url' => URL::route('cp.catalog.create'),
+                'url' => route('cp.catalog.create'),
                 'icon' => 'bi-folder-plus',
             ],
         ];

@@ -3,8 +3,8 @@
 namespace App\Repositories;
 
 use App\DTO\DataTransferObject;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
 interface RepositoryInterface

@@ -6,16 +6,17 @@ use App\DTO\Catalog\CatalogData;
 use App\Models\Catalog;
 use App\Repositories\CatalogRepository;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\URL;
 
 class CatalogService
 {
     public function __construct(
         private readonly CatalogRepository $catalogs,
         private readonly CatalogImageService $images,
-    ) {
-    }
+    ) {}
 
+    /**
+     * Строит массив разделов, сгруппированный по родительскому разделу.
+     */
     public function tree(): array
     {
         $cats = [];
@@ -27,16 +28,30 @@ class CatalogService
         return $cats;
     }
 
+    /**
+     * Возвращает HTML-дерево разделов для админки.
+     */
     public function treeHtml(): string
     {
         return $this->buildTree($this->tree(), 0) ?? '';
     }
 
+    /**
+     * Возвращает список разделов для select-полей.
+     */
     public function options(array $base = [0 => 'Выберите']): array
     {
         return $this->catalogs->options($base);
     }
 
+    /**
+     * Создает раздел каталога и сохраняет изображение при наличии файла.
+     *
+     * @param CatalogData $data
+     * @param UploadedFile|null $image
+     * @return void
+     * @throws \Gumlet\ImageResizeException
+     */
     public function create(CatalogData $data, ?UploadedFile $image): void
     {
         if ($image !== null) {
@@ -46,6 +61,16 @@ class CatalogService
         $this->catalogs->createFromData($data);
     }
 
+
+    /**
+     * Обновляет раздел каталога и заменяет изображение при загрузке нового файла.
+     *
+     * @param CatalogData $data
+     * @param UploadedFile|null $image
+     * @param string|null $oldImage
+     * @return bool
+     * @throws \Gumlet\ImageResizeException
+     */
     public function update(CatalogData $data, ?UploadedFile $image, ?string $oldImage): bool
     {
         if ($image !== null) {
@@ -56,6 +81,11 @@ class CatalogService
         return $this->catalogs->updateFromData($data);
     }
 
+    /**Удаляет раздел каталога, его потомков и связанные изображения
+     *
+     * @param int $id
+     * @return void
+     */
     public function deleteWithChildren(int $id): void
     {
         /** @var Catalog $catalog */
@@ -72,6 +102,13 @@ class CatalogService
         $this->catalogs->deleteMany($ids);
     }
 
+    /**
+     * Рекурсивно собирает HTML для ветки дерева разделов.
+     *
+     * @param array $catalogs
+     * @param int $parentId
+     * @return string|null
+     */
     private function buildTree(array $catalogs, int $parentId): ?string
     {
         if (! isset($catalogs[$parentId])) {
@@ -81,18 +118,24 @@ class CatalogService
         $tree = '<ul>';
 
         foreach ($catalogs[$parentId] as $catalog) {
-            $tree .= '<li>' . e($catalog['name']) . ' ' . $this->actionsHtml((int) $catalog['id']);
+            $tree .= '<li>'.e($catalog['name']).' '.$this->actionsHtml((int) $catalog['id']);
             $tree .= $this->buildTree($catalogs, (int) $catalog['id']);
             $tree .= '</li>';
         }
 
-        return $tree . '</ul>';
+        return $tree.'</ul>';
     }
 
+    /**
+     * Формирует HTML-кнопки действий для строки раздела.
+     *
+     * @param int $catalogId
+     * @return string
+     */
     private function actionsHtml(int $catalogId): string
     {
-        return '<a title="Добавить подкатегорию" class="btn btn-xs btn-primary" href="' . URL::route('cp.catalog.create', ['parent_id' => $catalogId]) . '"><span class="bi bi-plus-lg"></span></a> '
-            . '<a title="Редактировать" href="' . URL::route('cp.catalog.edit', ['id' => $catalogId]) . '"> <span class="fa fa-pencil"></span> </a> '
-            . '<a title="Удалить" href="' . URL::route('cp.catalog.delete', $catalogId) . '"> <span class="fa fa-trash-o"></span> </a>';
+        return '<a title="Добавить подкатегорию" class="btn btn-xs btn-primary" href="'.route('cp.catalog.create', ['parent_id' => $catalogId]).'"><span class="bi bi-plus-lg"></span></a> '
+            .'<a title="Редактировать" href="'.route('cp.catalog.edit', ['id' => $catalogId]).'"> <span class="fa fa-pencil"></span> </a> '
+            .'<a title="Удалить" href="'.route('cp.catalog.delete', $catalogId).'"> <span class="fa fa-trash-o"></span> </a>';
     }
 }

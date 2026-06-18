@@ -6,8 +6,8 @@ use App\Helpers\SettingsHelpers;
 use App\Models\Links;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailable;
+use Illuminate\Queue\SerializesModels;
 
 class NewlinkNotify extends Mailable implements ShouldQueue
 {
@@ -16,9 +16,7 @@ class NewlinkNotify extends Mailable implements ShouldQueue
     public Links $links;
 
     /**
-     * Create a new message instance.
-     *
-     * @return void
+     * Создает письмо уведомления о новой ссылке.
      */
     public function __construct(Links $links)
     {
@@ -26,23 +24,17 @@ class NewlinkNotify extends Mailable implements ShouldQueue
     }
 
     /**
-     * Get the notification's delivery channels.
-     *
-     * @param mixed $notifiable
-     *
-     * @return array
+     * Возвращает каналы доставки письма.
      */
-    public function via($notifiable): array
+    public function via(mixed $notifiable): array
     {
         return ['mail'];
     }
 
     /**
-     * Build the message.
-     *
-     * @return $this
+     * Собирает email-сообщение о новой ссылке.
      */
-    public function build()
+    public function build(): static
     {
         return $this->from(SettingsHelpers::getSetting('FROM'), SettingsHelpers::getSetting('SITE_NAME'))
             ->subject('Добавлена новая ссылка')

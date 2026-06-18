@@ -17,16 +17,35 @@ class LinksRepository extends BaseRepository
         parent::__construct($model);
     }
 
+    /**
+     * Создает ссылку из DTO.
+     *
+     * @param LinkData $data
+     * @return Builder|Model
+     */
     public function createFromData(LinkData $data): Builder|Model
     {
         return $this->create($data->toArray());
     }
 
+    /**
+     * Обновляет ссылку из DTO.
+     *
+     * @param LinkData $data
+     * @return bool
+     */
     public function updateFromData(LinkData $data): bool
     {
         return $this->update($data->id(), $data->toArray());
     }
 
+
+    /**
+     * Проверяет, существует ли ссылка с указанным URL.
+     *
+     * @param string $url
+     * @return bool
+     */
     public function existsByUrl(string $url): bool
     {
         return $this->model->query()
@@ -34,6 +53,9 @@ class LinksRepository extends BaseRepository
             ->exists();
     }
 
+    /**
+     * Возвращает query builder для серверной таблицы ссылок.
+     */
     public function dataTableQuery(): Builder
     {
         return $this->model->query()
@@ -52,16 +74,31 @@ class LinksRepository extends BaseRepository
             ->groupBy('links.description');
     }
 
+    /**
+     * Считает количество ссылок с указанным статусом
+     *
+     * @param LinkStatus|int $status
+     * @return int
+     */
     public function countByStatus(LinkStatus|int $status): int
     {
         return $this->model->query()->where('status', $this->statusValue($status))->count();
     }
 
+    /**
+     * Считает общее количество ссылок.
+     */
     public function countAll(): int
     {
         return $this->model->query()->count();
     }
 
+    /**
+     * Возвращает последние ссылки для dashboard.
+     *
+     * @param int $limit
+     * @return Collection
+     */
     public function latestForDashboard(int $limit): Collection
     {
         return $this->model->query()
@@ -71,6 +108,12 @@ class LinksRepository extends BaseRepository
             ->get();
     }
 
+    /**
+     * Возвращает самые просматриваемые ссылки.
+     *
+     * @param int $limit
+     * @return Collection
+     */
     public function topViewed(int $limit): Collection
     {
         return $this->model->query()
@@ -81,6 +124,12 @@ class LinksRepository extends BaseRepository
             ->get();
     }
 
+    /**
+     * Возвращает опубликованные ссылки для экспорта.
+     *
+     * @param int|null $catalogId
+     * @return Collection
+     */
     public function publishedForExport(?int $catalogId): Collection
     {
         $query = $this->model->query()
@@ -97,6 +146,13 @@ class LinksRepository extends BaseRepository
         return $query->get();
     }
 
+    /**
+     * Массово обновляет статус выбранных ссылок.
+     *
+     * @param array $ids
+     * @param int $status
+     * @return int
+     */
     public function updateStatuses(array $ids, int $status): int
     {
         return $this->model->query()
@@ -104,6 +160,12 @@ class LinksRepository extends BaseRepository
             ->update(['status' => $status]);
     }
 
+    /**
+     * Возвращает последние опубликованные ссылки.
+     *
+     * @param int $limit
+     * @return Collection
+     */
     public function latestPublished(int $limit): Collection
     {
         return $this->model->query()
@@ -113,6 +175,15 @@ class LinksRepository extends BaseRepository
             ->get();
     }
 
+    /**
+     * Возвращает последние опубликованные ссылки из выбранных разделов.
+     */
+
+    /**
+     * @param array $catalogIds
+     * @param int $limit
+     * @return Collection
+     */
     public function latestPublishedInCatalogs(array $catalogIds, int $limit): Collection
     {
         if ($catalogIds === []) {
@@ -127,6 +198,13 @@ class LinksRepository extends BaseRepository
             ->get();
     }
 
+    /**
+     * Возвращает постраничный список опубликованных ссылок раздела.
+     *
+     * @param int|null $catalogId
+     * @param int $perPage
+     * @return LengthAwarePaginator
+     */
     public function paginatePublishedByCatalog(?int $catalogId, int $perPage): LengthAwarePaginator
     {
         $query = $this->model->query()
@@ -139,6 +217,12 @@ class LinksRepository extends BaseRepository
         return $query->paginate($perPage);
     }
 
+    /**
+     * Находит ссылку для просмотра в админке вместе с разделом
+     *
+     * @param int $id
+     * @return Links|null
+     */
     public function findForAdmin(int $id): ?Links
     {
         $link = $this->model->query()
@@ -149,6 +233,12 @@ class LinksRepository extends BaseRepository
         return $link instanceof Links ? $link : null;
     }
 
+    /**
+     * Находит опубликованную ссылку для фронтенда
+     *
+     * @param int $id
+     * @return Links|null
+     */
     public function findPublished(int $id): ?Links
     {
         $link = $this->model->query()
@@ -159,6 +249,9 @@ class LinksRepository extends BaseRepository
         return $link instanceof Links ? $link : null;
     }
 
+    /**
+     * Находит ссылку без фильтра по статусу.
+     */
     public function findAny(int $id): ?Links
     {
         $link = $this->find($id);
@@ -166,6 +259,13 @@ class LinksRepository extends BaseRepository
         return $link instanceof Links ? $link : null;
     }
 
+    /**
+     * Возвращает случайные опубликованные ссылки из раздела.
+     *
+     * @param int|null $catalogId
+     * @param int $limit
+     * @return Collection
+     */
     public function randomPublishedByCatalog(?int $catalogId, int $limit): Collection
     {
         $query = $this->model->query()
@@ -180,6 +280,12 @@ class LinksRepository extends BaseRepository
         return $query->get();
     }
 
+    /**
+     * Увеличивает счетчик просмотров ссылки.
+     *
+     * @param Links $link
+     * @return bool
+     */
     public function incrementViews(Links $link): bool
     {
         return $link->forceFill([
@@ -187,11 +293,20 @@ class LinksRepository extends BaseRepository
         ])->save();
     }
 
+    /**
+     * Считает количество опубликованных ссылок.
+     */
     public function countPublished(): int
     {
         return $this->model->query()->where('status', LinkStatus::Published->value)->count();
     }
 
+    /**
+     * Возвращает страницу опубликованных ссылок для XML sitemap.
+     *
+     * @param int $page
+     * @return Collection
+     */
     public function sitemapPage(int $page): Collection
     {
         $limit = Links::PER_PAGE;
@@ -203,6 +318,12 @@ class LinksRepository extends BaseRepository
             ->get();
     }
 
+    /**
+     * Нормализует enum или int-статус к числовому значению.
+     *
+     * @param LinkStatus|int $status
+     * @return int
+     */
     private function statusValue(LinkStatus|int $status): int
     {
         return $status instanceof LinkStatus ? $status->value : $status;

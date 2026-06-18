@@ -2,32 +2,28 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Blade;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * Register any application services.
-     *
-     * @return void
+     * Регистрирует сервисы приложения в контейнере.
      */
-    public function register()
+    public function register(): void
     {
         //
     }
 
     /**
-     * Bootstrap any application services.
-     *
-     * @return void
+     * Выполняет начальную настройку пагинации и Blade-директив.
      */
-    public function boot()
+    public function boot(): void
     {
         Paginator::useBootstrapFive();
 
-        Blade::directive('captcha', function () {
+        Blade::directive('captcha', function (): string {
             return "<?php echo function_exists('captcha_img') ? captcha_img() : ''; ?>";
         });
     }

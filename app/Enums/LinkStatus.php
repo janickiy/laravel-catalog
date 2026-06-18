@@ -8,6 +8,9 @@ enum LinkStatus: int
     case Published = 1;
     case Blocked = 2;
 
+    /**
+     * Возвращает строковый код статуса для legacy-представления.
+     */
     public function code(): string
     {
         return match ($this) {
@@ -17,6 +20,9 @@ enum LinkStatus: int
         };
     }
 
+    /**
+     * Возвращает человекочитаемую подпись статуса.
+     */
     public function label(): string
     {
         return match ($this) {
@@ -26,6 +32,9 @@ enum LinkStatus: int
         };
     }
 
+    /**
+     * Возвращает AdminLTE CSS-класс цвета для статуса.
+     */
     public function cssColor(): string
     {
         return match ($this) {
@@ -35,6 +44,9 @@ enum LinkStatus: int
         };
     }
 
+    /**
+     * Создает enum-статус из строкового кода.
+     */
     public static function fromCode(string $code): ?self
     {
         return match ($code) {
@@ -45,6 +57,9 @@ enum LinkStatus: int
         };
     }
 
+    /**
+     * Нормализует смешанное значение статуса в enum.
+     */
     public static function fromValue(self|int|string|null $status): ?self
     {
         if ($status instanceof self) {
@@ -62,21 +77,33 @@ enum LinkStatus: int
         return self::fromCode((string) $status);
     }
 
+    /**
+     * Возвращает строковый код для любого поддерживаемого значения статуса.
+     */
     public static function codeFor(self|int|string|null $status): string
     {
         return self::fromValue($status)?->code() ?? (string) $status;
     }
 
+    /**
+     * Возвращает подпись для любого поддерживаемого значения статуса.
+     */
     public static function labelFor(self|int|string|null $status): string
     {
         return self::fromValue($status)?->label() ?? (string) $status;
     }
 
+    /**
+     * Возвращает CSS-класс цвета для любого поддерживаемого значения статуса.
+     */
     public static function cssColorFor(self|int|string|null $status): string
     {
         return self::fromValue($status)?->cssColor() ?? 'text-bg-secondary';
     }
 
+    /**
+     * Возвращает список статусов для select-полей.
+     */
     public static function options(): array
     {
         $options = [];
@@ -88,6 +115,9 @@ enum LinkStatus: int
         return $options;
     }
 
+    /**
+     * Возвращает числовые значения всех статусов.
+     */
     public static function values(): array
     {
         return array_map(

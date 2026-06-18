@@ -2,48 +2,41 @@
 
 namespace App\Mail;
 
-use stdClass;
+use App\Helpers\SettingsHelpers;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use App\Helpers\{SettingsHelpers};
+use stdClass;
 
 class FeedbackMailer extends Mailable implements ShouldQueue
 {
     use Queueable;
 
-    private $data;
+    private stdClass $data;
 
     /**
-     * Create a new message instance.
-     *
-     * @return void
+     * Создает письмо обратной связи с данными формы.
      */
-    public function __construct(stdClass $data) {
+    public function __construct(stdClass $data)
+    {
         $this->data = $data;
     }
 
     /**
-     * Get the notification's delivery channels.
-     *
-     * @param mixed $notifiable
-     *
-     * @return array
+     * Возвращает каналы доставки письма.
      */
-    public function via($notifiable): array
+    public function via(mixed $notifiable): array
     {
         return ['mail'];
     }
 
-
     /**
-     * @return FeedbackMailer
+     * Собирает email-сообщение обратной связи.
      */
-    public function build() {
+    public function build(): static
+    {
         return $this->from(SettingsHelpers::getSetting('FROM'), SettingsHelpers::getSetting('SITE_NAME'))
             ->subject('Форма обратной связи')
             ->view('mail.feedback', ['data' => $this->data]);
     }
-
-
 }

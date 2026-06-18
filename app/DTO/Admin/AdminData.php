@@ -11,9 +11,11 @@ final readonly class AdminData implements DataTransferObject
         private string $name,
         private string $login,
         private ?string $password = null,
-    ) {
-    }
+    ) {}
 
+    /**
+     * Создает DTO администратора из валидированного массива формы.
+     */
     public static function fromArray(array $data): self
     {
         return new self(
@@ -24,16 +26,25 @@ final readonly class AdminData implements DataTransferObject
         );
     }
 
+    /**
+     * Возвращает идентификатор администратора для операций обновления.
+     */
     public function id(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * Возвращает новый пароль администратора, если он был передан.
+     */
     public function password(): ?string
     {
         return $this->password;
     }
 
+    /**
+     * Преобразует DTO в массив атрибутов администратора.
+     */
     public function toArray(): array
     {
         return [

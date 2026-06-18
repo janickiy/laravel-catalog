@@ -14,7 +14,11 @@ use App\Http\Requests\Admin\UpdateLinkStatusRequest;
 use App\Repositories\LinksRepository;
 use App\Services\Admin\LinkImportExportService;
 use App\Services\Admin\LinkService;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\URL;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class LinksController extends Controller
 {
@@ -26,28 +30,48 @@ class LinksController extends Controller
         parent::__construct();
     }
 
-    public function index()
+    /**
+     * Показывает список ссылок в панели управления.
+     */
+    public function index(): View
     {
         $status_list = $this->service->statusList();
 
         return view('cp.links.index', compact('status_list'))->with('title', 'Ссылки');
     }
 
-    public function create()
+    /**
+     * Показывает форму создания ссылки.
+     *
+     * @return View
+     */
+    public function create(): View
     {
         $options = $this->service->catalogOptions();
 
         return view('cp.links.create_edit', compact('options'))->with('title', 'Добавление ссылки');
     }
 
-    public function store(StoreLinkRequest $request)
+    /**
+     * Создает опубликованную ссылку из валидированных данных формы.
+     *
+     * @param StoreLinkRequest $request
+     * @return RedirectResponse
+     */
+    public function store(StoreLinkRequest $request): RedirectResponse
     {
         $this->service->create(LinkData::fromArray($request->validated(), LinkStatus::Published->value));
 
         return redirect(URL::route('cp.links.index'))->with('success', 'Информация успешно добавлена');
     }
 
-    public function show(int $id)
+    /**
+     * Показывает детальную страницу ссылки в админке.
+     *
+     * @param int $id
+     * @return View
+     */
+    public function show(int $id): View
     {
         $link = $this->links->findForAdmin($id);
         abort_if(! $link, 404);
@@ -55,7 +79,13 @@ class LinksController extends Controller
         return view('cp.links.show', compact('link'))->with('title', 'Просмотр ссылки');
     }
 
-    public function edit(int $id)
+    /**
+     * Показывает форму редактирования ссылки.
+     *
+     * @param int $id
+     * @return View
+     */
+    public function edit(int $id): View
     {
         $row = $this->links->find($id);
         abort_if(! $row, 404);
@@ -65,40 +95,72 @@ class LinksController extends Controller
         return view('cp.links.create_edit', compact('row', 'options'))->with('title', 'Редактирование ссылки');
     }
 
-    public function update(UpdateLinkRequest $request)
+    /**
+     * Обновляет ссылку из валидированных данных формы.
+     *
+     * @param UpdateLinkRequest $request
+     * @return RedirectResponse
+     */
+    public function update(UpdateLinkRequest $request): RedirectResponse
     {
         $this->service->update(LinkData::fromArray($request->validated()));
 
         return redirect(URL::route('cp.links.index'))->with('success', 'Данные обновлены');
     }
 
+    /**
+     * Удаляет ссылку по идентификатору из валидированного запроса.
+     *
+     * @param DestroyLinkRequest $request
+     * @return void
+     */
     public function destroy(DestroyLinkRequest $request): void
     {
         $this->service->delete((int) $request->validated('id'));
     }
 
-    public function importForm()
+    /**
+     * Показывает форму импорта ссылок.
+     *
+     * @return View
+     */
+    public function importForm(): View
     {
         $maxUploadFileSize = StringHelper::maxUploadFileSize();
 
         return view('cp.links.import', compact('maxUploadFileSize'))->with('title', 'Импорт');
     }
 
-    public function importLink(ImportLinksRequest $request)
+    /**
+     * Импортирует ссылки из загруженного файла.
+     *
+     * @param ImportLinksRequest $request
+     * @return RedirectResponse
+     */
+    public function importLink(ImportLinksRequest $request): RedirectResponse
     {
         $count = $this->importExport->import($request->file('file'));
 
-        return redirect(URL::route('cp.links.import'))->with('success', 'Импорт завершен. Импортировано ' . $count . ' ссылок');
+        return redirect(URL::route('cp.links.import'))->with('success', 'Импорт завершен. Импортировано '.$count.' ссылок');
     }
 
-    public function export()
+    /**
+     * Показывает форму экспорта ссылок.
+     */
+    public function export(): View
     {
         $options = $this->service->catalogOptions();
 
         return view('cp.links.export', compact('options'))->with('title', 'Экспорт');
     }
 
-    public function exportLink(ExportLinksRequest $request)
+    /**
+     * Отдает файл экспорта ссылок в выбранном формате.
+     *
+     * @param ExportLinksRequest $request
+     * @return Response|BinaryFileResponse
+     */
+    public function exportLink(ExportLinksRequest $request): Response|BinaryFileResponse
     {
         $catalogId = $request->validated('catalog_id');
 
@@ -109,7 +171,13 @@ class LinksController extends Controller
         );
     }
 
-    public function statusLinks(UpdateLinkStatusRequest $request)
+    /**
+     * Массово обновляет статусы выбранных ссылок.
+     *
+     * @param UpdateLinkStatusRequest $request
+     * @return RedirectResponse
+     */
+    public function statusLinks(UpdateLinkStatusRequest $request): RedirectResponse
     {
         $this->service->updateStatuses($request->validated('activate') ?? [], (int) $request->validated('action'));
 

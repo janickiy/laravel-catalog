@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Http\Traits\StaticTableName;
 use Illuminate\Database\Eloquent\Model;
 
 class Settings extends Model
 {
+    use StaticTableName;
 
     protected $table = 'settings';
 
@@ -14,14 +16,14 @@ class Settings extends Model
     protected $fillable = [
         'name',
         'description',
-        'value'
+        'value',
     ];
 
     /**
-     * @param $value
+     * Нормализует имя настройки перед сохранением.
      */
-    public function setNameAttribute($value) {
-        $this->attributes['name'] = str_replace(' ', '_', $value);
+    public function setNameAttribute(mixed $value): void
+    {
+        $this->attributes['name'] = str_replace(' ', '_', (string) $value);
     }
-
 }

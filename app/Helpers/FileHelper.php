@@ -9,12 +9,23 @@ use Throwable;
 class FileHelper
 {
     private const DEFAULT_SCHEME = 'http://';
+
     private const DEFAULT_TIMEOUT = 10;
+
     private const PAGE_SPEED_ENDPOINT = 'https://pagespeedonline.googleapis.com/pagespeedonline/v5/runPagespeed';
+
     private const MINI_SCREENSHOT_ENDPOINT = 'http://mini.s-shot.ru';
+
     private const SCREENSHOT_DIRECTORY = '/uploads/url';
+
     private const LINKS_STORAGE_DIRECTORY = 'url';
 
+    /**
+     * Получает полноразмерный скриншот сайта через PageSpeed API и сохраняет его.
+     *
+     * @param string $url
+     * @return array|false[]
+     */
     public static function getScreenShot(string $url): array
     {
         $response = self::fetchUrl(self::pageSpeedUrl($url));
@@ -32,6 +43,15 @@ class FileHelper
         return self::savePageSpeedScreenshot($screenshot);
     }
 
+    /**
+     * Получает миниатюру скриншота через внешний сервис и сохраняет ее.
+     *
+     * @param string $url
+     * @param string $screen
+     * @param string $size
+     * @param string $format
+     * @return array|false[]
+     */
     public static function getScreenShotMini(string $url, string $screen, string $size, string $format = 'jpg'): array
     {
         $response = self::fetchUrl(self::miniScreenshotUrl($url, $screen, $size, $format));
@@ -43,11 +63,24 @@ class FileHelper
         return self::saveMiniScreenshot($response, $format);
     }
 
+    /**
+     * Возвращает содержимое URL с указанным таймаутом.
+     *
+     * @param string $url
+     * @param int $timeout
+     * @return bool|string
+     */
     public static function getDataContents(string $url, int $timeout = self::DEFAULT_TIMEOUT): bool|string
     {
         return self::fetchUrl($url, $timeout);
     }
 
+    /**
+     * Проверяет, является ли строка корректным URL после добавления схемы.
+     *
+     * @param string $url
+     * @return bool
+     */
     public static function url_exists(string $url): bool
     {
         $normalizedUrl = self::urlWithScheme($url);
@@ -60,9 +93,15 @@ class FileHelper
         return filter_var($normalizedUrl, FILTER_VALIDATE_URL) !== false;
     }
 
+    /**
+     * Формирует URL запроса к PageSpeed API для получения скриншота
+     *
+     * @param string $url
+     * @return string
+     */
     private static function pageSpeedUrl(string $url): string
     {
-        return self::PAGE_SPEED_ENDPOINT . '?' . http_build_query([
+        return self::PAGE_SPEED_ENDPOINT.'?'.http_build_query([
             'url' => self::urlWithScheme($url),
             'category' => 'CATEGORY_UNSPECIFIED',
             'strategy' => 'DESKTOP',
@@ -70,6 +109,15 @@ class FileHelper
         ]);
     }
 
+    /**
+     * Формирует URL запроса к сервису миниатюр скриншотов.
+     *
+     * @param string $url
+     * @param string $screen
+     * @param string $size
+     * @param string $format
+     * @return string
+     */
     private static function miniScreenshotUrl(string $url, string $screen, string $size, string $format): string
     {
         return implode('/', [
@@ -77,9 +125,15 @@ class FileHelper
             rawurlencode($screen),
             rawurlencode($size),
             rawurlencode($format),
-        ]) . '/?' . self::urlWithScheme($url);
+        ]).'/?'.self::urlWithScheme($url);
     }
 
+    /**
+     * Добавляет URL стандартную схему, если она отсутствует.
+     *
+     * @param string $url
+     * @return string
+     */
     private static function urlWithScheme(string $url): string
     {
         $url = trim($url);
@@ -88,9 +142,16 @@ class FileHelper
             return $url;
         }
 
-        return self::DEFAULT_SCHEME . $url;
+        return self::DEFAULT_SCHEME.$url;
     }
 
+    /**
+     * Выполняет curl-запрос и возвращает тело ответа.
+     *
+     * @param string $url
+     * @param int $timeout
+     * @return bool|string
+     */
     private static function fetchUrl(string $url, int $timeout = self::DEFAULT_TIMEOUT): bool|string
     {
         $curl = curl_init($url);
@@ -117,6 +178,12 @@ class FileHelper
         return $response;
     }
 
+    /**
+     * Извлекает base64-данные скриншота из ответа PageSpeed API.
+     *
+     * @param string $response
+     * @return string|null
+     */
     private static function extractPageSpeedScreenshot(string $response): ?string
     {
         $data = json_decode($response, true);
@@ -134,6 +201,13 @@ class FileHelper
         return preg_replace('/^data:image\/[a-zA-Z0-9.+-]+;base64,/', '', $screenshot);
     }
 
+
+    /**
+     * Декодирует и сохраняет скриншот PageSpeed в локальную директорию.
+     *
+     * @param string $base64Image
+     * @return array|false[]
+     */
     private static function savePageSpeedScreenshot(string $base64Image): array
     {
         $imageContent = base64_decode($base64Image, true);
@@ -149,7 +223,7 @@ class FileHelper
             $image = ImageResize::createFromString($imageContent);
             $image->crop(1200, 800, true, ImageResize::CROPTOP);
 
-            if ($image->save(public_path(self::SCREENSHOT_DIRECTORY) . '/' . $filename) === false) {
+            if ($image->save(public_path(self::SCREENSHOT_DIRECTORY).'/'.$filename) === false) {
                 return self::failedResult();
             }
         } catch (Throwable) {
@@ -159,13 +233,20 @@ class FileHelper
         return self::successfulResult($filename);
     }
 
+    /**
+     * Сохраняет миниатюру скриншота в storage-диск ссылок.
+     *
+     * @param string $imageContent
+     * @param string $format
+     * @return array|false[]
+     */
     private static function saveMiniScreenshot(string $imageContent, string $format): array
     {
         try {
             Storage::disk('links')->makeDirectory(self::LINKS_STORAGE_DIRECTORY);
 
             $filename = self::filename($format);
-            $path = self::LINKS_STORAGE_DIRECTORY . '/' . $filename;
+            $path = self::LINKS_STORAGE_DIRECTORY.'/'.$filename;
 
             if (Storage::disk('links')->put($path, $imageContent) === false) {
                 return self::failedResult();
@@ -177,6 +258,9 @@ class FileHelper
         return self::successfulResult($filename);
     }
 
+    /**
+     * Создает директорию, если она еще не существует.
+     */
     private static function ensureDirectory(string $path): void
     {
         if (! is_dir($path)) {
@@ -184,14 +268,20 @@ class FileHelper
         }
     }
 
+    /**
+     * Генерирует безопасное случайное имя файла с расширением.
+     */
     private static function filename(string $extension): string
     {
         $extension = preg_replace('/[^a-zA-Z0-9]/', '', $extension) ?: 'jpg';
         $name = bin2hex(random_bytes(16));
 
-        return $name . '.' . strtolower($extension);
+        return $name.'.'.strtolower($extension);
     }
 
+    /**
+     * Возвращает успешный результат сохранения файла.
+     */
     private static function successfulResult(string $filename): array
     {
         return [
@@ -200,6 +290,9 @@ class FileHelper
         ];
     }
 
+    /**
+     * Возвращает результат неуспешной операции с файлом.
+     */
     private static function failedResult(): array
     {
         return ['result' => false];

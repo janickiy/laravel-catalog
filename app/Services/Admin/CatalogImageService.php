@@ -10,26 +10,39 @@ class CatalogImageService
 {
     private const DIRECTORY = '/uploads/catalog/';
 
+    /**
+     * Сохраняет изображение раздела каталога в нужном размере.
+     *
+     * @param UploadedFile $file
+     * @return string
+     * @throws \Gumlet\ImageResizeException
+     */
     public function store(UploadedFile $file): string
     {
         $destinationPath = public_path(self::DIRECTORY);
         File::ensureDirectoryExists($destinationPath);
 
-        $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+        $filename = time().'_'.uniqid().'.'.$file->getClientOriginalExtension();
         $image = new ImageResize($file->getRealPath());
         $image->resizeToBestFit(150, 150);
-        $image->save($destinationPath . '/' . $filename);
+        $image->save($destinationPath.'/'.$filename);
 
         return $filename;
     }
 
+    /**
+     * Удаляет изображение раздела каталога, если файл существует.
+     *
+     * @param string|null $filename
+     * @return void
+     */
     public function delete(?string $filename): void
     {
         if ($filename === null || $filename === '' || $filename === 'NULL') {
             return;
         }
 
-        $path = public_path(self::DIRECTORY . $filename);
+        $path = public_path(self::DIRECTORY.$filename);
 
         if (File::exists($path)) {
             File::delete($path);

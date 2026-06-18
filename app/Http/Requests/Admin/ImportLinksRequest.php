@@ -6,11 +6,17 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class ImportLinksRequest extends FormRequest
 {
+    /**
+     * Разрешает выполнение импорта авторизованному администратору.
+     */
     public function authorize(): bool
     {
         return true;
     }
 
+    /**
+     * Возвращает правила валидации файла импорта ссылок.
+     */
     public function rules(): array
     {
         return [
@@ -18,6 +24,9 @@ class ImportLinksRequest extends FormRequest
         ];
     }
 
+    /**
+     * Возвращает пользовательские сообщения ошибок импорта.
+     */
     public function messages(): array
     {
         return [

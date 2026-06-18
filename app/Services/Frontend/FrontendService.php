@@ -24,9 +24,11 @@ class FrontendService
         private readonly CatalogRepository $catalogs,
         private readonly LinksRepository $links,
         private readonly FeedbackRepository $feedback,
-    ) {
-    }
+    ) {}
 
+    /**
+     * Собирает данные главной страницы каталога.
+     */
     public function homePage(): array
     {
         [$arr, $number] = $this->catalogGrid($this->catalogs->childrenWithLinkCounts(null), true);
@@ -42,6 +44,12 @@ class FrontendService
         ];
     }
 
+    /**
+     * Собирает данные страницы раздела каталога.
+     *
+     * @param int $id
+     * @return array
+     */
     public function catalogPage(int $id): array
     {
         $title = 'Разное';
@@ -55,7 +63,7 @@ class FrontendService
         if ($id > 0) {
             $catalog = $this->catalogs->find($id);
 
-            if (!$catalog instanceof Catalog) {
+            if (! $catalog instanceof Catalog) {
                 abort(404);
             }
 
@@ -79,7 +87,7 @@ class FrontendService
             $description = $catalog->description ?? $description;
             $keywords = $catalog->keywords ?? $keywords;
         } else {
-            $pathway = '<a href="' . URL::route('index') . '">Главная</a>» Разное';
+            $pathway = '<a href="'.route('index').'">Главная</a>» Разное';
             $links = $this->links->paginatePublishedByCatalog(null, 10);
             $rank = $links->firstItem();
             $paginator = $links->links();
@@ -99,11 +107,17 @@ class FrontendService
         ];
     }
 
+    /**
+     * Собирает данные детальной страницы сайта и увеличивает просмотры.
+     *
+     * @param int $id
+     * @return array
+     */
     public function linkInfo(int $id): array
     {
         $link = $this->links->findPublished($id);
 
-        if (!$link instanceof Links) {
+        if (! $link instanceof Links) {
             abort(404);
         }
 
@@ -117,11 +131,20 @@ class FrontendService
         ];
     }
 
+    /**
+     * Возвращает разделы каталога для формы добавления сайта.
+     */
     public function catalogOptions(): array
     {
         return $this->catalogs->options([0 => '-Разное']);
     }
 
+    /**
+     * Сохраняет заявку на добавление сайта и отправляет уведомление.
+     *
+     * @param LinkSubmissionData $data
+     * @return string
+     */
     public function submitLink(LinkSubmissionData $data): string
     {
         $result = FileHelper::getScreenShotMini($data->url(), '1024x768', '1024', 'jpg');
@@ -139,17 +162,29 @@ class FrontendService
             : 'Сайт добавлен в каталог и после проверки будет доступен в каталоге';
     }
 
+    /**
+     * Возвращает внешний URL ссылки для редиректа.
+     *
+     * @param int $id
+     * @return string
+     */
     public function redirectUrl(int $id): string
     {
         $link = $this->links->findAny($id);
 
-        if (!$link instanceof Links) {
+        if (! $link instanceof Links) {
             abort(404);
         }
 
         return StringHelper::urlWithPrefix($link->url);
     }
 
+    /**
+     * Сохраняет сообщение обратной связи и отправляет email-событие.
+     *
+     * @param FeedbackMessageData $data
+     * @return void
+     */
     public function sendFeedback(FeedbackMessageData $data): void
     {
         $this->feedback->createFromData($data);
@@ -157,6 +192,9 @@ class FrontendService
         event(new FeedbackMailEvent($data->toEventPayload()));
     }
 
+    /**
+     * Возвращает количество страниц sitemap для ссылок и разделов.
+     */
     public function sitemapData(): array
     {
         return [
@@ -165,16 +203,32 @@ class FrontendService
         ];
     }
 
+    /**
+     * Возвращает страницу ссылок для XML sitemap.
+     */
     public function linksMap(int $page): Collection
     {
         return $this->links->sitemapPage($page);
     }
 
+    /**
+     * Возвращает страницу разделов для XML sitemap.
+     *
+     * @param int $page
+     * @return Collection
+     */
     public function catalogsMap(int $page): Collection
     {
         return $this->catalogs->sitemapPage($page);
     }
 
+    /**
+     * Раскладывает разделы каталога по колонкам для фронтенда.
+     *
+     * @param Collection $catalogs
+     * @param bool $includeMisc
+     * @return array
+     */
     private function catalogGrid(Collection $catalogs, bool $includeMisc): array
     {
         $items = $catalogs
@@ -212,25 +266,37 @@ class FrontendService
         return [$arr, $number];
     }
 
+    /**
+     * Формирует хлебные крошки для выбранного раздела.
+     *
+     * @param int $id
+     * @return string
+     */
     private function pathway(int $id): string
     {
-        $pathway = '<a href="' . URL::route('index') . '">Главная</a>';
+        $pathway = '<a href="'.URL::route('index').'">Главная</a>';
 
         foreach ($this->catalogs->pathToRoot($id) as [$catalogId, $catalogName]) {
             if ((int) $catalogId === $id) {
-                $pathway .= '» ' . e($catalogName);
+                $pathway .= '» '.e($catalogName);
             } else {
-                $pathway .= '» <a href="' . URL::route('catalog', ['id' => $catalogId]) . '">' . e($catalogName) . '</a>';
+                $pathway .= '» <a href="'.route('catalog', ['id' => $catalogId]).'">'.e($catalogName).'</a>';
             }
         }
 
         return $pathway;
     }
 
+    /**
+     * Формирует HTML-список дочерних разделов с количеством ссылок.
+     *
+     * @param int $id
+     * @return string
+     */
     private function subCategoryLinks(int $id): string
     {
         return $this->catalogs->childrenWithLinkCounts($id)
-            ->map(fn ($catalog) => '<a href="' . URL::route('catalog', ['id' => $catalog->id]) . '">' . e($catalog->name) . '</a> <span>(' . (int) $catalog->number_links . ')</span>')
+            ->map(fn ($catalog) => '<a href="'.route('catalog', ['id' => $catalog->id]).'">'.e($catalog->name).'</a> <span>('.(int) $catalog->number_links.')</span>')
             ->implode(', ');
     }
 }

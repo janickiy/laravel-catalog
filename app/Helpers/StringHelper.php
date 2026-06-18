@@ -7,7 +7,9 @@ use Symfony\Component\Mime\MimeTypes;
 class StringHelper
 {
     private const DEFAULT_URL_SCHEME = 'http://';
+
     private const DEFAULT_DOWNLOAD_MIME_TYPE = 'application/force-download';
+
     private const DEFAULT_MAX_UPLOAD_SIZE = 2097152;
 
     private const MONTHS = [
@@ -45,10 +47,9 @@ class StringHelper
     ];
 
     /**
-     * @param $str
-     * @return string
+     * Делает первый UTF-8 символ строки заглавным.
      */
-    public static function ucfirst_utf8($str)
+    public static function ucfirst_utf8(mixed $str): string
     {
         $str = (string) $str;
 
@@ -56,27 +57,25 @@ class StringHelper
             return '';
         }
 
-        return mb_strtoupper(mb_substr($str, 0, 1, 'UTF-8'), 'UTF-8') . mb_substr($str, 1, null, 'UTF-8');
+        return mb_strtoupper(mb_substr($str, 0, 1, 'UTF-8'), 'UTF-8').mb_substr($str, 1, null, 'UTF-8');
     }
 
     /**
-     * @param $url
-     * @return mixed|string
+     * Добавляет к URL стандартную схему, если она не указана.
      */
-    public static function urlWithPrefix($url)
+    public static function urlWithPrefix(mixed $url): string
     {
         $url = trim((string) $url);
 
         return self::hasUrlScheme($url)
             ? $url
-            : self::DEFAULT_URL_SCHEME . $url;
+            : self::DEFAULT_URL_SCHEME.$url;
     }
 
     /**
-     * @param $originalDate
-     * @return false|string
+     * Форматирует дату в короткий русский формат d.m.Y.
      */
-    public static function date_format_ru($originalDate)
+    public static function date_format_ru(mixed $originalDate): string
     {
         $timestamp = strtotime((string) $originalDate);
 
@@ -84,54 +83,44 @@ class StringHelper
     }
 
     /**
-     * @param string $datestr
-     * @param bool $short
-     * @return string
+     * Форматирует MySQL-дату русским текстовым месяцем.
      */
-    public static function mysql_russian_date($datestr = '', $short = false)
+    public static function mysql_russian_date(mixed $datestr = '', bool $short = false): string
     {
-        return self::formatMysqlDate($datestr, (bool) $short, 'ru');
+        return self::formatMysqlDate($datestr, $short, 'ru');
     }
 
     /**
-     * @param string $datestr
-     * @param bool $short
-     * @return string
+     * Форматирует MySQL-дату английским текстовым месяцем.
      */
-    public static function mysql_english_date($datestr = '', $short = false)
+    public static function mysql_english_date(mixed $datestr = '', bool $short = false): string
     {
-        return self::formatMysqlDate($datestr, (bool) $short, 'en');
+        return self::formatMysqlDate($datestr, $short, 'en');
     }
 
     /**
-     * @param string $datestr
-     * @param bool $short
-     * @return string
+     * Форматирует MySQL datetime русским текстовым месяцем.
      */
-    public static function mysql_russian_datetime($datestr = '', $short = false)
+    public static function mysql_russian_datetime(mixed $datestr = '', bool $short = false): string
     {
-        return self::formatMysqlDateTime($datestr, (bool) $short, 'ru');
+        return self::formatMysqlDateTime($datestr, $short, 'ru');
     }
 
     /**
-     * @param string $datestr
-     * @param bool $short
-     * @return string
+     * Форматирует MySQL datetime английским текстовым месяцем.
      */
-    public static function mysql_english_datetime($datestr = '', $short = false)
+    public static function mysql_english_datetime(mixed $datestr = '', bool $short = false): string
     {
-        return self::formatMysqlDateTime($datestr, (bool) $short, 'en');
+        return self::formatMysqlDateTime($datestr, $short, 'en');
     }
 
     /**
-     * @param $str
-     * @param int $chars
-     * @return string
+     * Обрезает текст до ближайшей границы слова после заданной длины.
      */
-    public static function shortText($str, $chars = 500)
+    public static function shortText(mixed $str, int $chars = 500): string
     {
         $str = (string) $str;
-        $chars = max(0, (int) $chars);
+        $chars = max(0, $chars);
 
         if (mb_strlen($str, 'UTF-8') <= $chars) {
             return $str;
@@ -141,15 +130,16 @@ class StringHelper
         $spacePosition = mb_strpos($tail, ' ', 0, 'UTF-8');
         $length = $chars + ($spacePosition === false ? 0 : $spacePosition);
 
-        return mb_substr($str, 0, $length, 'UTF-8') . '...';
+        return mb_substr($str, 0, $length, 'UTF-8').'...';
     }
 
     /**
-     * @param $string
-     * @return false|mixed|string
+     * Конвертирует строку из windows-1251 в UTF-8 при необходимости.
      */
-    public static function str_to_utf8($string)
+    public static function str_to_utf8(mixed $string): string
     {
+        $string = (string) $string;
+
         if (mb_detect_encoding($string, 'UTF-8', true) === false) {
             $converted = @iconv('windows-1251', 'UTF-8', $string);
 
@@ -160,22 +150,19 @@ class StringHelper
     }
 
     /**
-     * @param $size
-     * @param int $maxDecimals
-     * @param string $mbSuffix
-     * @return string
+     * Форматирует размер в байтах в мегабайты с суффиксом.
      */
-    public static function formatSizeInMb($size, $maxDecimals = 3, $mbSuffix = "MB")
+    public static function formatSizeInMb(int|float|string $size, int $maxDecimals = 3, string $mbSuffix = 'MB'): string
     {
-        $mbSize = round((float) $size / 1024 / 1024, (int) $maxDecimals);
+        $mbSize = round((float) $size / 1024 / 1024, $maxDecimals);
 
-        return preg_replace('/\\.?0+$/', '', (string) $mbSize) . $mbSuffix;
+        return preg_replace('/\\.?0+$/', '', (string) $mbSize).$mbSuffix;
     }
 
     /**
-     * @return mixed
+     * Определяет максимальный допустимый размер загрузки из ini-настроек PHP.
      */
-    public static function detectMaxUploadFileSize()
+    public static function detectMaxUploadFileSize(): int|float|false
     {
         $limits = [];
 
@@ -195,13 +182,13 @@ class StringHelper
     }
 
     /**
-     * @return string
+     * Возвращает человекочитаемый максимальный размер загружаемого файла.
      */
-    public static function maxUploadFileSize()
+    public static function maxUploadFileSize(): string
     {
         $maxUploadFileSize = self::detectMaxUploadFileSize();
 
-        if (!$maxUploadFileSize or $maxUploadFileSize == 0) {
+        if (! $maxUploadFileSize or $maxUploadFileSize == 0) {
             $maxUploadFileSize = self::DEFAULT_MAX_UPLOAD_SIZE;
         }
 
@@ -209,31 +196,35 @@ class StringHelper
     }
 
     /**
-     * @param $str
-     * @return string
+     * Удаляет HTML-теги и декодирует HTML-сущности в тексте.
      */
-    public static function removeHtmlTags($str)
+    public static function removeHtmlTags(mixed $str): string
     {
         return html_entity_decode(strip_tags((string) $str), ENT_QUOTES | ENT_HTML5, 'UTF-8');
     }
 
     /**
-     * @param $ext
-     * @return mixed|string
+     * Определяет MIME-тип по расширению через компонент Symfony Mime.
      */
-    public static function getMimeType($ext)
+    public static function getMimeType(mixed $ext): string
     {
         $mimeTypes = MimeTypes::getDefault()->getMimeTypes(self::normalizeExtension($ext));
 
         return $mimeTypes[0] ?? self::DEFAULT_DOWNLOAD_MIME_TYPE;
     }
 
+    /**
+     * Проверяет, есть ли у URL HTTP/HTTPS-схема.
+     */
     private static function hasUrlScheme(string $url): bool
     {
         return str_starts_with($url, 'http://') || str_starts_with($url, 'https://');
     }
 
-    private static function formatMysqlDate($datestr, bool $short, string $locale): string
+    /**
+     * Форматирует только дату MySQL с учетом языка и короткого режима.
+     */
+    private static function formatMysqlDate(mixed $datestr, bool $short, string $locale): string
     {
         $date = self::mysqlDatePart($datestr);
 
@@ -251,10 +242,13 @@ class StringHelper
 
         [$year, $month, $day] = explode('-', $date);
 
-        return $day . ' ' . self::monthName((int) $month, $short, $locale, 'date') . ' ' . $year;
+        return $day.' '.self::monthName((int) $month, $short, $locale, 'date').' '.$year;
     }
 
-    private static function formatMysqlDateTime($datestr, bool $short, string $locale): string
+    /**
+     * Форматирует дату и время MySQL с учетом языка и короткого режима.
+     */
+    private static function formatMysqlDateTime(mixed $datestr, bool $short, string $locale): string
     {
         $timestamp = self::mysqlTimestamp($datestr);
 
@@ -262,12 +256,15 @@ class StringHelper
             return '';
         }
 
-        return date('j', $timestamp) . ' '
-            . self::monthName((int) date('n', $timestamp), $short, $locale, 'datetime') . ' '
-            . date('Y', $timestamp);
+        return date('j', $timestamp).' '
+            .self::monthName((int) date('n', $timestamp), $short, $locale, 'datetime').' '
+            .date('Y', $timestamp);
     }
 
-    private static function mysqlDatePart($datestr): ?string
+    /**
+     * Извлекает валидную часть даты Y-m-d из MySQL-строки.
+     */
+    private static function mysqlDatePart(mixed $datestr): ?string
     {
         $datestr = trim((string) $datestr);
 
@@ -280,7 +277,10 @@ class StringHelper
         return preg_match('/^\d{4}-\d{2}-\d{2}$/', $date) === 1 ? $date : null;
     }
 
-    private static function mysqlTimestamp($datestr): ?int
+    /**
+     * Преобразует MySQL-строку даты и времени в timestamp.
+     */
+    private static function mysqlTimestamp(mixed $datestr): ?int
     {
         $datestr = trim((string) $datestr);
 
@@ -293,11 +293,17 @@ class StringHelper
         return $timestamp === false ? null : $timestamp;
     }
 
+    /**
+     * Возвращает название месяца для нужного языка и формата.
+     */
     private static function monthName(int $month, bool $short, string $locale, string $format): string
     {
         return self::MONTHS[$locale][$format][$short ? 'short' : 'full'][$month] ?? '';
     }
 
+    /**
+     * Нормализует ini-значение размера в байты.
+     */
     private static function normalizeIniSize(string|false $size): int|float|false
     {
         if ($size === false) {
@@ -315,9 +321,11 @@ class StringHelper
         return (float) $match[1] * 1024 ** $power;
     }
 
-    private static function normalizeExtension($ext): string
+    /**
+     * Очищает расширение файла от точек, пробелов и лишних символов регистра.
+     */
+    private static function normalizeExtension(mixed $ext): string
     {
         return trim(strtolower((string) $ext), " \t\n\r\0\x0B.");
     }
-
 }

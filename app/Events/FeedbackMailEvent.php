@@ -2,31 +2,28 @@
 
 namespace App\Events;
 
-use stdClass;
 use Illuminate\Queue\SerializesModels;
+use stdClass;
 
 class FeedbackMailEvent
 {
-
     use SerializesModels;
 
-    public $data;
+    public stdClass $data;
 
     /**
-     * Create a new event instance.
-     *
-     * @return void
+     * Создает событие отправки письма обратной связи.
      */
-    public function __construct(stdClass $data) {
+    public function __construct(stdClass $data)
+    {
         $this->data = $data;
     }
 
     /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return \Illuminate\Broadcasting\Channel|array
+     * Возвращает каналы трансляции события.
      */
-    public function broadcastOn() {
+    public function broadcastOn(): array
+    {
         return [];
     }
 }

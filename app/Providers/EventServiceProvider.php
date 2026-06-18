@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
-use App\Events\{FeedbackMailEvent,NewlinkNotifyEvent};
-use App\Listeners\{FeedbackMailListener,NewlinkNotifyEventListener};
+use App\Events\FeedbackMailEvent;
+use App\Events\NewlinkNotifyEvent;
+use App\Listeners\FeedbackMailListener;
+use App\Listeners\NewlinkNotifyEventListener;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
 
@@ -25,11 +27,9 @@ class EventServiceProvider extends ServiceProvider
     ];
 
     /**
-     * Register any events for your application.
-     *
-     * @return void
+     * Регистрирует события приложения и их слушателей.
      */
-    public function boot()
+    public function boot(): void
     {
         //
     }

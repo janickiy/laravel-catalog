@@ -11,5 +11,4 @@ class QueuedJob extends Model
     protected $primaryKey = 'id';
 
     public $timestamps = false;
-
 }

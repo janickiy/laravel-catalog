@@ -12,9 +12,7 @@ class NewlinkNotifyEvent
     public Links $links;
 
     /**
-     * Create a new message instance.
-     *
-     * @return void
+     * Создает событие уведомления о новой ссылке.
      */
     public function __construct(Links $links)
     {
@@ -22,11 +20,9 @@ class NewlinkNotifyEvent
     }
 
     /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return \Illuminate\Broadcasting\Channel|array
+     * Возвращает каналы трансляции события.
      */
-    public function broadcastOn()
+    public function broadcastOn(): array
     {
         return [];
     }

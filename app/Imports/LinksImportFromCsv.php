@@ -9,10 +9,11 @@ final class LinksImportFromCsv
 {
     private const DELIMITER = ';';
 
-    public function __construct(private readonly LinkImportProcessor $processor)
-    {
-    }
+    public function __construct(private readonly LinkImportProcessor $processor) {}
 
+    /**
+     * Импортирует CSV/TXT файл построчно через общий процессор.
+     */
     public function import(string $path): int
     {
         $csv = Reader::from($path, 'r');

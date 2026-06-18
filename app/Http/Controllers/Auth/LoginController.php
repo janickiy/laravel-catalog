@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -12,13 +15,12 @@ class LoginController extends Controller
         $this->middleware('guest:admin', ['except' => ['logout']]);
     }
 
-
     /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     * Показывает форму авторизации или отправляет авторизованного администратора в панель.
      */
-    public function showLoginForm()
+    public function showLoginForm(): View|RedirectResponse
     {
-        $user = \Auth::user('admin');
+        $user = Auth::guard('admin')->user();
 
         if ($user) {
             return redirect()->intended(route('cp.dashbaord.index'));
@@ -28,47 +30,40 @@ class LoginController extends Controller
     }
 
     /**
-     * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Illuminate\Validation\ValidationException
+     * Проверяет учетные данные администратора и выполняет вход.
      */
-    public function login(Request $request)
+    public function login(Request $request): RedirectResponse
     {
-        // Validate the form data
         $this->validate($request, [
-            'login'   => 'required',
-            'password' => 'required'
+            'login' => 'required',
+            'password' => 'required',
         ]);
 
-        // Attempt to log the user in
-        if (\Auth::guard('admin')->attempt(['login' => $request->login, 'password' => $request->password], $request->remember)) {
-            // if successful, then redirect to their intended location
+        if (Auth::guard('admin')->attempt(['login' => $request->login, 'password' => $request->password], $request->remember)) {
             return redirect()->intended(route('cp.dashbaord.index'));
-        } else {
-            // if unsuccessful, then redirect back to the login with the form data
-            return redirect()->back()->withErrors(['message' => trans('auth.failed')])->withInput($request->only('login', 'remember'));
         }
 
-        return redirect()->back()->withInput($request->only('login', 'remember'));
+        return redirect()
+            ->back()
+            ->withErrors(['message' => trans('auth.failed')])
+            ->withInput($request->only('login', 'remember'));
     }
 
     /**
-     * @param $request
-     * @param $user
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * Возвращает пользователя на главную страницу после успешной авторизации.
      */
-    protected function authenticated($request, $user)
+    protected function authenticated(Request $request, mixed $user): RedirectResponse
     {
-        $redirect = redirect('/');
-        return $redirect;
+        return redirect('/');
     }
 
     /**
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * Завершает админскую сессию и возвращает пользователя на главную страницу.
      */
-    public function logout()
+    public function logout(): RedirectResponse
     {
-        \Auth::guard('admin')->logout();
+        Auth::guard('admin')->logout();
+
         return redirect('/');
     }
 }

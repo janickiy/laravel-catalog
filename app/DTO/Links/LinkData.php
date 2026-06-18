@@ -19,9 +19,16 @@ final readonly class LinkData implements DataTransferObject
         private ?int $catalogId,
         private ?int $status = null,
         private ?string $image = null,
-    ) {
-    }
+    ) {}
 
+    /**
+     * Создает DTO ссылки из валидированного массива формы.
+     *
+     * @param array $data
+     * @param int|null $status
+     * @param string|null $image
+     * @return self
+     */
     public static function fromArray(array $data, ?int $status = null, ?string $image = null): self
     {
         return new self(
@@ -40,16 +47,28 @@ final readonly class LinkData implements DataTransferObject
         );
     }
 
+    /**
+     * Возвращает идентификатор ссылки для операций обновления.
+     */
     public function id(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * Возвращает URL ссылки.
+     */
     public function url(): string
     {
         return $this->url;
     }
 
+    /**
+     * Возвращает копию DTO с новым именем изображения.
+     *
+     * @param string|null $image
+     * @return self
+     */
     public function withImage(?string $image): self
     {
         return new self(
@@ -68,6 +87,11 @@ final readonly class LinkData implements DataTransferObject
         );
     }
 
+    /**
+     * Преобразует DTO в массив атрибутов ссылки.
+     *
+     * @return array|mixed[]
+     */
     public function toArray(): array
     {
         $data = [
@@ -93,6 +117,12 @@ final readonly class LinkData implements DataTransferObject
         return $data;
     }
 
+    /**
+     * Нормализует идентификатор раздела каталога.
+     *
+     * @param mixed $catalogId
+     * @return int|null
+     */
     private static function normalizeCatalogId(mixed $catalogId): ?int
     {
         $catalogId = (int) ($catalogId ?? 0);

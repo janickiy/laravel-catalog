@@ -9,10 +9,14 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminService
 {
-    public function __construct(private readonly AdminRepository $admins)
-    {
-    }
+    public function __construct(private readonly AdminRepository $admins) {}
 
+    /**
+     * Создает администратора и хеширует его пароль.
+     *
+     * @param AdminData $data
+     * @return Model
+     */
     public function create(AdminData $data): Model
     {
         return $this->admins->create(array_merge($data->toArray(), [
@@ -20,6 +24,12 @@ class AdminService
         ]));
     }
 
+    /**
+     * Обновляет администратора и меняет пароль только при передаче нового значения.
+     *
+     * @param AdminData $data
+     * @return bool
+     */
     public function update(AdminData $data): bool
     {
         $attributes = $data->toArray();
@@ -31,6 +41,13 @@ class AdminService
         return $this->admins->update($data->id(), $attributes);
     }
 
+    /**
+     * Удаляет администратора, если это не текущий авторизованный пользователь.
+     *
+     * @param int $id
+     * @param int $currentUserId
+     * @return bool
+     */
     public function deleteExceptCurrent(int $id, int $currentUserId): bool
     {
         if ($id === $currentUserId) {

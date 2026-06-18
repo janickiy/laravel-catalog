@@ -13,16 +13,20 @@ class LinkImportProcessor
     private const DOMAIN_TIMEOUT = 5;
 
     private int $importedCount = 0;
+
     private array $categoryCache = [];
+
     private array $urlCache = [];
 
     public function __construct(
         private readonly LinksRepository $links,
         private readonly CatalogRepository $catalogs,
         private readonly DomainAvailabilityService $domainAvailability,
-    ) {
-    }
+    ) {}
 
+    /**
+     * Сбрасывает счетчик и кэши перед новым импортом.
+     */
     public function reset(): void
     {
         $this->importedCount = 0;
@@ -30,11 +34,20 @@ class LinkImportProcessor
         $this->urlCache = [];
     }
 
+    /**
+     * Возвращает количество успешно импортированных ссылок.
+     */
     public function importedCount(): int
     {
         return $this->importedCount;
     }
 
+    /**
+     * Валидирует, нормализует и сохраняет одну строку импортируемого файла.
+     *
+     * @param array $row
+     * @return bool
+     */
     public function importRow(array $row): bool
     {
         $row = $this->normalizeRow($row);
@@ -74,6 +87,12 @@ class LinkImportProcessor
         return true;
     }
 
+    /**
+     * Приводит строку импортируемого файла к ожидаемой структуре.
+     *
+     * @param array $row
+     * @return array
+     */
     private function normalizeRow(array $row): array
     {
         return [
@@ -85,11 +104,24 @@ class LinkImportProcessor
         ];
     }
 
+    /**
+     * Возвращает очищенное UTF-8 значение ячейки по индексу.
+     *
+     * @param array $row
+     * @param int $index
+     * @return string
+     */
     private function cell(array $row, int $index): string
     {
         return trim(StringHelper::str_to_utf8((string) ($row[$index] ?? '')));
     }
 
+    /**
+     * Очищает URL до доменного имени без схемы и пути.
+     *
+     * @param string $url
+     * @return string
+     */
     private function normalizeUrl(string $url): string
     {
         $url = preg_replace('#^https?://#i', '', trim($url)) ?? '';
@@ -97,6 +129,12 @@ class LinkImportProcessor
         return explode('/', $url, 2)[0] ?? '';
     }
 
+    /**
+     * Проверяет существование URL с использованием локального кэша.
+     *
+     * @param string $url
+     * @return bool
+     */
     private function urlExists(string $url): bool
     {
         if (isset($this->urlCache[$url])) {
@@ -112,6 +150,12 @@ class LinkImportProcessor
         return false;
     }
 
+    /**
+     * Загружает meta-теги сайта и приводит строковые значения к UTF-8.
+     *
+     * @param string $url
+     * @return array
+     */
     private function metaTags(string $url): array
     {
         $tags = @get_meta_tags($url);
@@ -126,6 +170,12 @@ class LinkImportProcessor
         );
     }
 
+    /**
+     * Находит или создает цепочку разделов из импортируемого пути.
+     *
+     * @param string $path
+     * @return int|null
+     */
     private function catalogId(string $path): ?int
     {
         $parts = array_values(array_filter(array_map('trim', explode('/', $path))));
@@ -140,9 +190,16 @@ class LinkImportProcessor
         return $catalogId;
     }
 
+    /**
+     * Находит или создает раздел каталога с кэшированием результата.
+     *
+     * @param string $name
+     * @param int|null $parentId
+     * @return int
+     */
     private function findOrCreateCatalog(string $name, ?int $parentId): int
     {
-        $cacheKey = mb_strtolower($name, 'UTF-8') . ':' . ($parentId ?? 0);
+        $cacheKey = mb_strtolower($name, 'UTF-8').':'.($parentId ?? 0);
 
         if (isset($this->categoryCache[$cacheKey])) {
             return $this->categoryCache[$cacheKey];

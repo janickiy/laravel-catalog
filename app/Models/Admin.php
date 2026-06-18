@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
+use App\Http\Traits\StaticTableName;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class Admin extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory;
+    use Notifiable;
+    use StaticTableName;
 
     protected $table = 'admin';
 
@@ -29,5 +32,4 @@ class Admin extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
-
 }

@@ -4,6 +4,13 @@ namespace App\Services;
 
 class DomainAvailabilityService
 {
+    /**
+     * Проверяет доступность домена через короткий HTTP-запрос.
+     *
+     * @param string $domain
+     * @param int $timeout
+     * @return bool
+     */
     public function isAvailable(string $domain, int $timeout = 5): bool
     {
         if (! filter_var($domain, FILTER_VALIDATE_URL)) {

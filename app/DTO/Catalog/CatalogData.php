@@ -13,9 +13,15 @@ final readonly class CatalogData implements DataTransferObject
         private ?string $keywords,
         private ?int $parentId,
         private ?string $image = null,
-    ) {
-    }
+    ) {}
 
+    /**
+     * Создает DTO раздела каталога из валидированного массива формы.
+     *
+     * @param array $data
+     * @param string|null $image
+     * @return self
+     */
     public static function fromArray(array $data, ?string $image = null): self
     {
         return new self(
@@ -28,16 +34,25 @@ final readonly class CatalogData implements DataTransferObject
         );
     }
 
+    /**
+     * Возвращает идентификатор раздела для операций обновления.
+     */
     public function id(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * Возвращает копию DTO с новым именем изображения.
+     */
     public function withImage(?string $image): self
     {
         return new self($this->id, $this->name, $this->description, $this->keywords, $this->parentId, $image);
     }
 
+    /**
+     * Преобразует DTO в массив атрибутов раздела каталога.
+     */
     public function toArray(): array
     {
         $data = [
@@ -54,6 +69,9 @@ final readonly class CatalogData implements DataTransferObject
         return $data;
     }
 
+    /**
+     * Нормализует идентификатор родительского раздела.
+     */
     private static function normalizeParentId(mixed $parentId): ?int
     {
         $parentId = (int) ($parentId ?? 0);

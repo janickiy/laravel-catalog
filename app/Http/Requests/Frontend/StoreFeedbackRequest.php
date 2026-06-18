@@ -6,11 +6,17 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreFeedbackRequest extends FormRequest
 {
+    /**
+     * Разрешает отправку сообщения обратной связи посетителю сайта.
+     */
     public function authorize(): bool
     {
         return true;
     }
 
+    /**
+     * Возвращает правила валидации формы обратной связи.
+     */
     public function rules(): array
     {
         return [
@@ -21,6 +27,9 @@ class StoreFeedbackRequest extends FormRequest
         ];
     }
 
+    /**
+     * Возвращает пользовательские сообщения ошибок формы обратной связи.
+     */
     public function messages(): array
     {
         return [
