@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="220" viewBox="0 0 320 220" role="img" aria-labelledby="title desc">
+    <title id="title">Site preview placeholder</title>
+    <desc id="desc">Decorative placeholder for a website preview in My Links Manager catalog.</desc>
+    <defs>
+        <linearGradient id="placeholderBg" x1="0" y1="0" x2="320" y2="220" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#eef6ff"/>
+            <stop offset="0.52" stop-color="#f7fbfd"/>
+            <stop offset="1" stop-color="#ecfff8"/>
+        </linearGradient>
+        <linearGradient id="browserTop" x1="58" y1="52" x2="262" y2="168" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#0d6efd"/>
+            <stop offset="0.52" stop-color="#0aa2c0"/>
+            <stop offset="1" stop-color="#20c997"/>
+        </linearGradient>
+        <linearGradient id="accentLine" x1="85" y1="152" x2="235" y2="152" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#0d6efd"/>
+            <stop offset="1" stop-color="#20c997"/>
+        </linearGradient>
+        <filter id="cardShadow" x="-20%" y="-25%" width="140%" height="155%" color-interpolation-filters="sRGB">
+            <feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="#172b4d" flood-opacity="0.14"/>
+        </filter>
+    </defs>
+
+    <rect width="320" height="220" rx="18" fill="url(#placeholderBg)"/>
+    <path d="M34 176c47-47 71-48 107-22 38 28 66 28 145-31v97H34v-44Z" fill="#d7f6ef" opacity="0.5"/>
+    <path d="M0 0h320v220H0z" fill="none" stroke="#dbeafe" stroke-width="2"/>
+
+    <g filter="url(#cardShadow)">
+        <rect x="58" y="49" width="204" height="122" rx="16" fill="#ffffff"/>
+        <path d="M74 49h172a16 16 0 0 1 16 16v22H58V65a16 16 0 0 1 16-16Z" fill="url(#browserTop)"/>
+        <circle cx="80" cy="68" r="5" fill="#ffffff" opacity="0.96"/>
+        <circle cx="98" cy="68" r="5" fill="#ffffff" opacity="0.72"/>
+        <circle cx="116" cy="68" r="5" fill="#ffffff" opacity="0.52"/>
+        <rect x="139" y="62" width="92" height="12" rx="6" fill="#ffffff" opacity="0.3"/>
+
+        <rect x="85" y="106" width="66" height="13" rx="6.5" fill="#dbeafe"/>
+        <rect x="85" y="128" width="150" height="9" rx="4.5" fill="#e2e8f0"/>
+        <rect x="85" y="146" width="112" height="9" rx="4.5" fill="#e2e8f0"/>
+
+        <g transform="translate(181 101)">
+            <path d="M18 28h15M40 28h15" fill="none" stroke="#0d6efd" stroke-width="8" stroke-linecap="round"/>
+            <circle cx="18" cy="28" r="10" fill="#0d6efd"/>
+            <circle cx="55" cy="28" r="10" fill="#20c997"/>
+            <circle cx="36.5" cy="28" r="7" fill="#0aa2c0"/>
+            <circle cx="18" cy="28" r="3" fill="#ffffff"/>
+            <circle cx="55" cy="28" r="3" fill="#ffffff"/>
+        </g>
+
+        <rect x="85" y="158" width="150" height="4" rx="2" fill="url(#accentLine)" opacity="0.88"/>
+    </g>
+
+    <g opacity="0.65">
+        <circle cx="42" cy="54" r="4" fill="#0d6efd"/>
+        <circle cx="278" cy="43" r="5" fill="#20c997"/>
+        <circle cx="288" cy="178" r="3.5" fill="#0aa2c0"/>
+    </g>
+</svg>

@@ -243,19 +243,22 @@ textarea:focus {
 }
 
 .category-card__icon img {
-    height: 38px;
+    height: 44px;
     object-fit: contain;
-    width: 38px;
+    width: 44px;
 }
 
 .category-card__title {
     color: var(--mlm-ink);
+    font-size: 1.08rem;
     font-weight: 750;
+    line-height: 1.35;
 }
 
 .category-card__children {
     color: var(--mlm-muted);
-    font-size: .9rem;
+    font-size: .96rem;
+    line-height: 1.65;
     margin-top: .35rem;
 }
 

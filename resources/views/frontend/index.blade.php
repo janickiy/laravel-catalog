@@ -23,7 +23,7 @@
                         @if(isset($arr[$i][$j][1], $arr[$i][$j][0], $arr[$i][$j][3]))
                             <article class="category-card">
                                 <a class="category-card__icon" href="{{ URL::route('catalog', ['id' => $arr[$i][$j][1] > 0 ? $arr[$i][$j][1] : '']) }}">
-                                    <img src="{{ isset($arr[$i][$j][2]) && $arr[$i][$j][2] ? url('uploads/catalog/' . $arr[$i][$j][2]) : url('/img/folder.jpg') }}" alt="{{ $arr[$i][$j][0] }}">
+                                    <img src="{{ isset($arr[$i][$j][2]) && $arr[$i][$j][2] ? url('uploads/catalog/' . $arr[$i][$j][2]) : url('/img/catalog-placeholder.svg') }}" alt="{{ $arr[$i][$j][0] }}">
                                 </a>
 
                                 <div>
@@ -48,19 +48,6 @@
     @if(isset($pathway) && $pathway)
         <div class="breadcrumb-panel">{!! $pathway !!}</div>
     @endif
-
-    <div class="ad-card">
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-2243538192217050"
-             data-ad-slot="8369734756"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-    </div>
 
     <div class="content-layout">
         <div class="content-main">

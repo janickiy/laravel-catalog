@@ -1,11 +1,11 @@
 @php
     $hasImage = $link->image && file_exists(public_path('/uploads/url/') . '/' . $link->image);
-    $imageUrl = $hasImage ? url('/uploads/url/' . $link->image) : url('/img/noimage.gif');
+    $imageUrl = $hasImage ? url('/uploads/url/' . $link->image) : url('/img/site-placeholder.svg');
 @endphp
 
 <article class="link-card">
     <a class="link-card__media" href="{{ \App\Helpers\StringHelper::urlWithPrefix($link->url) }}" target="_blank" rel="noopener nofollow">
-        <img src="{{ $imageUrl }}" alt="{{ $link->name }}">
+        <img src="{{ $imageUrl }}" alt="{{ $hasImage ? $link->name : 'Нет изображения сайта' }}" loading="lazy" decoding="async">
     </a>
 
     <div class="link-card__body">
