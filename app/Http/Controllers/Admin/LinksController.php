@@ -92,8 +92,10 @@ class LinksController extends Controller
 
     public function exportLink(ExportLinksRequest $request)
     {
+        $catalogId = $request->validated('catalog_id');
+
         return $this->importExport->export(
-            $request->integer('catalog_id') ?: null,
+            $catalogId === null ? null : (int) $catalogId,
             (string) $request->validated('export_type'),
             (string) $request->validated('compress'),
         );

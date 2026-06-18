@@ -6,8 +6,9 @@ use App\Helpers\StringHelper;
 use App\Imports\LinksImport;
 use App\Imports\LinksImportFromCsv;
 use App\Repositories\LinksRepository;
-use App\Services\DomainAvailabilityService;
+use InvalidArgumentException;
 use Illuminate\Http\UploadedFile;
+use Maatwebsite\Excel\Excel as ExcelReader;
 use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -15,9 +16,15 @@ use ZipArchive;
 
 class LinkImportExportService
 {
+    private const CSV_EXTENSIONS = ['csv', 'txt'];
+    private const SPREADSHEET_READER_TYPES = [
+        'xls' => ExcelReader::XLS,
+        'xlsx' => ExcelReader::XLSX,
+    ];
+
     public function __construct(
         private readonly LinksRepository $links,
-        private readonly DomainAvailabilityService $domainAvailability,
+        private readonly LinkImportProcessor $importProcessor,
     ) {
     }
 
@@ -26,14 +33,16 @@ class LinkImportExportService
         set_time_limit(0);
 
         $extension = strtolower($file->getClientOriginalExtension());
+        $this->importProcessor->reset();
 
-        if ($extension === 'csv' || $extension === 'txt') {
-            return LinksImportFromCsv::import($file->getRealPath(), $this->domainAvailability);
+        if (in_array($extension, self::CSV_EXTENSIONS, true)) {
+            return (new LinksImportFromCsv($this->importProcessor))->import($file->getRealPath());
         }
 
-        Excel::import(new LinksImport($this->domainAvailability), $file);
+        $import = new LinksImport($this->importProcessor);
+        Excel::import($import, $file, null, $this->spreadsheetReaderType($extension));
 
-        return 0;
+        return $import->importedCount();
     }
 
     public function export(?int $catalogId, string $type, string $compress)
@@ -127,5 +136,14 @@ class LinkImportExportService
         $zip->close();
 
         return response()->download($zipPath, 'emailexport_' . date('d_m_Y') . '.zip')->deleteFileAfterSend(true);
+    }
+
+    private function spreadsheetReaderType(string $extension): string
+    {
+        if (! isset(self::SPREADSHEET_READER_TYPES[$extension])) {
+            throw new InvalidArgumentException('Unsupported import file extension: ' . $extension);
+        }
+
+        return self::SPREADSHEET_READER_TYPES[$extension];
     }
 }

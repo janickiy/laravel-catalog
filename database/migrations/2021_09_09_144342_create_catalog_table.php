@@ -19,7 +19,7 @@ class CreateCatalogTable extends Migration
             $table->text('description')->nullable();
             $table->text('keywords')->nullable();
             $table->string('image')->nullable();
-            $table->integer('parent_id')->default(0)->index('parent_id');
+            $table->unsignedBigInteger('parent_id')->nullable()->index('parent_id');
             $table->timestamps();
         });
     }

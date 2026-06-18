@@ -6,6 +6,7 @@ use App\DTO\Catalog\CatalogData;
 use App\Models\Catalog;
 use App\Repositories\CatalogRepository;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\URL;
 
 class CatalogService
 {
@@ -19,16 +20,21 @@ class CatalogService
     {
         $cats = [];
 
-        foreach ($this->catalogs->all() as $catalog) {
-            $cats[$catalog->parent_id][$catalog->id] = $catalog->toArray();
+        foreach ($this->catalogs->allOrdered() as $catalog) {
+            $cats[$catalog->parent_id ?? 0][$catalog->id] = $catalog->toArray();
         }
 
         return $cats;
     }
 
+    public function treeHtml(): string
+    {
+        return $this->buildTree($this->tree(), 0) ?? '';
+    }
+
     public function options(array $base = [0 => 'Выберите']): array
     {
-        return $this->catalogs->options($base, 0);
+        return $this->catalogs->options($base);
     }
 
     public function create(CatalogData $data, ?UploadedFile $image): void
@@ -64,5 +70,29 @@ class CatalogService
         }
 
         $this->catalogs->deleteMany($ids);
+    }
+
+    private function buildTree(array $catalogs, int $parentId): ?string
+    {
+        if (! isset($catalogs[$parentId])) {
+            return null;
+        }
+
+        $tree = '<ul>';
+
+        foreach ($catalogs[$parentId] as $catalog) {
+            $tree .= '<li>' . e($catalog['name']) . ' ' . $this->actionsHtml((int) $catalog['id']);
+            $tree .= $this->buildTree($catalogs, (int) $catalog['id']);
+            $tree .= '</li>';
+        }
+
+        return $tree . '</ul>';
+    }
+
+    private function actionsHtml(int $catalogId): string
+    {
+        return '<a title="Добавить подкатегорию" href="' . URL::route('cp.catalog.create', ['parent_id' => $catalogId]) . '"> <span class="fa fa-plus"></span> </a> '
+            . '<a title="Редактировать" href="' . URL::route('cp.catalog.edit', ['id' => $catalogId]) . '"> <span class="fa fa-pencil"></span> </a> '
+            . '<a title="Удалить" href="' . URL::route('cp.catalog.delete', $catalogId) . '"> <span class="fa fa-trash-o"></span> </a>';
     }
 }

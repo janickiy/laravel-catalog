@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Admin;
 
-use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateLinkRequest extends StoreLinkRequest
 {
@@ -18,7 +18,11 @@ class UpdateLinkRequest extends StoreLinkRequest
             'description' => 'required',
             'keywords' => 'nullable|string',
             'full_description' => 'required',
-            'catalog_id' => 'required|integer',
+            'catalog_id' => [
+                'required',
+                'integer',
+                Rule::when((int) $this->input('catalog_id') > 0, ['exists:catalog,id']),
+            ],
         ];
     }
 }

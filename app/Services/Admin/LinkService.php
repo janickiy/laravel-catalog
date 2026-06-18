@@ -23,7 +23,7 @@ class LinkService
 
     public function catalogOptions(): array
     {
-        return $this->catalogs->options([0 => '-Разное'], 0);
+        return $this->catalogs->options([0 => '-Разное']);
     }
 
     public function create(LinkData $data): void

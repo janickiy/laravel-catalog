@@ -31,28 +31,43 @@ class CatalogRepository extends BaseRepository
         return $this->model->query()->orderBy('name')->get();
     }
 
-    public function childrenOf(int $parentId): EloquentCollection
+    public function childrenOf(?int $parentId): EloquentCollection
     {
-        return $this->model->query()
-            ->where('parent_id', $parentId)
-            ->orderBy('name')
-            ->get();
+        $query = $this->model->query();
+
+        $parentId === null
+            ? $query->whereNull('parent_id')
+            : $query->where('parent_id', $parentId);
+
+        return $query->orderBy('name')->get();
     }
 
-    public function childrenWithLinkCounts(int $parentId): Collection
+    public function firstOrCreateByNameAndParent(string $name, ?int $parentId): Catalog
     {
-        return $this->model->query()
+        return $this->model->query()->firstOrCreate([
+            'name' => $name,
+            'parent_id' => $parentId,
+        ]);
+    }
+
+    public function childrenWithLinkCounts(?int $parentId): Collection
+    {
+        $query = $this->model->query()
             ->selectRaw('catalog.name, catalog.id, catalog.image, COUNT(links.status) AS number_links')
             ->leftJoin('links', 'links.catalog_id', '=', 'catalog.id')
-            ->where('catalog.parent_id', $parentId)
             ->groupBy('catalog.id')
             ->groupBy('catalog.name')
             ->groupBy('catalog.image')
-            ->orderBy('catalog.name')
-            ->get();
+            ->orderBy('catalog.name');
+
+        $parentId === null
+            ? $query->whereNull('catalog.parent_id')
+            : $query->where('catalog.parent_id', $parentId);
+
+        return $query->get();
     }
 
-    public function options(array $options, int $parentId = 0, int $level = 0): array
+    public function options(array $options, ?int $parentId = null, int $level = 0): array
     {
         $level++;
 
@@ -129,7 +144,7 @@ class CatalogRepository extends BaseRepository
             }
 
             array_unshift($path, [$catalog->id, $catalog->name]);
-            $currentId = (int) $catalog->parent_id;
+            $currentId = $catalog->parent_id === null ? 0 : (int) $catalog->parent_id;
         }
 
         return $path;

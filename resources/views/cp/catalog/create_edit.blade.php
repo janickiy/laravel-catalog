@@ -142,7 +142,7 @@
 
                                 <label class="input">
 
-                                    {!! Form::select('parent_id', $options, old('parent_id', isset($row) ? $row->parent_id : 0), ['class' => 'form-control custom-scroll']) !!}
+                                    {!! Form::select('parent_id', $options, old('parent_id', isset($row) ? ($row->parent_id ?? 0) : 0), ['class' => 'form-control custom-scroll']) !!}
 
                                 </label>
 

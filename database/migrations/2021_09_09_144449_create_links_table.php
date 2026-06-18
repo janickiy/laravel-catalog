@@ -24,7 +24,7 @@ class CreateLinksTable extends Migration
             $table->text('keywords')->nullable();
             $table->text('full_description');
             $table->text('image')->nullable();
-            $table->integer('catalog_id')->index('catalog_id');
+            $table->unsignedBigInteger('catalog_id')->nullable()->index('catalog_id');
             $table->string('status', 10);
             $table->integer('views')->default(0);
             $table->timestamps();

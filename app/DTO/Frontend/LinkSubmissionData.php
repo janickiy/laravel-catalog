@@ -17,7 +17,7 @@ final readonly class LinkSubmissionData implements DataTransferObject
         private string $description,
         private ?string $keywords,
         private string $fullDescription,
-        private int $catalogId,
+        private ?int $catalogId,
     ) {
     }
 
@@ -32,7 +32,7 @@ final readonly class LinkSubmissionData implements DataTransferObject
             (string) $data['description'],
             $data['keywords'] ?? null,
             (string) $data['full_description'],
-            (int) $data['catalog_id'],
+            self::normalizeCatalogId($data['catalog_id'] ?? null),
         );
     }
 
@@ -69,5 +69,12 @@ final readonly class LinkSubmissionData implements DataTransferObject
             'full_description' => $this->fullDescription,
             'catalog_id' => $this->catalogId,
         ];
+    }
+
+    private static function normalizeCatalogId(mixed $catalogId): ?int
+    {
+        $catalogId = (int) ($catalogId ?? 0);
+
+        return $catalogId > 0 ? $catalogId : null;
     }
 }

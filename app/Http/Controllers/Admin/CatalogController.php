@@ -22,9 +22,9 @@ class CatalogController extends Controller
 
     public function index()
     {
-        $cats = $this->service->tree();
+        $catalogTree = $this->service->treeHtml();
 
-        return view('cp.catalog.index', compact('cats'))->with('title', 'Категории');
+        return view('cp.catalog.index', compact('catalogTree'))->with('title', 'Категории');
     }
 
     public function create(int $parent_id = 0)

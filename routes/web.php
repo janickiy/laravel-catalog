@@ -29,12 +29,12 @@ Route::get('', [FrontendController::class, 'index'])->name('index');
 Route::get('catalog/{id?}', [FrontendController::class, 'catalog'])->name('catalog')->where('id', '[0-9]+');
 
 Route::get('info/{id}', [FrontendController::class,'info'])->name('info')->where('id', '[0-9]+');
-Route::get('addurl', [FrontendController::class,'addurl'])->name('addurl');
+Route::get('add-url', [FrontendController::class,'addurl'])->name('addurl');
 Route::post('add', [FrontendController::class,'add'])->name('add');
 Route::get('redirect/{id}', [FrontendController::class,'redirect'])->name('redirect')->where('id', '[0-9]+');
 Route::get('rules', [FrontendController::class,'rules'])->name('rules');
 Route::get('contact', [FrontendController::class,'contact'])->name('contact');
-Route::post('sendmsg', [FrontendController::class,'sendMsg'])->name('sendmsg');
+Route::post('send-message', [FrontendController::class,'sendMsg'])->name('sendmsg');
 
 Route::get('sitemap.xml', [FrontendController::class, 'sitemap'])->name('sitemap');
 Route::get('sitemaps/maplinks{page}.xml', [FrontendController::class, 'maplinks'])->name('maplinks')->where('page', '[0-9]+');

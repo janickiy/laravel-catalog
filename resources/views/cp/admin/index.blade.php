@@ -136,6 +136,7 @@
             $('#itemList').on('click', 'a.deleteRow', function () {
 
                 var rowid = $(this).attr('id');
+                var deleteUrl = $(this).data('delete-url');
                 swal({
                         title: "Вы уверены?",
                         text: "Вы не сможете восстановить эту информацию!",
@@ -149,10 +150,9 @@
                     function (isConfirm) {
                         if (!isConfirm) return;
                         $.ajax({
-                            url: '{{ URL::route('cp.admin.destroy') }}',
-                            type: "POST",
+                            url: deleteUrl,
+                            type: "DELETE",
                             dataType: "html",
-                            data: {id: rowid},
                             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                             success: function () {
                                 $("#rowid_" + rowid).remove();

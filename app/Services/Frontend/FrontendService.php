@@ -29,7 +29,7 @@ class FrontendService
 
     public function homePage(): array
     {
-        [$arr, $number] = $this->catalogGrid($this->catalogs->childrenWithLinkCounts(0), true);
+        [$arr, $number] = $this->catalogGrid($this->catalogs->childrenWithLinkCounts(null), true);
 
         return [
             'title' => 'Главная страница',
@@ -65,7 +65,7 @@ class FrontendService
 
             $pathway = $this->pathway($id);
 
-            if ((int) $catalog->parent_id === 0) {
+            if ($catalog->parent_id === null) {
                 $links = $this->links->latestPublishedInCatalogs($catalogIds, 5);
                 $rank = 1;
             } else {
@@ -80,7 +80,7 @@ class FrontendService
             $keywords = $catalog->keywords ?? $keywords;
         } else {
             $pathway = '<a href="' . URL::route('index') . '">Главная</a>» Разное';
-            $links = $this->links->paginatePublishedByCatalog(0, 10);
+            $links = $this->links->paginatePublishedByCatalog(null, 10);
             $rank = $links->firstItem();
             $paginator = $links->links();
         }
@@ -107,7 +107,7 @@ class FrontendService
             abort(404);
         }
 
-        $similarLinks = $this->links->randomPublishedByCatalog((int) $link->catalog_id, 5);
+        $similarLinks = $this->links->randomPublishedByCatalog($link->catalog_id === null ? null : (int) $link->catalog_id, 5);
         $this->links->incrementViews($link);
 
         return [

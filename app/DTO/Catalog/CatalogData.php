@@ -11,7 +11,7 @@ final readonly class CatalogData implements DataTransferObject
         private string $name,
         private ?string $description,
         private ?string $keywords,
-        private int $parentId,
+        private ?int $parentId,
         private ?string $image = null,
     ) {
     }
@@ -23,7 +23,7 @@ final readonly class CatalogData implements DataTransferObject
             (string) $data['name'],
             $data['description'] ?? null,
             $data['keywords'] ?? null,
-            (int) ($data['parent_id'] ?? 0),
+            self::normalizeParentId($data['parent_id'] ?? null),
             $image,
         );
     }
@@ -52,5 +52,12 @@ final readonly class CatalogData implements DataTransferObject
         }
 
         return $data;
+    }
+
+    private static function normalizeParentId(mixed $parentId): ?int
+    {
+        $parentId = (int) ($parentId ?? 0);
+
+        return $parentId > 0 ? $parentId : null;
     }
 }

@@ -32,12 +32,12 @@ Route::group(['prefix' => 'cp'], function () {
         Route::post('store', [LinksController::class, 'store'])->name('cp.links.store');
         Route::get('edit/{id}', [LinksController::class, 'edit'])->name('cp.links.edit')->where('id', '[0-9]+');
         Route::put('update', [LinksController::class, 'update'])->name('cp.links.update');
-        Route::post('destroy', [LinksController::class, 'destroy'])->name('cp.links.destroy');
+        Route::delete('destroy/{id}', [LinksController::class, 'destroy'])->name('cp.links.destroy')->where('id', '[0-9]+');
         Route::get('import', [LinksController::class, 'importForm'])->name('cp.links.import');
         Route::post('importLink', [LinksController::class, 'importLink'])->name('cp.links.importlink');
         Route::get('export', [LinksController::class, 'export'])->name('cp.links.export');
         Route::post('exportLink', [LinksController::class, 'exportLink'])->name('cp.links.export_link');
-        Route::put('statuslinks', [LinksController::class, 'statusLinks'])->name('cp.statuslinks.update');
+        Route::put('status-links', [LinksController::class, 'statusLinks'])->name('cp.statuslinks.update');
     });
 
     Route::group(['prefix' => 'catalog'], function () {
@@ -59,7 +59,7 @@ Route::group(['prefix' => 'cp'], function () {
         Route::post('create', [AdminController::class, 'store'])->name('cp.admin.store');
         Route::get('edit/{id}', [AdminController::class, 'edit'])->name('cp.admin.edit')->where('id', '[0-9]+');
         Route::put('update', [AdminController::class, 'update'])->name('cp.admin.update');
-        Route::post('destroy', [AdminController::class, 'destroy'])->name('cp.admin.destroy');
+        Route::delete('destroy/{id}', [AdminController::class, 'destroy'])->name('cp.admin.destroy')->where('id', '[0-9]+');
     });
 
     Route::group(['prefix' => 'settings'], function () {
@@ -68,7 +68,7 @@ Route::group(['prefix' => 'cp'], function () {
         Route::post('create', [SettingsController::class, 'store'])->name('cp.settings.store');
         Route::get('edit/{id}', [SettingsController::class, 'edit'])->name('cp.settings.edit')->where('id', '[0-9]+');
         Route::put('update', [SettingsController::class, 'update'])->name('cp.settings.update');
-        Route::post('destroy', [SettingsController::class, 'destroy'])->name('cp.settings.destroy');
+        Route::delete('destroy/{id}', [SettingsController::class, 'destroy'])->name('cp.settings.destroy')->where('id', '[0-9]+');
     });
 
     Route::group(['prefix' => 'datatable'], function () {
@@ -79,7 +79,6 @@ Route::group(['prefix' => 'cp'], function () {
     });
 
 });
-
 
 
 

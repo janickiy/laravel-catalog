@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Frontend;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreLinkRequest extends FormRequest
 {
@@ -22,7 +23,11 @@ class StoreLinkRequest extends FormRequest
             'city' => 'nullable|string',
             'phone' => 'nullable|string',
             'keywords' => 'nullable|string',
-            'catalog_id' => 'required|integer',
+            'catalog_id' => [
+                'required',
+                'integer',
+                Rule::when((int) $this->input('catalog_id') > 0, ['exists:catalog,id']),
+            ],
             'captcha' => 'required|captcha',
             'agree' => 'required',
         ];

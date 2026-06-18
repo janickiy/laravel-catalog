@@ -27,6 +27,13 @@ class LinksRepository extends BaseRepository
         return $this->update($data->id(), $data->toArray());
     }
 
+    public function existsByUrl(string $url): bool
+    {
+        return $this->model->query()
+            ->where('url', $url)
+            ->exists();
+    }
+
     public function dataTableQuery(): Builder
     {
         return $this->model->query()
@@ -57,8 +64,10 @@ class LinksRepository extends BaseRepository
             ->where('status', LinkStatus::Published->value)
             ->orderBy('name');
 
-        if ($catalogId) {
-            $query->where('catalog_id', $catalogId);
+        if ($catalogId !== null) {
+            $catalogId > 0
+                ? $query->where('catalog_id', $catalogId)
+                : $query->whereNull('catalog_id');
         }
 
         return $query->get();
@@ -94,12 +103,16 @@ class LinksRepository extends BaseRepository
             ->get();
     }
 
-    public function paginatePublishedByCatalog(int $catalogId, int $perPage): LengthAwarePaginator
+    public function paginatePublishedByCatalog(?int $catalogId, int $perPage): LengthAwarePaginator
     {
-        return $this->model->query()
-            ->where('catalog_id', $catalogId)
-            ->where('status', LinkStatus::Published->value)
-            ->paginate($perPage);
+        $query = $this->model->query()
+            ->where('status', LinkStatus::Published->value);
+
+        $catalogId !== null && $catalogId > 0
+            ? $query->where('catalog_id', $catalogId)
+            : $query->whereNull('catalog_id');
+
+        return $query->paginate($perPage);
     }
 
     public function findPublished(int $id): ?Links
@@ -119,14 +132,18 @@ class LinksRepository extends BaseRepository
         return $link instanceof Links ? $link : null;
     }
 
-    public function randomPublishedByCatalog(int $catalogId, int $limit): Collection
+    public function randomPublishedByCatalog(?int $catalogId, int $limit): Collection
     {
-        return $this->model->query()
-            ->where('catalog_id', $catalogId)
+        $query = $this->model->query()
             ->where('status', LinkStatus::Published->value)
             ->inRandomOrder()
-            ->take($limit)
-            ->get();
+            ->take($limit);
+
+        $catalogId !== null && $catalogId > 0
+            ? $query->where('catalog_id', $catalogId)
+            : $query->whereNull('catalog_id');
+
+        return $query->get();
     }
 
     public function incrementViews(Links $link): bool

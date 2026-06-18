@@ -2,125 +2,39 @@
 
 namespace App\Imports;
 
-use App\Enums\LinkStatus;
-use App\Helpers\StringHelper;
-use App\Models\Catalog;
-use App\Models\Links;
-use App\Services\DomainAvailabilityService;
-use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithBatchInserts;
+use App\Services\Admin\LinkImportProcessor;
+use Maatwebsite\Excel\Concerns\OnEachRow;
+use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
+use Maatwebsite\Excel\Concerns\WithColumnLimit;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Row;
 
-class LinksImport implements ToModel, WithBatchInserts
+final class LinksImport implements OnEachRow, SkipsEmptyRows, WithChunkReading, WithColumnLimit
 {
-    public function __construct(private readonly DomainAvailabilityService $domainAvailability)
+    private const CHUNK_SIZE = 500;
+    private const END_COLUMN = 'H';
+
+    public function __construct(private readonly LinkImportProcessor $processor)
     {
     }
 
-    /**
-     * @param array $row
-     *
-     * @return \Illuminate\Database\Eloquent\Model|null
-     */
-    public function model(array $row)
+    public function onRow(Row $row): void
     {
-        $n = 0;
-        /*
-        $name = trim($row['nazvanie_kompanii']);
-        $url = trim($row['www']);
-        $email = trim($row['e_mail']);
-        $telefon = trim($row['telefon']);
-        */
-
-        $city = trim($row[0]);
-        $name = trim($row[1]);
-        $category = trim($row[3]);
-        $url = trim($row[5]);
-        $phone = trim($row[7]);
-
-        if ($url && $this->domainAvailability->isAvailable($url, 5)) {
-
-            $url_link = $url;
-
-            if (substr($url_link, 0, 7) == "http://") $url_link = str_replace('http://', '', $url_link);
-            if (substr($url_link, 0, 8) == "https://") $url_link = str_replace('https://', '', $url_link);
-            if (strpos($url_link, '/') > 0) list($url_link) = explode('/', $url_link);
-
-            if (Links::where('url', '=', $url_link)->count() == 0) {
-                $tags_row = @get_meta_tags($url);
-
-                $tags = [];
-
-                if ($tags_row) {
-                    foreach ($tags_row as $mkey => $mval) {
-                        $tags[$mkey] = StringHelper::str_to_utf8($mval);
-                    }
-                }
-
-                $keywords = $tags['keywords'] ?? '';
-                $description = $tags['keywords'] ??  '';
-
-                if ($description) {
-                    $n++;
-                    $arr = explode('/', $category);
-                    $n_arr = [];
-
-                    $parent_id = 0;
-
-                    for ($i = 0; $i < count($arr); $i++) {
-                        $parent_id = $this->importCategory(trim($arr[$i]), $parent_id);
-                        $n_arr[$i] = ['name' => $arr[$i], 'id' => $parent_id];
-                    }
-
-                    $category = array_pop($n_arr);
-
-                    Links::create([
-                            'name' => $name,
-                            'url' => $url_link,
-                            'phone' => $phone,
-                            'city' => $city,
-                            'description' => $description,
-                            'keywords' => $keywords,
-                            'full_description' => $description,
-                            'catalog_id' => $category['id'] ?? 3,
-                            'status' => LinkStatus::Published->value
-                        ]
-                    );
-
-                    return $n;
-                }
-            }
-        }
+        $this->processor->importRow($row->toArray(null, false, false, self::END_COLUMN));
     }
 
     public function chunkSize(): int
     {
-        return 1000;
+        return self::CHUNK_SIZE;
     }
 
-
-    public function batchSize(): int
+    public function endColumn(): string
     {
-        return 1000;
+        return self::END_COLUMN;
     }
 
-    /**
-     * @param $name
-     * @param int $parent_id
-     * @return mixed
-     */
-    private function importCategory($name, $parent_id = 0)
+    public function importedCount(): int
     {
-        if (!empty($name) && is_numeric($parent_id)) {
-            $catalog = Catalog::where('name', 'like', $name)->where('parent_id', $parent_id);
-
-            if ($catalog->count() > 0) {
-                return $catalog->first()->id;
-            } else {
-                if ($name) {
-                    Catalog::create(['name' => $name, 'parent_id' => $parent_id]);
-                }
-            }
-        }
+        return $this->processor->importedCount();
     }
-
 }

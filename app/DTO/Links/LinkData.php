@@ -16,7 +16,7 @@ final readonly class LinkData implements DataTransferObject
         private string $description,
         private ?string $keywords,
         private string $fullDescription,
-        private int $catalogId,
+        private ?int $catalogId,
         private ?int $status = null,
         private ?string $image = null,
     ) {
@@ -34,7 +34,7 @@ final readonly class LinkData implements DataTransferObject
             (string) $data['description'],
             $data['keywords'] ?? null,
             (string) $data['full_description'],
-            (int) $data['catalog_id'],
+            self::normalizeCatalogId($data['catalog_id'] ?? null),
             $status,
             $image,
         );
@@ -91,5 +91,12 @@ final readonly class LinkData implements DataTransferObject
         }
 
         return $data;
+    }
+
+    private static function normalizeCatalogId(mixed $catalogId): ?int
+    {
+        $catalogId = (int) ($catalogId ?? 0);
+
+        return $catalogId > 0 ? $catalogId : null;
     }
 }
