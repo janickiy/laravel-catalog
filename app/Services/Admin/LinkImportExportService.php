@@ -6,6 +6,7 @@ use App\Helpers\StringHelper;
 use App\Imports\LinksImport;
 use App\Imports\LinksImportFromCsv;
 use App\Repositories\LinksRepository;
+use App\Services\DomainAvailabilityService;
 use Illuminate\Http\UploadedFile;
 use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -14,8 +15,10 @@ use ZipArchive;
 
 class LinkImportExportService
 {
-    public function __construct(private readonly LinksRepository $links)
-    {
+    public function __construct(
+        private readonly LinksRepository $links,
+        private readonly DomainAvailabilityService $domainAvailability,
+    ) {
     }
 
     public function import(UploadedFile $file): int
@@ -25,10 +28,10 @@ class LinkImportExportService
         $extension = strtolower($file->getClientOriginalExtension());
 
         if ($extension === 'csv' || $extension === 'txt') {
-            return LinksImportFromCsv::import($file->getRealPath());
+            return LinksImportFromCsv::import($file->getRealPath(), $this->domainAvailability);
         }
 
-        Excel::import(new LinksImport(), $file);
+        Excel::import(new LinksImport($this->domainAvailability), $file);
 
         return 0;
     }

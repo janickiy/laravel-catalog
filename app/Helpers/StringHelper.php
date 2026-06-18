@@ -2,8 +2,47 @@
 
 namespace App\Helpers;
 
+use Symfony\Component\Mime\MimeTypes;
+
 class StringHelper
 {
+    private const DEFAULT_URL_SCHEME = 'http://';
+    private const DEFAULT_DOWNLOAD_MIME_TYPE = 'application/force-download';
+    private const DEFAULT_MAX_UPLOAD_SIZE = 2097152;
+
+    private const MONTHS = [
+        'ru' => [
+            'date' => [
+                'full' => [1 => 'января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'],
+                'short' => [1 => 'янв', 'фев', 'март', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноябр', 'дек'],
+            ],
+            'datetime' => [
+                'full' => [1 => 'января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'],
+                'short' => [1 => 'янв', 'фев', 'март', 'апр', 'мая', 'июн', 'июл', 'авг', 'сент', 'окт', 'ноябр', 'дек'],
+            ],
+        ],
+        'en' => [
+            'date' => [
+                'full' => [1 => 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                'short' => [1 => 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Augt', 'Sept', 'Oct', 'Nov', 'Dec'],
+            ],
+            'datetime' => [
+                'full' => [1 => 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                'short' => [1 => 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
+            ],
+        ],
+    ];
+
+    private const RELATIVE_DATES = [
+        'ru' => [
+            'today' => 'Сегодня',
+            'yesterday' => 'Вчера',
+        ],
+        'en' => [
+            'today' => 'today',
+            'yesterday' => 'yesterday',
+        ],
+    ];
 
     /**
      * @param $str
@@ -11,7 +50,13 @@ class StringHelper
      */
     public static function ucfirst_utf8($str)
     {
-        return mb_substr(mb_strtoupper($str, 'utf-8'), 0, 1, 'utf-8') . mb_substr($str, 1, mb_strlen($str) - 1, 'utf-8');
+        $str = (string) $str;
+
+        if ($str === '') {
+            return '';
+        }
+
+        return mb_strtoupper(mb_substr($str, 0, 1, 'UTF-8'), 'UTF-8') . mb_substr($str, 1, null, 'UTF-8');
     }
 
     /**
@@ -20,10 +65,11 @@ class StringHelper
      */
     public static function urlWithPrefix($url)
     {
-        if (substr($url, 0, 7) == "http://" or substr($url, 0, 8) == "https://")
-            return $url;
-        else
-            return 'http://' . $url;
+        $url = trim((string) $url);
+
+        return self::hasUrlScheme($url)
+            ? $url
+            : self::DEFAULT_URL_SCHEME . $url;
     }
 
     /**
@@ -32,7 +78,9 @@ class StringHelper
      */
     public static function date_format_ru($originalDate)
     {
-        return date("d.m.Y", strtotime($originalDate));
+        $timestamp = strtotime((string) $originalDate);
+
+        return $timestamp === false ? '' : date('d.m.Y', $timestamp);
     }
 
     /**
@@ -42,30 +90,7 @@ class StringHelper
      */
     public static function mysql_russian_date($datestr = '', $short = false)
     {
-        if ($datestr == '') return '';
-
-        list($day) = explode(' ', $datestr);
-
-        switch ($day) {
-            case date('Y-m-d'):
-                $result = 'Сегодня';
-                break;
-
-            case date('Y-m-d', mktime(0, 0, 0, date("m"), date("d") - 1, date("Y"))):
-                $result = 'Вчера';
-                break;
-
-            default:
-            {
-                list($y, $m, $d) = explode('-', $day);
-                $month_str = $short == true ? ['янв', 'фев', 'март', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноябр', 'дек'] : ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
-                $month_int = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
-                $m = str_replace($month_int, $month_str, $m);
-                $result = $d . ' ' . $m . ' ' . $y;
-            }
-        }
-
-        return $result;
+        return self::formatMysqlDate($datestr, (bool) $short, 'ru');
     }
 
     /**
@@ -75,30 +100,7 @@ class StringHelper
      */
     public static function mysql_english_date($datestr = '', $short = false)
     {
-        if ($datestr == '') return '';
-
-        list($day) = explode(' ', $datestr);
-
-        switch ($day) {
-            case date('Y-m-d'):
-                $result = 'today';
-                break;
-
-            case date('Y-m-d', mktime(0, 0, 0, date("m"), date("d") - 1, date("Y"))):
-                $result = 'yesterday';
-                break;
-
-            default:
-            {
-                list($y, $m, $d) = explode('-', $day);
-                $month_str = $short == true ? ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Augt', 'Sept', 'Oct', 'Nov', 'Dec'] : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-                $month_int = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
-                $m = str_replace($month_int, $month_str, $m);
-                $result = $d . ' ' . $m . ' ' . $y;
-            }
-        }
-
-        return $result;
+        return self::formatMysqlDate($datestr, (bool) $short, 'en');
     }
 
     /**
@@ -108,25 +110,7 @@ class StringHelper
      */
     public static function mysql_russian_datetime($datestr = '', $short = false)
     {
-        if ($datestr == '') return '';
-
-        $dt_elements = explode(' ', $datestr);
-
-        $date_elements = explode('-', $dt_elements[0]);
-        $time_elements = explode(':', $dt_elements[1]);
-
-        $result1 = mktime($time_elements[0], $time_elements[1], $time_elements[2], $date_elements[1], $date_elements[2], $date_elements[0]);
-        $monthes = $short == true ? [' ', 'янв', 'фев', 'март', 'апр', 'мая', 'июн', 'июл', 'авг', 'сент', 'окт', 'ноябр', 'дек'] : [' ', 'января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
-        $days = $short == true ? [' ', 'пон', 'вт', 'ср', 'чет', 'пят', 'суб', 'воск'] : [' ', 'понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота', 'воскресенье'];
-        $day = date("j", $result1);
-        $month = $monthes[date("n", $result1)];
-        $year = date("Y", $result1);
-        $hour = date("G", $result1);
-        $minute = date("i", $result1);
-        $dayofweek = $days[date("N", $result1)];
-        $result = $day . ' ' . $month . ' ' . $year;
-
-        return $result;
+        return self::formatMysqlDateTime($datestr, (bool) $short, 'ru');
     }
 
     /**
@@ -136,25 +120,7 @@ class StringHelper
      */
     public static function mysql_english_datetime($datestr = '', $short = false)
     {
-        if ($datestr == '') return '';
-
-        $dt_elements = explode(' ', $datestr);
-
-        $date_elements = explode('-', $dt_elements[0]);
-        $time_elements = explode(':', $dt_elements[1]);
-
-        $result1 = mktime($time_elements[0], $time_elements[1], $time_elements[2], $date_elements[1], $date_elements[2], $date_elements[0]);
-        $monthes = $short == true ? [' ', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'] : [' ', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-        $days = $short == true ? [' ', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'] : [' ', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
-        $day = date("j", $result1);
-        $month = $monthes[date("n", $result1)];
-        $year = date("Y", $result1);
-        $hour = date("G", $result1);
-        $minute = date("i", $result1);
-        $dayofweek = $days[date("N", $result1)];
-        $result = $day . ' ' . $month . ' ' . $year;
-
-        return $result;
+        return self::formatMysqlDateTime($datestr, (bool) $short, 'en');
     }
 
     /**
@@ -164,10 +130,18 @@ class StringHelper
      */
     public static function shortText($str, $chars = 500)
     {
-        $pos = strpos(substr($str, $chars), " ");
-        $srttmpend = strlen($str) > $chars ? '...' : '';
+        $str = (string) $str;
+        $chars = max(0, (int) $chars);
 
-        return substr($str, 0, $chars + $pos) . (isset($srttmpend) ? $srttmpend : '');
+        if (mb_strlen($str, 'UTF-8') <= $chars) {
+            return $str;
+        }
+
+        $tail = mb_substr($str, $chars, null, 'UTF-8');
+        $spacePosition = mb_strpos($tail, ' ', 0, 'UTF-8');
+        $length = $chars + ($spacePosition === false ? 0 : $spacePosition);
+
+        return mb_substr($str, 0, $length, 'UTF-8') . '...';
     }
 
     /**
@@ -177,8 +151,11 @@ class StringHelper
     public static function str_to_utf8($string)
     {
         if (mb_detect_encoding($string, 'UTF-8', true) === false) {
-            $string = @iconv("windows-1251", "utf-8", $string);
+            $converted = @iconv('windows-1251', 'UTF-8', $string);
+
+            return $converted === false ? $string : $converted;
         }
+
         return $string;
     }
 
@@ -190,9 +167,9 @@ class StringHelper
      */
     public static function formatSizeInMb($size, $maxDecimals = 3, $mbSuffix = "MB")
     {
-        $mbSize = round($size / 1024 / 1024, $maxDecimals);
+        $mbSize = round((float) $size / 1024 / 1024, (int) $maxDecimals);
 
-        return preg_replace("/\\.?0+$/", "", $mbSize) . $mbSuffix;
+        return preg_replace('/\\.?0+$/', '', (string) $mbSize) . $mbSuffix;
     }
 
     /**
@@ -200,33 +177,21 @@ class StringHelper
      */
     public static function detectMaxUploadFileSize()
     {
-        /**
-         * Converts shorthands like "2M" or "512K" to bytes
-         *
-         * @param int $size
-         * @return int|float
-         * @throws Exception
-         */
-        $normalize = function ($size) {
-            if (preg_match('/^(-?[\d\.]+)(|[KMG])$/i', $size, $match)) {
-                $pos = array_search($match[2], ["", "K", "M", "G"]);
-                $size = $match[1] * pow(1024, $pos);
-            } else {
-                return false;
-            }
-            return $size;
-        };
         $limits = [];
-        $limits[] = $normalize(ini_get('upload_max_filesize'));
-        if (($max_post = $normalize(ini_get('post_max_size'))) != 0) {
+
+        if (($uploadMax = self::normalizeIniSize(ini_get('upload_max_filesize'))) !== false) {
+            $limits[] = $uploadMax;
+        }
+
+        if (($max_post = self::normalizeIniSize(ini_get('post_max_size'))) !== false && $max_post != 0) {
             $limits[] = $max_post;
         }
-        if (($memory_limit = $normalize(ini_get('memory_limit'))) != -1) {
+
+        if (($memory_limit = self::normalizeIniSize(ini_get('memory_limit'))) !== false && $memory_limit != -1) {
             $limits[] = $memory_limit;
         }
-        $maxFileSize = min($limits);
 
-        return $maxFileSize;
+        return $limits === [] ? false : min($limits);
     }
 
     /**
@@ -237,7 +202,7 @@ class StringHelper
         $maxUploadFileSize = self::detectMaxUploadFileSize();
 
         if (!$maxUploadFileSize or $maxUploadFileSize == 0) {
-            $maxUploadFileSize = 2097152;
+            $maxUploadFileSize = self::DEFAULT_MAX_UPLOAD_SIZE;
         }
 
         return self::formatSizeInMb($maxUploadFileSize);
@@ -249,10 +214,7 @@ class StringHelper
      */
     public static function removeHtmlTags($str)
     {
-        $str = strip_tags($str);
-        $str = html_entity_decode($str);
-
-        return $str;
+        return html_entity_decode(strip_tags((string) $str), ENT_QUOTES | ENT_HTML5, 'UTF-8');
     }
 
     /**
@@ -261,410 +223,101 @@ class StringHelper
      */
     public static function getMimeType($ext)
     {
-        $mimetypes = [
-            "123" => "application/vnd.lotus-1-2-3",
-            "3ds" => "image/x-3ds",
-            "669" => "audio/x-mod",
-            "a" => "application/x-archive",
-            "abw" => "application/x-abiword",
-            "ac3" => "audio/ac3",
-            "adb" => "text/x-adasrc",
-            "ads" => "text/x-adasrc",
-            "afm" => "application/x-font-afm",
-            "ag" => "image/x-applix-graphics",
-            "ai" => "application/illustrator",
-            "aif" => "audio/x-aiff",
-            "aifc" => "audio/x-aiff",
-            "aiff" => "audio/x-aiff",
-            "al" => "application/x-perl",
-            "arj" => "application/x-arj",
-            "as" => "application/x-applix-spreadsheet",
-            "asc" => "text/plain",
-            "asf" => "video/x-ms-asf",
-            "asp" => "application/x-asp",
-            "asx" => "video/x-ms-asf",
-            "au" => "audio/basic",
-            "avi" => "video/x-msvideo",
-            "aw" => "application/x-applix-word",
-            "bak" => "application/x-trash",
-            "bcpio" => "application/x-bcpio",
-            "bdf" => "application/x-font-bdf",
-            "bib" => "text/x-bibtex",
-            "bin" => "application/octet-stream",
-            "blend" => "application/x-blender",
-            "blender" => "application/x-blender",
-            "bmp" => "image/bmp",
-            "bz" => "application/x-bzip",
-            "bz2" => "application/x-bzip",
-            "c" => "text/x-csrc",
-            "c++" => "text/x-c++src",
-            "cc" => "text/x-c++src",
-            "cdf" => "application/x-netcdf",
-            "cdr" => "application/vnd.corel-draw",
-            "cer" => "application/x-x509-ca-cert",
-            "cert" => "application/x-x509-ca-cert",
-            "cgi" => "application/x-cgi",
-            "cgm" => "image/cgm",
-            "chrt" => "application/x-kchart",
-            "class" => "application/x-java",
-            "cls" => "text/x-tex",
-            "cpio" => "application/x-cpio",
-            "cpp" => "text/x-c++src",
-            "crt" => "application/x-x509-ca-cert",
-            "cs" => "text/x-csharp",
-            "csh" => "application/x-shellscript",
-            "css" => "text/css",
-            "cssl" => "text/css",
-            "csv" => "text/x-comma-separated-values",
-            "cur" => "image/x-win-bitmap",
-            "cxx" => "text/x-c++src",
-            "dat" => "video/mpeg",
-            "dbf" => "application/x-dbase",
-            "dc" => "application/x-dc-rom",
-            "dcl" => "text/x-dcl",
-            "dcm" => "image/x-dcm",
-            "deb" => "application/x-deb",
-            "der" => "application/x-x509-ca-cert",
-            "desktop" => "application/x-desktop",
-            "dia" => "application/x-dia-diagram",
-            "diff" => "text/x-patch",
-            "djv" => "image/vnd.djvu",
-            "djvu" => "image/vnd.djvu",
-            "doc" => "application/vnd.ms-word",
-            "dsl" => "text/x-dsl",
-            "dtd" => "text/x-dtd",
-            "dvi" => "application/x-dvi",
-            "dwg" => "image/vnd.dwg",
-            "dxf" => "image/vnd.dxf",
-            "egon" => "application/x-egon",
-            "el" => "text/x-emacs-lisp",
-            "eps" => "image/x-eps",
-            "epsf" => "image/x-eps",
-            "epsi" => "image/x-eps",
-            "etheme" => "application/x-e-theme",
-            "etx" => "text/x-setext",
-            "exe" => "application/x-ms-dos-executable",
-            "ez" => "application/andrew-inset",
-            "f" => "text/x-fortran",
-            "fig" => "image/x-xfig",
-            "fits" => "image/x-fits",
-            "flac" => "audio/x-flac",
-            "flc" => "video/x-flic",
-            "fli" => "video/x-flic",
-            "flw" => "application/x-kivio",
-            "fo" => "text/x-xslfo",
-            "g3" => "image/fax-g3",
-            "gb" => "application/x-gameboy-rom",
-            "gcrd" => "text/x-vcard",
-            "gen" => "application/x-genesis-rom",
-            "gg" => "application/x-sms-rom",
-            "gif" => "image/gif",
-            "glade" => "application/x-glade",
-            "gmo" => "application/x-gettext-translation",
-            "gnc" => "application/x-gnucash",
-            "gnucash" => "application/x-gnucash",
-            "gnumeric" => "application/x-gnumeric",
-            "gra" => "application/x-graphite",
-            "gsf" => "application/x-font-type1",
-            "gtar" => "application/x-gtar",
-            "gz" => "application/x-gzip",
-            "h" => "text/x-chdr",
-            "h++" => "text/x-chdr",
-            "hdf" => "application/x-hdf",
-            "hh" => "text/x-c++hdr",
-            "hp" => "text/x-chdr",
-            "hpgl" => "application/vnd.hp-hpgl",
-            "hs" => "text/x-haskell",
-            "htm" => "text/html",
-            "html" => "text/html",
-            "icb" => "image/x-icb",
-            "ico" => "image/x-ico",
-            "ics" => "text/calendar",
-            "idl" => "text/x-idl",
-            "ief" => "image/ief",
-            "iff" => "image/x-iff",
-            "ilbm" => "image/x-ilbm",
-            "iso" => "application/x-cd-image",
-            "it" => "audio/x-it",
-            "jar" => "application/x-jar",
-            "java" => "text/x-java",
-            "jng" => "image/x-jng",
-            "jp2" => "image/jpeg2000",
-            "jpe" => "image/jpeg",
-            "jpeg" => "image/jpeg",
-            "jpg" => "image/jpeg",
-            "jpr" => "application/x-jbuilder-project",
-            "jpx" => "application/x-jbuilder-project",
-            "js" => "application/x-javascript",
-            "karbon" => "application/x-karbon",
-            "kdelnk" => "application/x-desktop",
-            "kfo" => "application/x-kformula",
-            "kil" => "application/x-killustrator",
-            "kon" => "application/x-kontour",
-            "kpm" => "application/x-kpovmodeler",
-            "kpr" => "application/x-kpresenter",
-            "kpt" => "application/x-kpresenter",
-            "kra" => "application/x-krita",
-            "ksp" => "application/x-kspread",
-            "kud" => "application/x-kugar",
-            "kwd" => "application/x-kword",
-            "kwt" => "application/x-kword",
-            "la" => "application/x-shared-library-la",
-            "lha" => "application/x-lha",
-            "lhs" => "text/x-literate-haskell",
-            "lhz" => "application/x-lhz",
-            "log" => "text/x-log",
-            "ltx" => "text/x-tex",
-            "lwo" => "image/x-lwo",
-            "lwob" => "image/x-lwo",
-            "lws" => "image/x-lws",
-            "lyx" => "application/x-lyx",
-            "lzh" => "application/x-lha",
-            "lzo" => "application/x-lzop",
-            "m" => "text/x-objcsrc",
-            "m15" => "audio/x-mod",
-            "m3u" => "audio/x-mpegurl",
-            "man" => "application/x-troff-man",
-            "md" => "application/x-genesis-rom",
-            "me" => "text/x-troff-me",
-            "mgp" => "application/x-magicpoint",
-            "mid" => "audio/midi",
-            "midi" => "audio/midi",
-            "mif" => "application/x-mif",
-            "mkv" => "application/x-matroska",
-            "mm" => "text/x-troff-mm",
-            "mml" => "text/mathml",
-            "mng" => "video/x-mng",
-            "moc" => "text/x-moc",
-            "mod" => "audio/x-mod",
-            "moov" => "video/quicktime",
-            "mov" => "video/quicktime",
-            "movie" => "video/x-sgi-movie",
-            "mp2" => "video/mpeg",
-            "mp3" => "audio/x-mp3",
-            "mpe" => "video/mpeg",
-            "mpeg" => "video/mpeg",
-            "mpg" => "video/mpeg",
-            "ms" => "text/x-troff-ms",
-            "msod" => "image/x-msod",
-            "msx" => "application/x-msx-rom",
-            "mtm" => "audio/x-mod",
-            "n64" => "application/x-n64-rom",
-            "nc" => "application/x-netcdf",
-            "nes" => "application/x-nes-rom",
-            "nsv" => "video/x-nsv",
-            "o" => "application/x-object",
-            "obj" => "application/x-tgif",
-            "oda" => "application/oda",
-            "ogg" => "application/ogg",
-            "old" => "application/x-trash",
-            "oleo" => "application/x-oleo",
-            "p" => "text/x-pascal",
-            "p12" => "application/x-pkcs12",
-            "p7s" => "application/pkcs7-signature",
-            "pas" => "text/x-pascal",
-            "patch" => "text/x-patch",
-            "pbm" => "image/x-portable-bitmap",
-            "pcd" => "image/x-photo-cd",
-            "pcf" => "application/x-font-pcf",
-            "pcl" => "application/vnd.hp-pcl",
-            "pdb" => "application/vnd.palm",
-            "pdf" => "application/pdf",
-            "pem" => "application/x-x509-ca-cert",
-            "perl" => "application/x-perl",
-            "pfa" => "application/x-font-type1",
-            "pfb" => "application/x-font-type1",
-            "pfx" => "application/x-pkcs12",
-            "pgm" => "image/x-portable-graymap",
-            "pgn" => "application/x-chess-pgn",
-            "pgp" => "application/pgp",
-            "php" => "application/x-php",
-            "php3" => "application/x-php",
-            "php4" => "application/x-php",
-            "pict" => "image/x-pict",
-            "pict1" => "image/x-pict",
-            "pict2" => "image/x-pict",
-            "pl" => "application/x-perl",
-            "pls" => "audio/x-scpls",
-            "pm" => "application/x-perl",
-            "png" => "image/png",
-            "pnm" => "image/x-portable-anymap",
-            "po" => "text/x-gettext-translation",
-            "pot" => "text/x-gettext-translation-template",
-            "ppm" => "image/x-portable-pixmap",
-            "pps" => "application/vnd.ms-powerpoint",
-            "ppt" => "application/vnd.ms-powerpoint",
-            "ppz" => "application/vnd.ms-powerpoint",
-            "ps" => "application/postscript",
-            "psd" => "image/x-psd",
-            "psf" => "application/x-font-linux-psf",
-            "psid" => "audio/prs.sid",
-            "pw" => "application/x-pw",
-            "py" => "application/x-python",
-            "pyc" => "application/x-python-bytecode",
-            "pyo" => "application/x-python-bytecode",
-            "qif" => "application/x-qw",
-            "qt" => "video/quicktime",
-            "qtvr" => "video/quicktime",
-            "ra" => "audio/x-pn-realaudio",
-            "ram" => "audio/x-pn-realaudio",
-            "rar" => "application/x-rar",
-            "ras" => "image/x-cmu-raster",
-            "rdf" => "text/rdf",
-            "rej" => "application/x-reject",
-            "rgb" => "image/x-rgb",
-            "rle" => "image/rle",
-            "rm" => "audio/x-pn-realaudio",
-            "roff" => "application/x-troff",
-            "rpm" => "application/x-rpm",
-            "rss" => "text/rss",
-            "rtf" => "application/rtf",
-            "rtx" => "text/richtext",
-            "s3m" => "audio/x-s3m",
-            "sam" => "application/x-amipro",
-            "scm" => "text/x-scheme",
-            "sda" => "application/vnd.stardivision.draw",
-            "sdc" => "application/vnd.stardivision.calc",
-            "sdd" => "application/vnd.stardivision.impress",
-            "sdp" => "application/vnd.stardivision.impress",
-            "sds" => "application/vnd.stardivision.chart",
-            "sdw" => "application/vnd.stardivision.writer",
-            "sgi" => "image/x-sgi",
-            "sgl" => "application/vnd.stardivision.writer",
-            "sgm" => "text/sgml",
-            "sgml" => "text/sgml",
-            "sh" => "application/x-shellscript",
-            "shar" => "application/x-shar",
-            "siag" => "application/x-siag",
-            "sid" => "audio/prs.sid",
-            "sik" => "application/x-trash",
-            "slk" => "text/spreadsheet",
-            "smd" => "application/vnd.stardivision.mail",
-            "smf" => "application/vnd.stardivision.math",
-            "smi" => "application/smil",
-            "smil" => "application/smil",
-            "sml" => "application/smil",
-            "sms" => "application/x-sms-rom",
-            "snd" => "audio/basic",
-            "so" => "application/x-sharedlib",
-            "spd" => "application/x-font-speedo",
-            "sql" => "text/x-sql",
-            "src" => "application/x-wais-source",
-            "stc" => "application/vnd.sun.xml.calc.template",
-            "std" => "application/vnd.sun.xml.draw.template",
-            "sti" => "application/vnd.sun.xml.impress.template",
-            "stm" => "audio/x-stm",
-            "stw" => "application/vnd.sun.xml.writer.template",
-            "sty" => "text/x-tex",
-            "sun" => "image/x-sun-raster",
-            "sv4cpio" => "application/x-sv4cpio",
-            "sv4crc" => "application/x-sv4crc",
-            "svg" => "image/svg+xml",
-            "swf" => "application/x-shockwave-flash",
-            "sxc" => "application/vnd.sun.xml.calc",
-            "sxd" => "application/vnd.sun.xml.draw",
-            "sxg" => "application/vnd.sun.xml.writer.global",
-            "sxi" => "application/vnd.sun.xml.impress",
-            "sxm" => "application/vnd.sun.xml.math",
-            "sxw" => "application/vnd.sun.xml.writer",
-            "sylk" => "text/spreadsheet",
-            "t" => "application/x-troff",
-            "tar" => "application/x-tar",
-            "tcl" => "text/x-tcl",
-            "tcpalette" => "application/x-terminal-color-palette",
-            "tex" => "text/x-tex",
-            "texi" => "text/x-texinfo",
-            "texinfo" => "text/x-texinfo",
-            "tga" => "image/x-tga",
-            "tgz" => "application/x-compressed-tar",
-            "theme" => "application/x-theme",
-            "tif" => "image/tiff",
-            "tiff" => "image/tiff",
-            "tk" => "text/x-tcl",
-            "torrent" => "application/x-bittorrent",
-            "tr" => "application/x-troff",
-            "ts" => "application/x-linguist",
-            "tsv" => "text/tab-separated-values",
-            "ttf" => "application/x-font-ttf",
-            "txt" => "text/plain",
-            "tzo" => "application/x-tzo",
-            "ui" => "application/x-designer",
-            "uil" => "text/x-uil",
-            "ult" => "audio/x-mod",
-            "uni" => "audio/x-mod",
-            "uri" => "text/x-uri",
-            "url" => "text/x-uri",
-            "ustar" => "application/x-ustar",
-            "vcf" => "text/x-vcalendar",
-            "vcs" => "text/x-vcalendar",
-            "vct" => "text/x-vcard",
-            "vob" => "video/mpeg",
-            "voc" => "audio/x-voc",
-            "vor" => "application/vnd.stardivision.writer",
-            "vpp" => "application/x-extension-vpp",
-            "wav" => "audio/x-wav",
-            "wb1" => "application/x-quattropro",
-            "wb2" => "application/x-quattropro",
-            "wb3" => "application/x-quattropro",
-            "wk1" => "application/vnd.lotus-1-2-3",
-            "wk3" => "application/vnd.lotus-1-2-3",
-            "wk4" => "application/vnd.lotus-1-2-3",
-            "wks" => "application/vnd.lotus-1-2-3",
-            "wmf" => "image/x-wmf",
-            "wml" => "text/vnd.wap.wml",
-            "wmv" => "video/x-ms-wmv",
-            "wpd" => "application/vnd.wordperfect",
-            "wpg" => "application/x-wpg",
-            "wri" => "application/x-mswrite",
-            "wrl" => "model/vrml",
-            "xac" => "application/x-gnucash",
-            "xbel" => "application/x-xbel",
-            "xbm" => "image/x-xbitmap",
-            "xcf" => "image/x-xcf",
-            "xhtml" => "application/xhtml+xml",
-            "xi" => "audio/x-xi",
-            "xla" => "application/vnd.ms-excel",
-            "xlc" => "application/vnd.ms-excel",
-            "xld" => "application/vnd.ms-excel",
-            "xll" => "application/vnd.ms-excel",
-            "xlm" => "application/vnd.ms-excel",
-            "xls" => "application/vnd.ms-excel",
-            "xlt" => "application/vnd.ms-excel",
-            "xlw" => "application/vnd.ms-excel",
-            "xm" => "audio/x-xm",
-            "xmi" => "text/x-xmi",
-            "xml" => "text/xml",
-            "xpm" => "image/x-xpixmap",
-            "xsl" => "text/x-xslt",
-            "xslfo" => "text/x-xslfo",
-            "xslt" => "text/x-xslt",
-            "xwd" => "image/x-xwindowdump",
-            "z" => "application/x-compress",
-            "zabw" => "application/x-abiword",
-            "zip" => "application/zip",
-            "zoo" => "application/x-zoo"
-        ];
+        $mimeTypes = MimeTypes::getDefault()->getMimeTypes(self::normalizeExtension($ext));
 
-        $ext = trim(strtolower($ext));
+        return $mimeTypes[0] ?? self::DEFAULT_DOWNLOAD_MIME_TYPE;
+    }
 
-        if ($ext != '' && isset($mimetypes[$ext])) {
-            return $mimetypes[$ext];
-        } else {
-            return "application/force-download";
+    private static function hasUrlScheme(string $url): bool
+    {
+        return str_starts_with($url, 'http://') || str_starts_with($url, 'https://');
+    }
+
+    private static function formatMysqlDate($datestr, bool $short, string $locale): string
+    {
+        $date = self::mysqlDatePart($datestr);
+
+        if ($date === null) {
+            return '';
         }
+
+        if ($date === date('Y-m-d')) {
+            return self::RELATIVE_DATES[$locale]['today'];
+        }
+
+        if ($date === date('Y-m-d', strtotime('-1 day'))) {
+            return self::RELATIVE_DATES[$locale]['yesterday'];
+        }
+
+        [$year, $month, $day] = explode('-', $date);
+
+        return $day . ' ' . self::monthName((int) $month, $short, $locale, 'date') . ' ' . $year;
+    }
+
+    private static function formatMysqlDateTime($datestr, bool $short, string $locale): string
+    {
+        $timestamp = self::mysqlTimestamp($datestr);
+
+        if ($timestamp === null) {
+            return '';
+        }
+
+        return date('j', $timestamp) . ' '
+            . self::monthName((int) date('n', $timestamp), $short, $locale, 'datetime') . ' '
+            . date('Y', $timestamp);
+    }
+
+    private static function mysqlDatePart($datestr): ?string
+    {
+        $datestr = trim((string) $datestr);
+
+        if ($datestr === '') {
+            return null;
+        }
+
+        [$date] = explode(' ', $datestr);
+
+        return preg_match('/^\d{4}-\d{2}-\d{2}$/', $date) === 1 ? $date : null;
+    }
+
+    private static function mysqlTimestamp($datestr): ?int
+    {
+        $datestr = trim((string) $datestr);
+
+        if ($datestr === '') {
+            return null;
+        }
+
+        $timestamp = strtotime($datestr);
+
+        return $timestamp === false ? null : $timestamp;
+    }
+
+    private static function monthName(int $month, bool $short, string $locale, string $format): string
+    {
+        return self::MONTHS[$locale][$format][$short ? 'short' : 'full'][$month] ?? '';
+    }
+
+    private static function normalizeIniSize(string|false $size): int|float|false
+    {
+        if ($size === false) {
+            return false;
+        }
+
+        $size = trim($size);
+
+        if (preg_match('/^(-?[\d.]+)(|[KMG])$/i', $size, $match) !== 1) {
+            return false;
+        }
+
+        $power = array_search(strtoupper($match[2]), ['', 'K', 'M', 'G'], true);
+
+        return (float) $match[1] * 1024 ** $power;
+    }
+
+    private static function normalizeExtension($ext): string
+    {
+        return trim(strtolower((string) $ext), " \t\n\r\0\x0B.");
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

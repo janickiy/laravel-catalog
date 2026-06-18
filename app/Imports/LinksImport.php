@@ -2,13 +2,19 @@
 
 namespace App\Imports;
 
-use App\Models\{Links,Catalog};
+use App\Enums\LinkStatus;
+use App\Helpers\StringHelper;
+use App\Models\Catalog;
+use App\Models\Links;
+use App\Services\DomainAvailabilityService;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
-use App\Helpers\StringHelper;
 
 class LinksImport implements ToModel, WithBatchInserts
 {
+    public function __construct(private readonly DomainAvailabilityService $domainAvailability)
+    {
+    }
 
     /**
      * @param array $row
@@ -31,7 +37,7 @@ class LinksImport implements ToModel, WithBatchInserts
         $url = trim($row[5]);
         $phone = trim($row[7]);
 
-        if ($url && Links::isDomainAvailible($url, 5)) {
+        if ($url && $this->domainAvailability->isAvailable($url, 5)) {
 
             $url_link = $url;
 
@@ -76,7 +82,7 @@ class LinksImport implements ToModel, WithBatchInserts
                             'keywords' => $keywords,
                             'full_description' => $description,
                             'catalog_id' => $category['id'] ?? 3,
-                            'status' => 1
+                            'status' => LinkStatus::Published->value
                         ]
                     );
 

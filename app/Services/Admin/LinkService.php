@@ -3,8 +3,8 @@
 namespace App\Services\Admin;
 
 use App\DTO\Links\LinkData;
+use App\Enums\LinkStatus;
 use App\Helpers\FileHelper;
-use App\Models\Links;
 use App\Repositories\CatalogRepository;
 use App\Repositories\LinksRepository;
 
@@ -18,13 +18,7 @@ class LinkService
 
     public function statusList(): array
     {
-        $statusList = [];
-
-        foreach (['new' => 0, 'publish' => 1, 'block' => 2] as $key => $value) {
-            $statusList[$value] = Links::linkStatus($key);
-        }
-
-        return $statusList;
+        return LinkStatus::options();
     }
 
     public function catalogOptions(): array

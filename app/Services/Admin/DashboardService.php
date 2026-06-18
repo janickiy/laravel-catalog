@@ -2,6 +2,7 @@
 
 namespace App\Services\Admin;
 
+use App\Enums\LinkStatus;
 use App\Repositories\LinksRepository;
 
 class DashboardService
@@ -13,9 +14,9 @@ class DashboardService
     public function counters(): array
     {
         return [
-            'new' => $this->links->countByStatus(0),
-            'publish' => $this->links->countByStatus(1),
-            'black' => $this->links->countByStatus(2),
+            'new' => $this->links->countByStatus(LinkStatus::Pending),
+            'publish' => $this->links->countByStatus(LinkStatus::Published),
+            'black' => $this->links->countByStatus(LinkStatus::Blocked),
         ];
     }
 }

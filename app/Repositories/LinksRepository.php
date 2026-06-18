@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\DTO\Links\LinkData;
+use App\Enums\LinkStatus;
 use App\Models\Links;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -44,16 +45,16 @@ class LinksRepository extends BaseRepository
             ->groupBy('links.description');
     }
 
-    public function countByStatus(int $status): int
+    public function countByStatus(LinkStatus|int $status): int
     {
-        return $this->model->query()->where('status', $status)->count();
+        return $this->model->query()->where('status', $this->statusValue($status))->count();
     }
 
     public function publishedForExport(?int $catalogId): Collection
     {
         $query = $this->model->query()
             ->with('catalog')
-            ->where('status', 1)
+            ->where('status', LinkStatus::Published->value)
             ->orderBy('name');
 
         if ($catalogId) {
@@ -73,7 +74,7 @@ class LinksRepository extends BaseRepository
     public function latestPublished(int $limit): Collection
     {
         return $this->model->query()
-            ->where('status', 1)
+            ->where('status', LinkStatus::Published->value)
             ->orderByDesc('id')
             ->take($limit)
             ->get();
@@ -86,7 +87,7 @@ class LinksRepository extends BaseRepository
         }
 
         return $this->model->query()
-            ->where('status', 1)
+            ->where('status', LinkStatus::Published->value)
             ->whereIn('catalog_id', $catalogIds)
             ->orderByDesc('id')
             ->take($limit)
@@ -97,7 +98,7 @@ class LinksRepository extends BaseRepository
     {
         return $this->model->query()
             ->where('catalog_id', $catalogId)
-            ->where('status', 1)
+            ->where('status', LinkStatus::Published->value)
             ->paginate($perPage);
     }
 
@@ -105,7 +106,7 @@ class LinksRepository extends BaseRepository
     {
         $link = $this->model->query()
             ->where('id', $id)
-            ->where('status', 1)
+            ->where('status', LinkStatus::Published->value)
             ->first();
 
         return $link instanceof Links ? $link : null;
@@ -122,7 +123,7 @@ class LinksRepository extends BaseRepository
     {
         return $this->model->query()
             ->where('catalog_id', $catalogId)
-            ->where('status', 1)
+            ->where('status', LinkStatus::Published->value)
             ->inRandomOrder()
             ->take($limit)
             ->get();
@@ -137,7 +138,7 @@ class LinksRepository extends BaseRepository
 
     public function countPublished(): int
     {
-        return $this->model->query()->where('status', 1)->count();
+        return $this->model->query()->where('status', LinkStatus::Published->value)->count();
     }
 
     public function sitemapPage(int $page): Collection
@@ -145,9 +146,14 @@ class LinksRepository extends BaseRepository
         $limit = Links::PER_PAGE;
 
         return $this->model->query()
-            ->where('status', 1)
+            ->where('status', LinkStatus::Published->value)
             ->limit($limit)
             ->offset($limit * max(0, $page - 1))
             ->get();
+    }
+
+    private function statusValue(LinkStatus|int $status): int
+    {
+        return $status instanceof LinkStatus ? $status->value : $status;
     }
 }

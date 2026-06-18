@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\DTO\Links\LinkData;
+use App\Enums\LinkStatus;
 use App\Helpers\StringHelper;
 use App\Http\Requests\Admin\DestroyLinkRequest;
 use App\Http\Requests\Admin\ExportLinksRequest;
@@ -41,7 +42,7 @@ class LinksController extends Controller
 
     public function store(StoreLinkRequest $request)
     {
-        $this->service->create(LinkData::fromArray($request->validated(), 1));
+        $this->service->create(LinkData::fromArray($request->validated(), LinkStatus::Published->value));
 
         return redirect(URL::route('cp.links.index'))->with('success', 'Информация успешно добавлена');
     }

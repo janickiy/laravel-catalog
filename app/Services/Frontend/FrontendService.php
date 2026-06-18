@@ -4,6 +4,7 @@ namespace App\Services\Frontend;
 
 use App\DTO\Frontend\FeedbackMessageData;
 use App\DTO\Frontend\LinkSubmissionData;
+use App\Enums\LinkStatus;
 use App\Events\FeedbackMailEvent;
 use App\Events\NewlinkNotifyEvent;
 use App\Helpers\FileHelper;
@@ -124,14 +125,16 @@ class FrontendService
     public function submitLink(LinkSubmissionData $data): string
     {
         $result = FileHelper::getScreenShotMini($data->url(), '1024x768', '1024', 'jpg');
-        $status = (int) SettingsHelpers::getSetting('ADD_LINKS_WITHOUT_CHECK') === 1 ? 1 : 0;
-        $link = $this->links->createFromData($data->toLinkData($status, $result['name'] ?? ''));
+        $status = (int) SettingsHelpers::getSetting('ADD_LINKS_WITHOUT_CHECK') === 1
+            ? LinkStatus::Published
+            : LinkStatus::Pending;
+        $link = $this->links->createFromData($data->toLinkData($status->value, $result['name'] ?? ''));
 
         if ($link instanceof Links) {
             event(new NewlinkNotifyEvent($link));
         }
 
-        return $status === 1
+        return $status === LinkStatus::Published
             ? 'Сайт добавлен в каталог'
             : 'Сайт добавлен в каталог и после проверки будет доступен в каталоге';
     }

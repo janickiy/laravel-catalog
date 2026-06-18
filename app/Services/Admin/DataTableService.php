@@ -2,7 +2,7 @@
 
 namespace App\Services\Admin;
 
-use App\Models\Links;
+use App\Enums\LinkStatus;
 use App\Repositories\AdminRepository;
 use App\Repositories\FeedbackRepository;
 use App\Repositories\LinksRepository;
@@ -47,7 +47,7 @@ class DataTableService
             })
             ->editColumn('catalog', fn ($row) => $row->catalog_id == 0 ? 'Разное' : $row->catalog)
             ->addColumn('status_link', fn ($links) => $links->status)
-            ->editColumn('status', fn ($row) => Links::linkStatus($row->status))
+            ->editColumn('status', fn ($row) => LinkStatus::labelFor($row->status))
             ->addColumn('checkbox', fn ($links) => '<input type="checkbox" title="Отметить/Снять отметку" value="' . $links->id . '" name="activate[]">')
             ->rawColumns(['action', 'checkbox'])
             ->make(true);

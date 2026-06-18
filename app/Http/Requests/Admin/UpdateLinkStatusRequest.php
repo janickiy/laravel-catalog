@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Enums\LinkStatus;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateLinkStatusRequest extends FormRequest
 {
@@ -16,7 +18,7 @@ class UpdateLinkStatusRequest extends FormRequest
         return [
             'activate' => 'nullable|array',
             'activate.*' => 'integer|exists:links,id',
-            'action' => 'required|integer|in:0,1,2',
+            'action' => ['required', 'integer', Rule::in(LinkStatus::values())],
         ];
     }
 }

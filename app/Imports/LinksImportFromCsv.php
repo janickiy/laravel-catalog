@@ -2,13 +2,17 @@
 
 namespace App\Imports;
 
-use App\Models\{Links,Catalog};
+use App\Enums\LinkStatus;
+use App\Helpers\StringHelper;
+use App\Models\Catalog;
+use App\Models\Links;
+use App\Services\DomainAvailabilityService;
 use League\Csv\Reader;
 
 class LinksImportFromCsv
 {
 
-   public static function import($path)
+   public static function import($path, DomainAvailabilityService $domainAvailability)
    {
        $n = 0;
        $csv = Reader::createFromPath($path, 'r');
@@ -16,13 +20,13 @@ class LinksImportFromCsv
 
        foreach ($csv as $index => $row) {
 
-           $city = isset($row[0]) ? trim(str_to_utf8($row[0])) : '';
-           $name = isset($row[1]) ?  trim(str_to_utf8($row[1])) : '';
-           $category = isset($row[3]) ? trim(str_to_utf8($row[3])) : '';
+           $city = isset($row[0]) ? trim(StringHelper::str_to_utf8($row[0])) : '';
+           $name = isset($row[1]) ?  trim(StringHelper::str_to_utf8($row[1])) : '';
+           $category = isset($row[3]) ? trim(StringHelper::str_to_utf8($row[3])) : '';
            $url = isset($row[5]) ? trim($row[5]) : '';
            $phone = isset($row[7]) ? trim($row[7]) : '';
 
-           if ($url && isDomainAvailible($url, 5)) {
+           if ($url && $domainAvailability->isAvailable($url, 5)) {
 
                $url_link =  $url;
 
@@ -37,7 +41,7 @@ class LinksImportFromCsv
 
                    if ($tags_row) {
                        foreach($tags_row as $mkey => $mval) {
-                           $tags[$mkey] = str_to_utf8($mval);
+                           $tags[$mkey] = StringHelper::str_to_utf8($mval);
                        }
                    }
 
@@ -66,7 +70,7 @@ class LinksImportFromCsv
                                'keywords' => $keywords,
                                'full_description' => $description,
                                'catalog_id' => $category['id'] ?? 3,
-                               'status' => 1
+                               'status' => LinkStatus::Published->value
                        ]
                        );
                    }
