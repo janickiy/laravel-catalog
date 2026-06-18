@@ -225,7 +225,24 @@ docker exec -w /var/www/html laravel_catalog_app php artisan route:list
 
 # Создать storage link
 docker exec -w /var/www/html laravel_catalog_app php artisan storage:link
+
+# Создать скриншоты для сайтов без изображения
+docker exec -w /var/www/html laravel_catalog_app php artisan screenshot:make
 ```
+
+### Команда `screenshot:make`
+
+Команда `screenshot:make` обновляет изображения сайтов, у которых поле `image` еще не заполнено.
+За один запуск команда выбирает до 10 случайных записей из таблицы `links`, проверяет доступность URL и сохраняет скриншот в `public/uploads/url`.
+
+Запуск в Docker:
+
+```bash
+docker exec -w /var/www/html laravel_catalog_app php artisan screenshot:make
+```
+
+Для полноразмерных скриншотов используется PageSpeed API, поэтому для стабильной работы укажите `GOOGLE_API_KEY` в `.env` или `docker/.env.docker`.
+Если ключ не указан или внешний сервис недоступен, скриншот может не создаться.
 
 ## Публичные ассеты
 
