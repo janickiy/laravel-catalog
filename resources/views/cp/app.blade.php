@@ -152,13 +152,17 @@
 
     @yield('css')
 
-    <script>
-        window.SITE_URL = "{{ url('/') }}";
-        window.AdminI18n = @json([
+    @php
+        $adminI18n = [
             'datatable' => trans('interface.datatable'),
             'datatableLegacy' => trans('interface.datatable_legacy'),
             'confirm' => trans('interface.confirm'),
-        ]);
+        ];
+    @endphp
+
+    <script>
+        window.SITE_URL = "{{ url('/') }}";
+        window.AdminI18n = @json($adminI18n);
     </script>
 </head>
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
