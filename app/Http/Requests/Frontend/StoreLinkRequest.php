@@ -47,20 +47,20 @@ class StoreLinkRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => 'Не указано название!',
-            'url.required' => 'Не указан URL адрес сайта!',
-            'url.url' => 'Не верно указан URL адрес сайта!',
-            'url.unique' => 'Этот сайт уже есть в каталоге!',
-            'email.email' => 'Не верно указан email!',
-            'description.required' => 'Не указано описание!',
-            'description.min' => 'Количество символов в описание не должно быть меньше :min',
-            'description.max' => 'Количество символов в описание не должно быть больше :max',
-            'full_description.required' => 'Не указано полное описание!',
-            'full_description.min' => 'Количество символов в полном описание не должно быть меньше :min',
-            'full_description.max' => 'Количество символов в полном описание не должно быть больше :max',
-            'catalog_id.required' => 'Выберите раздел!',
-            'captcha.required' => 'Не указан защитный код!',
-            'agree.required' => 'Вы должны принять правила каталога',
+            'name.required' => __('interface.validation.name_required'),
+            'url.required' => __('interface.validation.frontend_url_required'),
+            'url.url' => __('interface.validation.frontend_url'),
+            'url.unique' => __('interface.validation.frontend_url_unique'),
+            'email.email' => __('interface.validation.email'),
+            'description.required' => __('interface.validation.description_required'),
+            'description.min' => __('interface.validation.description_min'),
+            'description.max' => __('interface.validation.description_max'),
+            'full_description.required' => __('interface.validation.full_description_required'),
+            'full_description.min' => __('interface.validation.full_description_min'),
+            'full_description.max' => __('interface.validation.full_description_max'),
+            'catalog_id.required' => __('interface.validation.catalog_required'),
+            'captcha.required' => __('interface.validation.captcha_required'),
+            'agree.required' => __('interface.validation.agree_required'),
         ];
     }
 }

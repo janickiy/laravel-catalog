@@ -58,11 +58,11 @@
                     <div class="d-flex flex-wrap gap-2">
                         <a class="btn btn-sm btn-outline-secondary" href="{{ URL::route('cp.links.index') }}">
                             <i class="bi bi-arrow-left"></i>
-                            Назад
+                            {{ __('interface.common.back') }}
                         </a>
                         <a class="btn btn-sm btn-primary" href="{{ URL::route('cp.links.edit', ['id' => $link->id]) }}">
                             <i class="bi bi-pencil-square"></i>
-                            Редактировать
+                            {{ __('interface.common.edit') }}
                         </a>
                     </div>
                 </div>
@@ -75,12 +75,12 @@
                         </div>
 
                         <div class="link-show-item">
-                            <div class="link-show-label">Категория</div>
-                            <div class="fw-semibold">{{ $link->catalog->name ?? 'Разное' }}</div>
+                            <div class="link-show-label">{{ __('interface.common.category') }}</div>
+                            <div class="fw-semibold">{{ $link->catalog->name ?? __('interface.common.misc') }}</div>
                         </div>
 
                         <div class="link-show-item">
-                            <div class="link-show-label">Статус</div>
+                            <div class="link-show-label">{{ __('interface.common.status') }}</div>
                             <div>
                                 <span class="badge {{ $statusColor }}">{{ $statusLabel }}</span>
                                 <span class="text-secondary small ms-1">{{ $statusCode }}</span>
@@ -88,17 +88,17 @@
                         </div>
 
                         <div class="link-show-item">
-                            <div class="link-show-label">Просмотры</div>
+                            <div class="link-show-label">{{ __('interface.common.views') }}</div>
                             <div class="fw-semibold">{{ number_format((int) $link->views, 0, '.', ' ') }}</div>
                         </div>
 
                         <div class="link-show-item">
-                            <div class="link-show-label">Дата создания</div>
+                            <div class="link-show-label">{{ __('interface.common.created_at') }}</div>
                             <div>{{ optional($link->created_at)->format('Y-m-d H:i:s') ?? $empty }}</div>
                         </div>
 
                         <div class="link-show-item">
-                            <div class="link-show-label">Дата обновления</div>
+                            <div class="link-show-label">{{ __('interface.common.updated_at') }}</div>
                             <div>{{ optional($link->updated_at)->format('Y-m-d H:i:s') ?? $empty }}</div>
                         </div>
                     </div>
@@ -114,7 +114,7 @@
 
                     <div class="row g-3 mb-4">
                         <div class="col-12 col-md-4">
-                            <div class="link-show-label">Телефон</div>
+                            <div class="link-show-label">{{ __('interface.common.phone') }}</div>
                             <div>{{ $link->phone ?: $empty }}</div>
                         </div>
                         <div class="col-12 col-md-4">
@@ -122,23 +122,23 @@
                             <div>{{ $link->email ?: $empty }}</div>
                         </div>
                         <div class="col-12 col-md-4">
-                            <div class="link-show-label">Город</div>
+                            <div class="link-show-label">{{ __('interface.common.city') }}</div>
                             <div>{{ $link->city ?: $empty }}</div>
                         </div>
                     </div>
 
                     <div class="mb-4">
-                        <div class="link-show-label mb-2">Описание</div>
+                        <div class="link-show-label mb-2">{{ __('interface.common.description') }}</div>
                         <div class="link-show-text">{{ $link->description ?: $empty }}</div>
                     </div>
 
                     <div class="mb-4">
-                        <div class="link-show-label mb-2">Полное описание</div>
+                        <div class="link-show-label mb-2">{{ __('interface.common.full_description') }}</div>
                         <div class="link-show-text">{{ $link->full_description ?: $empty }}</div>
                     </div>
 
                     <div>
-                        <div class="link-show-label mb-2">Ключевые слова</div>
+                        <div class="link-show-label mb-2">{{ __('interface.common.keywords') }}</div>
                         <div class="link-show-text">{{ $link->keywords ?: $empty }}</div>
                     </div>
                 </div>
@@ -148,14 +148,14 @@
         <div class="col-12 col-xl-4">
             <div class="card shadow-sm">
                 <div class="card-header">
-                    <h3 class="card-title mb-0">Снимок сайта</h3>
+                    <h3 class="card-title mb-0">{{ __('interface.admin.links.screenshot') }}</h3>
                 </div>
                 <div class="card-body">
                     @if (!empty($link->image))
                         <img class="img-fluid rounded border" src="{{ url('uploads/url/' . $link->image) }}" alt="">
                         <div class="small text-secondary mt-2 link-show-url">{{ $link->image }}</div>
                     @else
-                        <div class="text-secondary">Снимок не загружен</div>
+                        <div class="text-secondary">{{ __('interface.admin.links.screenshot_missing') }}</div>
                     @endif
                 </div>
             </div>

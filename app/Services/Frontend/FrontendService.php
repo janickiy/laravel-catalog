@@ -34,9 +34,9 @@ class FrontendService
         [$arr, $number] = $this->catalogGrid($this->catalogs->childrenWithLinkCounts(null), true);
 
         return [
-            'title' => 'Главная страница',
-            'description' => 'Белый каталог сайтов',
-            'keywords' => 'белый каталог сайтов, добавить сайт',
+            'title' => __('interface.frontend.home_page'),
+            'description' => __('interface.frontend.home_description'),
+            'keywords' => __('interface.frontend.home_keywords'),
             'arr' => $arr,
             'number' => $number,
             'links' => $this->links->latestPublished(5),
@@ -52,10 +52,10 @@ class FrontendService
      */
     public function catalogPage(int $id): array
     {
-        $title = 'Разное';
-        $description = 'Белый каталог сайтов';
-        $keywords = 'белый каталог сайтов, добавить сайт';
-        $catalogName = 'Разное';
+        $title = __('interface.common.misc');
+        $description = __('interface.frontend.home_description');
+        $keywords = __('interface.frontend.home_keywords');
+        $catalogName = __('interface.common.misc');
         $paginator = null;
         $arr = [];
         $number = 0;
@@ -87,7 +87,7 @@ class FrontendService
             $description = $catalog->description ?? $description;
             $keywords = $catalog->keywords ?? $keywords;
         } else {
-            $pathway = '<a href="'.route('index').'">Главная</a>» Разное';
+            $pathway = '<a href="'.route('index').'">'.e(__('interface.frontend.home')).'</a>» '.e(__('interface.common.misc'));
             $links = $this->links->paginatePublishedByCatalog(null, 10);
             $rank = $links->firstItem();
             $paginator = $links->links();
@@ -136,7 +136,7 @@ class FrontendService
      */
     public function catalogOptions(): array
     {
-        return $this->catalogs->options([0 => '-Разное']);
+        return $this->catalogs->options([0 => '-'.__('interface.common.misc')]);
     }
 
     /**
@@ -158,8 +158,8 @@ class FrontendService
         }
 
         return $status === LinkStatus::Published
-            ? 'Сайт добавлен в каталог'
-            : 'Сайт добавлен в каталог и после проверки будет доступен в каталоге';
+            ? __('interface.frontend.link_added')
+            : __('interface.frontend.link_added_pending');
     }
 
     /**
@@ -243,7 +243,7 @@ class FrontendService
             ->all();
 
         if ($includeMisc) {
-            $items[] = ['Разное', 0, null, 0, ''];
+            $items[] = [__('interface.common.misc'), 0, null, 0, ''];
         }
 
         $columns = max(1, (int) SettingsHelpers::getSetting('COLUMNS_NUMBER'));
@@ -274,7 +274,7 @@ class FrontendService
      */
     private function pathway(int $id): string
     {
-        $pathway = '<a href="'.URL::route('index').'">Главная</a>';
+        $pathway = '<a href="'.URL::route('index').'">'.e(__('interface.frontend.home')).'</a>';
 
         foreach ($this->catalogs->pathToRoot($id) as [$catalogId, $catalogName]) {
             if ((int) $catalogId === $id) {

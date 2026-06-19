@@ -37,7 +37,7 @@ class LinksController extends Controller
     {
         $status_list = $this->service->statusList();
 
-        return view('cp.links.index', compact('status_list'))->with('title', 'Ссылки');
+        return view('cp.links.index', compact('status_list'))->with('title', __('interface.admin.links.title'));
     }
 
     /**
@@ -49,7 +49,7 @@ class LinksController extends Controller
     {
         $options = $this->service->catalogOptions();
 
-        return view('cp.links.create_edit', compact('options'))->with('title', 'Добавление ссылки');
+        return view('cp.links.create_edit', compact('options'))->with('title', __('interface.admin.links.create_title'));
     }
 
     /**
@@ -62,7 +62,7 @@ class LinksController extends Controller
     {
         $this->service->create(LinkData::fromArray($request->validated(), LinkStatus::Published->value));
 
-        return redirect(URL::route('cp.links.index'))->with('success', 'Информация успешно добавлена');
+        return redirect(URL::route('cp.links.index'))->with('success', __('interface.messages.information_successfully_added'));
     }
 
     /**
@@ -76,7 +76,7 @@ class LinksController extends Controller
         $link = $this->links->findForAdmin($id);
         abort_if(! $link, 404);
 
-        return view('cp.links.show', compact('link'))->with('title', 'Просмотр ссылки');
+        return view('cp.links.show', compact('link'))->with('title', __('interface.admin.links.show_title'));
     }
 
     /**
@@ -92,7 +92,7 @@ class LinksController extends Controller
 
         $options = $this->service->catalogOptions();
 
-        return view('cp.links.create_edit', compact('row', 'options'))->with('title', 'Редактирование ссылки');
+        return view('cp.links.create_edit', compact('row', 'options'))->with('title', __('interface.admin.links.edit_title'));
     }
 
     /**
@@ -105,7 +105,7 @@ class LinksController extends Controller
     {
         $this->service->update(LinkData::fromArray($request->validated()));
 
-        return redirect(URL::route('cp.links.index'))->with('success', 'Данные обновлены');
+        return redirect(URL::route('cp.links.index'))->with('success', __('interface.messages.data_updated'));
     }
 
     /**
@@ -128,7 +128,7 @@ class LinksController extends Controller
     {
         $maxUploadFileSize = StringHelper::maxUploadFileSize();
 
-        return view('cp.links.import', compact('maxUploadFileSize'))->with('title', 'Импорт');
+        return view('cp.links.import', compact('maxUploadFileSize'))->with('title', __('interface.admin.links.import_title'));
     }
 
     /**
@@ -141,7 +141,7 @@ class LinksController extends Controller
     {
         $count = $this->importExport->import($request->file('file'));
 
-        return redirect(URL::route('cp.links.import'))->with('success', 'Импорт завершен. Импортировано '.$count.' ссылок');
+        return redirect(URL::route('cp.links.import'))->with('success', __('interface.messages.import_completed', ['count' => $count]));
     }
 
     /**
@@ -151,7 +151,7 @@ class LinksController extends Controller
     {
         $options = $this->service->catalogOptions();
 
-        return view('cp.links.export', compact('options'))->with('title', 'Экспорт');
+        return view('cp.links.export', compact('options'))->with('title', __('interface.admin.links.export_title'));
     }
 
     /**
@@ -181,6 +181,6 @@ class LinksController extends Controller
     {
         $this->service->updateStatuses($request->validated('activate') ?? [], (int) $request->validated('action'));
 
-        return redirect(URL::route('cp.links.index'))->with('success', 'Данные обновлены');
+        return redirect(URL::route('cp.links.index'))->with('success', __('interface.messages.data_updated'));
     }
 }

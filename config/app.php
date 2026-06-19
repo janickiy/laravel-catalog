@@ -71,6 +71,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Installation State
+    |--------------------------------------------------------------------------
+    |
+    | Fresh deployments copied from .env.example start as not installed and are
+    | redirected to the installer. Existing projects without this flag remain
+    | treated as installed when an .env file is already present.
+    |
+    */
+
+    'installed' => env('APP_INSTALLED', file_exists(base_path('.env'))),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Locale Configuration
     |--------------------------------------------------------------------------
     |
@@ -80,7 +93,30 @@ return [
     |
     */
 
-    'locale' => 'ru',
+    'locale' => env('APP_LOCALE', 'ru'),
+    'installed_locale' => env('APP_LOCALE', 'ru'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Supported Interface Locales
+    |--------------------------------------------------------------------------
+    |
+    | The application interface is available in Russian and English. The values
+    | below are used by the locale middleware and language switchers.
+    |
+    */
+
+    'locales' => ['ru', 'en'],
+
+    'languages' => [
+        'ru' => 'Русский',
+        'en' => 'English',
+    ],
+
+    'flags' => [
+        'ru' => 'ru',
+        'en' => 'us',
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -93,7 +129,7 @@ return [
     |
     */
 
-    'fallback_locale' => 'ru',
+    'fallback_locale' => env('APP_FALLBACK_LOCALE', 'ru'),
 
     /*
     |--------------------------------------------------------------------------

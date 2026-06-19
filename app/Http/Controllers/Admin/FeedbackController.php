@@ -11,6 +11,6 @@ class FeedbackController extends Controller
      */
     public function __invoke(): View
     {
-        return view('cp.feedback.index')->with('title', 'Сообщения с сайта');
+        return view('cp.feedback.index')->with('title', __('interface.admin.feedback'));
     }
 }

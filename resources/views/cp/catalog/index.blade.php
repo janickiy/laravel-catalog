@@ -25,7 +25,7 @@
                                 <a href="{{ URL::route('cp.catalog.create') }}"
                                    class="btn btn-primary btn-sm d-inline-flex align-items-center gap-1">
                                     <i class="bi bi-plus-lg"></i>
-                                    Добавить
+                                    {{ __('interface.common.add') }}
                                 </a>
                             </div>
                         </div>

@@ -45,9 +45,9 @@ class StoreLinkRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'required' => 'Это поле обязательно для заполнения!',
-            'url' => 'URL адрес введен неверно',
-            'url.unique' => 'Сайт с таким URL уже есть в каталоге!',
+            'required' => __('interface.validation.required'),
+            'url' => __('interface.validation.url'),
+            'url.unique' => __('interface.validation.url_unique'),
         ];
     }
 }

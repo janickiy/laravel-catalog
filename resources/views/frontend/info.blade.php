@@ -12,7 +12,7 @@
             <article class="content-card">
                 <div class="section-heading">
                     <div>
-                        <span class="eyebrow">Карточка сайта</span>
+                        <span class="eyebrow">{{ __('interface.frontend.site_card') }}</span>
                         <h1>{{ $link->name }}</h1>
                     </div>
                 </div>
@@ -23,20 +23,20 @@
 
                 <div class="details-list">
                     <div class="details-list__item">
-                        <span class="details-list__label">Раздел каталога</span>
-                        <span>{{ $link->catalog->name ?? 'Разное' }}</span>
+                        <span class="details-list__label">{{ __('interface.frontend.catalog_section') }}</span>
+                        <span>{{ $link->catalog->name ?? __('interface.common.misc') }}</span>
                     </div>
 
                     @if($link->contact)
                         <div class="details-list__item">
-                            <span class="details-list__label">Контакты</span>
+                            <span class="details-list__label">{{ __('interface.common.contacts') }}</span>
                             <span>{{ $link->contact }}</span>
                         </div>
                     @endif
 
                     @if($link->phone)
                         <div class="details-list__item">
-                            <span class="details-list__label">Телефон</span>
+                            <span class="details-list__label">{{ __('interface.common.phone') }}</span>
                             <span>{{ $link->phone }}</span>
                         </div>
                     @endif
@@ -50,18 +50,18 @@
 
                     @if($link->city)
                         <div class="details-list__item">
-                            <span class="details-list__label">Город</span>
+                            <span class="details-list__label">{{ __('interface.common.city') }}</span>
                             <span>{{ $link->city }}</span>
                         </div>
                     @endif
 
                     <div class="details-list__item">
-                        <span class="details-list__label">Посещений</span>
+                        <span class="details-list__label">{{ __('interface.frontend.visits') }}</span>
                         <span>{{ $link->views }}</span>
                     </div>
 
                     <div class="details-list__item">
-                        <span class="details-list__label">Адрес сайта</span>
+                        <span class="details-list__label">{{ __('interface.common.site_address') }}</span>
                         <noindex>
                             <a rel="nofollow" href="{{ URL::route('redirect', ['id' => $link->id]) }}">{{ $link->url }}</a>
                         </noindex>
@@ -73,8 +73,8 @@
                 <section class="content-card">
                     <div class="section-heading">
                         <div>
-                            <span class="eyebrow">Еще в разделе</span>
-                            <h2>Похожие сайты</h2>
+                            <span class="eyebrow">{{ __('interface.frontend.more_in_category') }}</span>
+                            <h2>{{ __('interface.frontend.similar_sites') }}</h2>
                         </div>
                     </div>
 

@@ -31,7 +31,7 @@
         <div class="col-12 col-xl-8">
             <div class="card shadow-sm">
                 <div class="card-header">
-                    <h3 class="card-title mb-0">Импорт ссылок</h3>
+                    <h3 class="card-title mb-0">{{ __('interface.admin.links.import_heading') }}</h3>
                 </div>
 
                 {!! Form::open(['url' => URL::route('cp.links.importlink'), 'files' => true, 'method' => 'post']) !!}
@@ -43,7 +43,7 @@
                                 </span>
 
                                 <div class="flex-fill">
-                                    {!! Form::label('file', 'Файл импорта', ['class' => 'form-label fw-semibold']) !!}
+                                    {!! Form::label('file', __('interface.admin.links.import_file'), ['class' => 'form-label fw-semibold']) !!}
                                     {!! Form::file('file', [
                                         'id' => 'file',
                                         'class' => 'form-control' . ($errors->has('file') ? ' is-invalid' : ''),
@@ -61,11 +61,11 @@
                     <div class="card-footer d-flex flex-column flex-sm-row gap-2 justify-content-between">
                         <a class="btn btn-outline-secondary" href="{{ URL::route('cp.links.index') }}">
                             <i class="bi bi-arrow-left"></i>
-                            Назад
+                            {{ __('interface.common.back') }}
                         </a>
                         <button type="submit" class="btn btn-primary">
                             <i class="bi bi-cloud-arrow-up"></i>
-                            Импортировать
+                            {{ __('interface.admin.links.import_submit') }}
                         </button>
                     </div>
                 {!! Form::close() !!}
@@ -75,15 +75,15 @@
         <div class="col-12 col-xl-4">
             <div class="card shadow-sm">
                 <div class="card-header">
-                    <h3 class="card-title mb-0">Параметры файла</h3>
+                    <h3 class="card-title mb-0">{{ __('interface.admin.links.file_parameters') }}</h3>
                 </div>
                 <div class="card-body import-meta">
                     <div class="d-flex justify-content-between gap-3">
-                        <span class="text-secondary">Форматы</span>
+                        <span class="text-secondary">{{ __('interface.common.file_formats') }}</span>
                         <span class="fw-semibold text-end">CSV, TXT, XLS, XLSX</span>
                     </div>
                     <div class="d-flex justify-content-between gap-3">
-                        <span class="text-secondary">Максимальный размер</span>
+                        <span class="text-secondary">{{ __('interface.common.max_size') }}</span>
                         <span class="fw-semibold text-end">{{ $maxUploadFileSize }}</span>
                     </div>
                 </div>

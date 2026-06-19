@@ -37,7 +37,7 @@ class NewlinkNotify extends Mailable implements ShouldQueue
     public function build(): static
     {
         return $this->from(SettingsHelpers::getSetting('FROM'), SettingsHelpers::getSetting('SITE_NAME'))
-            ->subject('Добавлена новая ссылка')
+            ->subject(__('mail.subject.new_link'))
             ->view('mail.newlink', ['data' => $this->links]);
     }
 }

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="utf-8">
-    <title>Белый каталог сайтов | @yield('title')</title>
+    <title>{{ __('interface.frontend.site_title') }} | @yield('title')</title>
     <meta name="description" content="@yield('description')">
     <meta name="keywords" content="@yield('keywords')">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -53,14 +53,23 @@
                 <img src="{{ asset('img/my-links-manager-logo.svg') }}" alt="My Links Manager">
             </a>
 
-            <nav class="site-nav" aria-label="Основная навигация">
-                <a class="site-nav__link {{ Request::is('/') ? 'is-active' : '' }}" href="{{ URL::route('index') }}">Главная</a>
-                <a class="site-nav__link {{ Request::is('rules*') ? 'is-active' : '' }}" href="{{ URL::route('rules') }}">Правила</a>
-                <a class="site-nav__link {{ Request::is('contact*') ? 'is-active' : '' }}" href="{{ URL::route('contact') }}">Обратная связь</a>
+            <nav class="site-nav" aria-label="{{ __('interface.frontend.main_nav') }}">
+                <a class="site-nav__link {{ Request::is('/') ? 'is-active' : '' }}" href="{{ URL::route('index') }}">{{ __('interface.frontend.home') }}</a>
+                <a class="site-nav__link {{ Request::is('rules*') ? 'is-active' : '' }}" href="{{ URL::route('rules') }}">{{ __('interface.frontend.rules') }}</a>
+                <a class="site-nav__link {{ Request::is('contact*') ? 'is-active' : '' }}" href="{{ URL::route('contact') }}">{{ __('interface.frontend.feedback') }}</a>
                 <a class="site-nav__cta" href="{{ URL::route('addurl') }}">
                     <i class="bi bi-plus-lg"></i>
-                    <span>Добавить сайт</span>
+                    <span>{{ __('interface.frontend.add_site') }}</span>
                 </a>
+                <form class="site-language" method="post" action="{{ route('language.change') }}" aria-label="{{ __('interface.language.label') }}">
+                    @csrf
+                    <i class="bi bi-translate"></i>
+                    <select name="locale" title="{{ __('interface.language.label') }}" onchange="this.form.submit()">
+                        @foreach(config('app.languages', []) as $code => $languageName)
+                            <option value="{{ $code }}" @selected(app()->getLocale() === $code)>{{ strtoupper($code) }}</option>
+                        @endforeach
+                    </select>
+                </form>
             </nav>
         </div>
     </header>
@@ -74,7 +83,7 @@
     <footer class="site-footer">
         <div class="container site-footer__inner">
             <span>© {{ date('Y') }} My Links Manager</span>
-            <a href="{{ URL::route('rules') }}">Правила каталога</a>
+            <a href="{{ URL::route('rules') }}">{{ __('interface.frontend.footer_rules') }}</a>
         </div>
     </footer>
 </div>

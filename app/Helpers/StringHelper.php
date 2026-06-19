@@ -99,6 +99,14 @@ class StringHelper
     }
 
     /**
+     * Форматирует MySQL-дату текстовым месяцем на текущем языке интерфейса.
+     */
+    public static function mysql_localized_date(mixed $datestr = '', bool $short = false): string
+    {
+        return self::formatMysqlDate($datestr, $short, self::currentLocale());
+    }
+
+    /**
      * Форматирует MySQL datetime русским текстовым месяцем.
      */
     public static function mysql_russian_datetime(mixed $datestr = '', bool $short = false): string
@@ -112,6 +120,14 @@ class StringHelper
     public static function mysql_english_datetime(mixed $datestr = '', bool $short = false): string
     {
         return self::formatMysqlDateTime($datestr, $short, 'en');
+    }
+
+    /**
+     * Форматирует MySQL datetime текстовым месяцем на текущем языке интерфейса.
+     */
+    public static function mysql_localized_datetime(mixed $datestr = '', bool $short = false): string
+    {
+        return self::formatMysqlDateTime($datestr, $short, self::currentLocale());
     }
 
     /**
@@ -299,6 +315,16 @@ class StringHelper
     private static function monthName(int $month, bool $short, string $locale, string $format): string
     {
         return self::MONTHS[$locale][$format][$short ? 'short' : 'full'][$month] ?? '';
+    }
+
+    /**
+     * Возвращает поддерживаемую текущую локаль для форматирования дат.
+     */
+    private static function currentLocale(): string
+    {
+        $locale = app()->getLocale();
+
+        return isset(self::MONTHS[$locale]) ? $locale : 'ru';
     }
 
     /**

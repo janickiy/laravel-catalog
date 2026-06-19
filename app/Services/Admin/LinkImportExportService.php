@@ -127,11 +127,11 @@ class LinkImportExportService
 
         $sheet = $spreadsheet->setActiveSheetIndex(0);
         $sheet
-            ->setCellValue('A1', 'Город')
-            ->setCellValue('B1', 'Название')
-            ->setCellValue('C1', 'Категория')
+            ->setCellValue('A1', __('interface.common.city'))
+            ->setCellValue('B1', __('interface.common.name'))
+            ->setCellValue('C1', __('interface.common.category'))
             ->setCellValue('D1', 'URL')
-            ->setCellValue('E1', 'Телефон')
+            ->setCellValue('E1', __('interface.common.phone'))
             ->setCellValue('F1', 'Email');
 
         $i = 1;

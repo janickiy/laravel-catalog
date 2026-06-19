@@ -27,7 +27,7 @@ class SettingsController extends Controller
      */
     public function index(): View
     {
-        return view('cp.settings.index')->with('title', 'Настройки');
+        return view('cp.settings.index')->with('title', __('interface.admin.settings.title'));
     }
 
     /**
@@ -37,7 +37,7 @@ class SettingsController extends Controller
      */
     public function create(): View
     {
-        return view('cp.settings.create_edit')->with('title', 'Добавление настроек');
+        return view('cp.settings.create_edit')->with('title', __('interface.admin.settings.create_title'));
     }
 
 
@@ -51,7 +51,7 @@ class SettingsController extends Controller
     {
         $this->service->create(SettingsData::fromArray($request->validated()));
 
-        return redirect(URL::route('cp.settings.index'))->with('success', 'Информация успешно добавлена');
+        return redirect(URL::route('cp.settings.index'))->with('success', __('interface.messages.information_successfully_added'));
     }
 
     /**
@@ -65,7 +65,7 @@ class SettingsController extends Controller
         $row = $this->settings->find($id);
         abort_if(! $row, 404);
 
-        return view('cp.settings.create_edit', compact('row'))->with('title', 'Редактирование настроек');
+        return view('cp.settings.create_edit', compact('row'))->with('title', __('interface.admin.settings.edit_title'));
     }
 
     /**
@@ -78,7 +78,7 @@ class SettingsController extends Controller
     {
         $this->service->update(SettingsData::fromArray($request->validated()));
 
-        return redirect(URL::route('cp.settings.index'))->with('success', 'Данные обновлены');
+        return redirect(URL::route('cp.settings.index'))->with('success', __('interface.messages.data_updated'));
     }
 
     /**

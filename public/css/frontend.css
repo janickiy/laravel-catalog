@@ -145,6 +145,28 @@ textarea:focus {
     transform: translateY(-1px);
 }
 
+.site-language {
+    align-items: center;
+    background: rgba(13, 110, 253, .08);
+    border: 1px solid rgba(13, 110, 253, .18);
+    border-radius: var(--mlm-radius);
+    color: var(--mlm-blue-dark);
+    display: inline-flex;
+    gap: .35rem;
+    min-height: 40px;
+    padding: .35rem .55rem;
+}
+
+.site-language select {
+    appearance: none;
+    background: transparent;
+    border: 0;
+    color: inherit;
+    cursor: pointer;
+    font-weight: 750;
+    min-width: 2.6rem;
+}
+
 .site-main {
     flex: 1 0 auto;
     padding: 2rem 0 2.5rem;
@@ -603,7 +625,8 @@ textarea.form-control {
     }
 
     .site-nav__link,
-    .site-nav__cta {
+    .site-nav__cta,
+    .site-language {
         font-size: .92rem;
         justify-content: center;
         min-height: 38px;

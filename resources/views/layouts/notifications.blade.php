@@ -1,6 +1,6 @@
 @if (Session::has('message'))
     <div class="alert alert-warning fade in">
-        <button type="button" class="close" data-dismiss="alert" data-bs-dismiss="alert" aria-label="Закрыть">
+        <button type="button" class="close" data-dismiss="alert" data-bs-dismiss="alert" aria-label="{{ __('interface.common.close') }}">
             ×
         </button>
         <i class="bi bi-exclamation-triangle"></i>
@@ -10,7 +10,7 @@
 
 @if (session('success'))
     <div class="alert alert-success fade in">
-        <button type="button" class="close" data-dismiss="alert" data-bs-dismiss="alert" aria-label="Закрыть">
+        <button type="button" class="close" data-dismiss="alert" data-bs-dismiss="alert" aria-label="{{ __('interface.common.close') }}">
             ×
         </button>
         <i class="bi bi-check-circle"></i>
@@ -20,7 +20,7 @@
 
 @if (session('error'))
     <div class="alert alert-danger fade in">
-        <button type="button" class="close" data-dismiss="alert" data-bs-dismiss="alert" aria-label="Закрыть">
+        <button type="button" class="close" data-dismiss="alert" data-bs-dismiss="alert" aria-label="{{ __('interface.common.close') }}">
             ×
         </button>
         <i class="bi bi-x-circle"></i>

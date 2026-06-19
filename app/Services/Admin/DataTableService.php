@@ -28,9 +28,9 @@ class DataTableService
     {
         return DataTables::of($this->admins->query())
             ->addColumn('action', function ($row) {
-                $editBtn = '<a title="редактировать" class="btn btn-xs btn-primary" href="'.route('cp.admin.edit', ['id' => $row->id]).'"><span class="fa fa-edit"></span></a> &nbsp;';
+                $editBtn = '<a title="'.e(__('interface.common.edit')).'" class="btn btn-xs btn-primary" href="'.route('cp.admin.edit', ['id' => $row->id]).'"><span class="fa fa-edit"></span></a> &nbsp;';
                 $deleteBtn = $row->id !== Auth::id()
-                    ? '<a title="удалить" class="btn btn-xs btn-danger deleteRow" id="'.$row->id.'" data-delete-url="'.route('cp.admin.destroy', ['id' => $row->id]).'"><span class="fa fa-remove"></span></a>'
+                    ? '<a title="'.e(__('interface.common.delete')).'" class="btn btn-xs btn-danger deleteRow" id="'.$row->id.'" data-delete-url="'.route('cp.admin.destroy', ['id' => $row->id]).'"><span class="fa fa-remove"></span></a>'
                     : '';
 
                 return '<div class="nobr"> '.$editBtn.$deleteBtn.'</div>';
@@ -48,16 +48,16 @@ class DataTableService
     {
         return DataTables::of($this->links->dataTableQuery())
             ->addColumn('action', function ($row) {
-                $showBtn = '<a title="просмотр" class="btn btn-sm btn-outline-info" href="'.route('cp.links.show', ['id' => $row->id]).'"><span class="bi bi-eye"></span></a>';
-                $editBtn = '<a title="редактировать" class="btn btn-sm btn-outline-primary" href="'.route('cp.links.edit', ['id' => $row->id]).'"><span class="bi bi-pencil-square"></span></a>';
-                $deleteBtn = '<a title="удалить" class="btn btn-sm btn-outline-danger deleteRow" id="'.$row->id.'" data-delete-url="'.route('cp.links.destroy', ['id' => $row->id]).'"><span class="bi bi-trash"></span></a>';
+                $showBtn = '<a title="'.e(__('interface.common.view')).'" class="btn btn-sm btn-outline-info" href="'.route('cp.links.show', ['id' => $row->id]).'"><span class="bi bi-eye"></span></a>';
+                $editBtn = '<a title="'.e(__('interface.common.edit')).'" class="btn btn-sm btn-outline-primary" href="'.route('cp.links.edit', ['id' => $row->id]).'"><span class="bi bi-pencil-square"></span></a>';
+                $deleteBtn = '<a title="'.e(__('interface.common.delete')).'" class="btn btn-sm btn-outline-danger deleteRow" id="'.$row->id.'" data-delete-url="'.route('cp.links.destroy', ['id' => $row->id]).'"><span class="bi bi-trash"></span></a>';
 
                 return '<div class="btn-group btn-group-sm" role="group">'.$showBtn.$editBtn.$deleteBtn.'</div>';
             })
-            ->editColumn('catalog', fn ($row) => $row->catalog_id === null ? 'Разное' : $row->catalog)
+            ->editColumn('catalog', fn ($row) => $row->catalog_id === null ? __('interface.common.misc') : $row->catalog)
             ->editColumn('status', fn ($row) => '<span class="badge '.LinkStatus::cssColorFor($row->status).'">'.e(LinkStatus::labelFor($row->status)).'</span>')
             ->editColumn('created_at', fn ($row) => $this->formatDate($row->created_at))
-            ->addColumn('checkbox', fn ($links) => '<input type="checkbox" title="Отметить/Снять отметку" value="'.$links->id.'" name="activate[]">')
+            ->addColumn('checkbox', fn ($links) => '<input type="checkbox" title="'.e(__('interface.admin.links.bulk_status')).'" value="'.$links->id.'" name="activate[]">')
             ->rawColumns(['action', 'checkbox', 'status'])
             ->make(true);
     }
@@ -80,8 +80,8 @@ class DataTableService
     {
         return DataTables::of($this->settings->query())
             ->addColumn('action', function ($row) {
-                $editBtn = '<a title="редактировать" class="btn btn-xs btn-primary" href="'.route('cp.settings.edit', ['id' => $row->id]).'"><span class="fa fa-edit"></span></a> &nbsp;';
-                $deleteBtn = '<a title="удалить" class="btn btn-xs btn-danger deleteRow" id="'.$row->id.'" data-delete-url="'.route('cp.settings.destroy', ['id' => $row->id]).'"><span class="fa fa-remove"></span></a>';
+                $editBtn = '<a title="'.e(__('interface.common.edit')).'" class="btn btn-xs btn-primary" href="'.route('cp.settings.edit', ['id' => $row->id]).'"><span class="fa fa-edit"></span></a> &nbsp;';
+                $deleteBtn = '<a title="'.e(__('interface.common.delete')).'" class="btn btn-xs btn-danger deleteRow" id="'.$row->id.'" data-delete-url="'.route('cp.settings.destroy', ['id' => $row->id]).'"><span class="fa fa-remove"></span></a>';
 
                 return '<div class="nobr"> '.$editBtn.$deleteBtn.'</div>';
             })

@@ -33,11 +33,11 @@ class StoreFeedbackRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => 'Укажите Ваше имя!',
-            'email.required' => 'Не указан Email!',
-            'email.email' => 'Не верно указан Email!',
-            'message.required' => 'Введите сообщение',
-            'captcha.required' => 'Не указан защитный код!',
+            'name.required' => __('interface.validation.feedback_name_required'),
+            'email.required' => __('interface.validation.email_required'),
+            'email.email' => __('interface.validation.email'),
+            'message.required' => __('interface.validation.feedback_message_required'),
+            'captcha.required' => __('interface.validation.captcha_required'),
         ];
     }
 }

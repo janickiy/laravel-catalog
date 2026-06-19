@@ -53,7 +53,7 @@
         <div class="col-12 col-xl-8">
             <div class="card shadow-sm">
                 <div class="card-header">
-                    <h3 class="card-title mb-0">Экспорт ссылок</h3>
+                    <h3 class="card-title mb-0">{{ __('interface.admin.links.export_heading') }}</h3>
                 </div>
 
                 {!! Form::open(['url' => URL::route('cp.links.export_link'), 'method' => 'post']) !!}
@@ -61,7 +61,7 @@
                         <div class="mb-4">
                             <div class="d-flex align-items-center gap-2 mb-3">
                                 <i class="bi bi-file-earmark-arrow-down text-primary"></i>
-                                {!! Form::label('export_type_text', 'Формат файла', ['class' => 'form-label fw-semibold mb-0']) !!}
+                                {!! Form::label('export_type_text', __('interface.admin.links.file_format'), ['class' => 'form-label fw-semibold mb-0']) !!}
                             </div>
 
                             <div class="export-choice-grid">
@@ -75,7 +75,7 @@
                                             <i class="bi bi-filetype-txt fs-5"></i>
                                         </span>
                                         <span>
-                                            <span class="d-block fw-semibold">Текст</span>
+                                            <span class="d-block fw-semibold">{{ __('interface.admin.links.text') }}</span>
                                             <span class="text-secondary small">TXT</span>
                                         </span>
                                     </label>
@@ -106,7 +106,7 @@
                         <div class="mb-4">
                             <div class="d-flex align-items-center gap-2 mb-3">
                                 <i class="bi bi-file-zip text-primary"></i>
-                                {!! Form::label('compress_none', 'Архивирование', ['class' => 'form-label fw-semibold mb-0']) !!}
+                                {!! Form::label('compress_none', __('interface.admin.links.archive_type'), ['class' => 'form-label fw-semibold mb-0']) !!}
                             </div>
 
                             <div class="export-choice-grid">
@@ -120,8 +120,8 @@
                                             <i class="bi bi-file-earmark fs-5"></i>
                                         </span>
                                         <span>
-                                            <span class="d-block fw-semibold">Без архива</span>
-                                            <span class="text-secondary small">Обычный файл</span>
+                                            <span class="d-block fw-semibold">{{ __('interface.admin.links.without_archive') }}</span>
+                                            <span class="text-secondary small">{{ __('interface.admin.links.regular_file') }}</span>
                                         </span>
                                     </label>
                                 </div>
@@ -137,7 +137,7 @@
                                         </span>
                                         <span>
                                             <span class="d-block fw-semibold">ZIP</span>
-                                            <span class="text-secondary small">Архив</span>
+                                            <span class="text-secondary small">{{ __('interface.common.archive') }}</span>
                                         </span>
                                     </label>
                                 </div>
@@ -149,10 +149,10 @@
                         </div>
 
                         <div>
-                            {!! Form::label('catalog_id', 'Категория', ['class' => 'form-label fw-semibold']) !!}
+                            {!! Form::label('catalog_id', __('interface.common.category'), ['class' => 'form-label fw-semibold']) !!}
                             {!! Form::select('catalog_id', $options, old('catalog_id'), [
                                 'id' => 'catalog_id',
-                                'placeholder' => 'Все категории',
+                                'placeholder' => __('interface.common.all_categories'),
                                 'class' => 'form-select' . ($errors->has('catalog_id') ? ' is-invalid' : ''),
                             ]) !!}
 
@@ -165,11 +165,11 @@
                     <div class="card-footer d-flex flex-column flex-sm-row gap-2 justify-content-between">
                         <a class="btn btn-outline-secondary" href="{{ URL::route('cp.links.index') }}">
                             <i class="bi bi-arrow-left"></i>
-                            Назад
+                            {{ __('interface.common.back') }}
                         </a>
                         <button type="submit" class="btn btn-primary">
                             <i class="bi bi-download"></i>
-                            Экспортировать
+                            {{ __('interface.admin.links.export_submit') }}
                         </button>
                     </div>
                 {!! Form::close() !!}
@@ -179,20 +179,20 @@
         <div class="col-12 col-xl-4">
             <div class="card shadow-sm">
                 <div class="card-header">
-                    <h3 class="card-title mb-0">Параметры экспорта</h3>
+                    <h3 class="card-title mb-0">{{ __('interface.admin.links.export_parameters') }}</h3>
                 </div>
                 <div class="card-body export-meta">
                     <div class="d-flex justify-content-between gap-3">
-                        <span class="text-secondary">Форматы</span>
+                        <span class="text-secondary">{{ __('interface.common.file_formats') }}</span>
                         <span class="fw-semibold text-end">TXT, XLSX</span>
                     </div>
                     <div class="d-flex justify-content-between gap-3">
-                        <span class="text-secondary">Архив</span>
+                        <span class="text-secondary">{{ __('interface.common.archive') }}</span>
                         <span class="fw-semibold text-end">ZIP</span>
                     </div>
                     <div class="d-flex justify-content-between gap-3">
-                        <span class="text-secondary">Категория</span>
-                        <span class="fw-semibold text-end">Опционально</span>
+                        <span class="text-secondary">{{ __('interface.common.category') }}</span>
+                        <span class="fw-semibold text-end">{{ __('interface.common.optional') }}</span>
                     </div>
                 </div>
             </div>

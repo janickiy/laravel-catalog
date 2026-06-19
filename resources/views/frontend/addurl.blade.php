@@ -2,17 +2,17 @@
 
 @section('title', $title)
 
-@section('description', 'Добавление сайта')
+@section('description', __('interface.frontend.add_site_description'))
 
-@section('keywords', 'белый каталог сайтов, добавить url, добавить сайт')
+@section('keywords', __('interface.frontend.add_site_keywords'))
 
 @section('content')
     <section class="content-card form-card">
         <div class="section-heading">
             <div>
-                <span class="eyebrow">Новая запись</span>
+                <span class="eyebrow">{{ __('interface.frontend.new_record') }}</span>
                 <h1>{{ $title }}</h1>
-                <p>Заполните данные сайта, выберите раздел и отправьте запись на модерацию.</p>
+                <p>{{ __('interface.frontend.add_site_intro') }}</p>
             </div>
         </div>
 
@@ -24,14 +24,14 @@
             </div>
         @endif
 
-        <p class="form-help">Поля со звездочкой обязательны для заполнения.</p>
+        <p class="form-help">{{ __('interface.common.required_fields_frontend') }}</p>
 
         {!! Form::open(['url' =>  URL::route('add'), 'method' => 'post', 'class' => 'frontend-form']) !!}
             <div class="form-group">
-                {!! Form::label('name', 'Название*', ['class' => 'form-label']) !!}
+                {!! Form::label('name', __('interface.frontend.site_name'), ['class' => 'form-label']) !!}
                 {!! Form::text('name', old('name', null), [
                     'class' => 'form-control' . ($errors->has('name') ? ' is-invalid' : ''),
-                    'placeholder' => 'Название сайта',
+                    'placeholder' => __('interface.frontend.site_name_placeholder'),
                 ]) !!}
                 @if ($errors->has('name'))
                     <span class="form-error">{{ $errors->first('name') }}</span>
@@ -39,9 +39,9 @@
             </div>
 
             <div class="form-group">
-                {!! Form::label('catalog_id', 'Раздел*', ['class' => 'form-label']) !!}
+                {!! Form::label('catalog_id', __('interface.frontend.section'), ['class' => 'form-label']) !!}
                 {!! Form::select('catalog_id', $options, old('catalog_id', null), [
-                    'placeholder' => 'Выберите раздел',
+                    'placeholder' => __('interface.frontend.choose_section'),
                     'class' => 'form-control' . ($errors->has('catalog_id') ? ' is-invalid' : ''),
                 ]) !!}
                 @if ($errors->has('catalog_id'))
@@ -50,7 +50,7 @@
             </div>
 
             <div class="form-group">
-                {!! Form::label('url', 'URL адрес сайта*', ['class' => 'form-label']) !!}
+                {!! Form::label('url', __('interface.frontend.url_address'), ['class' => 'form-label']) !!}
                 {!! Form::text('url', old('url', null), [
                     'class' => 'form-control' . ($errors->has('url') ? ' is-invalid' : ''),
                     'placeholder' => 'https://example.com',
@@ -63,7 +63,7 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group">
-                        {!! Form::label('phone', 'Телефон', ['class' => 'form-label']) !!}
+                        {!! Form::label('phone', __('interface.common.phone'), ['class' => 'form-label']) !!}
                         {!! Form::text('phone', old('phone', null), [
                             'class' => 'form-control' . ($errors->has('phone') ? ' is-invalid' : ''),
                             'placeholder' => '+7 999 000-00-00',
@@ -76,7 +76,7 @@
 
                 <div class="col-sm-6">
                     <div class="form-group">
-                        {!! Form::label('email', 'Email', ['class' => 'form-label']) !!}
+                        {!! Form::label('email', __('interface.common.email'), ['class' => 'form-label']) !!}
                         {!! Form::text('email', old('email', null), [
                             'class' => 'form-control' . ($errors->has('email') ? ' is-invalid' : ''),
                             'placeholder' => 'mail@example.com',
@@ -89,9 +89,9 @@
             </div>
 
             <div class="form-group">
-                {!! Form::label('description', 'Описание*', ['class' => 'form-label']) !!}
+                {!! Form::label('description', __('interface.frontend.short_description'), ['class' => 'form-label']) !!}
                 {!! Form::textarea('description', old('description', null), [
-                    'placeholder' => 'Краткое описание сайта',
+                    'placeholder' => __('interface.frontend.short_description_placeholder'),
                     'class' => 'form-control' . ($errors->has('description') ? ' is-invalid' : ''),
                     'rows' => 3,
                 ]) !!}
@@ -101,9 +101,9 @@
             </div>
 
             <div class="form-group">
-                {!! Form::label('full_description', 'Полное описание*', ['class' => 'form-label']) !!}
+                {!! Form::label('full_description', __('interface.frontend.full_description'), ['class' => 'form-label']) !!}
                 {!! Form::textarea('full_description', old('full_description', null), [
-                    'placeholder' => 'Подробное описание сайта',
+                    'placeholder' => __('interface.frontend.full_description_placeholder'),
                     'class' => 'form-control' . ($errors->has('full_description') ? ' is-invalid' : ''),
                     'rows' => 4,
                 ]) !!}
@@ -113,9 +113,9 @@
             </div>
 
             <div class="form-group">
-                {!! Form::label('keywords', 'Ключевые слова', ['class' => 'form-label']) !!}
+                {!! Form::label('keywords', __('interface.common.keywords'), ['class' => 'form-label']) !!}
                 {!! Form::textarea('keywords', old('keywords', null), [
-                    'placeholder' => 'Ключевые слова через запятую',
+                    'placeholder' => __('interface.frontend.keywords_placeholder'),
                     'class' => 'form-control' . ($errors->has('keywords') ? ' is-invalid' : ''),
                     'rows' => 2,
                 ]) !!}
@@ -125,9 +125,9 @@
             </div>
 
             <div class="form-group">
-                {!! Form::label('htmlcode_banner', 'HTML код баннера', ['class' => 'form-label']) !!}
+                {!! Form::label('htmlcode_banner', __('interface.common.html_banner'), ['class' => 'form-label']) !!}
                 {!! Form::textarea('htmlcode_banner', old('htmlcode_banner', null), [
-                    'placeholder' => 'HTML код баннера',
+                    'placeholder' => __('interface.frontend.html_banner_placeholder'),
                     'class' => 'form-control' . ($errors->has('htmlcode_banner') ? ' is-invalid' : ''),
                     'rows' => 3,
                 ]) !!}
@@ -137,10 +137,10 @@
             </div>
 
             <div class="form-group captcha-block">
-                {!! Form::label('captcha', 'Защитный код*', ['class' => 'form-label']) !!}
+                {!! Form::label('captcha', __('interface.frontend.captcha'), ['class' => 'form-label']) !!}
                 {!! Form::text('captcha', null, [
                     'class' => 'form-control' . ($errors->has('captcha') ? ' is-invalid' : ''),
-                    'placeholder' => 'Введите код с картинки',
+                    'placeholder' => __('interface.frontend.captcha_placeholder'),
                     'id' => 'captcha',
                 ]) !!}
                 <div>@captcha</div>
@@ -152,7 +152,7 @@
             <div class="form-group">
                 <label class="checkbox-line">
                     {!! Form::checkbox('agree', 1, old('agree') ? true : false) !!}
-                    <span>С <a href="{{ URL::route('rules') }}" target="_blank" rel="noopener">правилами участия</a> согласен(на)</span>
+                    <span>{{ __('interface.frontend.agree_prefix') }} <a href="{{ URL::route('rules') }}" target="_blank" rel="noopener">{{ __('interface.frontend.agree_link') }}</a> {{ __('interface.frontend.agree_suffix') }}</span>
                 </label>
                 @if ($errors->has('agree'))
                     <span class="form-error">{{ $errors->first('agree') }}</span>
@@ -162,7 +162,7 @@
             <div>
                 <button type="submit" class="btn btn-primary btn-lg">
                     <i class="bi bi-plus-lg"></i>
-                    Добавить
+                    {{ __('interface.frontend.add_submit') }}
                 </button>
             </div>
         {!! Form::close() !!}

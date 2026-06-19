@@ -28,7 +28,7 @@ class LinkService
      */
     public function catalogOptions(): array
     {
-        return $this->catalogs->options([0 => '-Разное']);
+        return $this->catalogs->options([0 => '-'.__('interface.common.misc')]);
     }
 
 

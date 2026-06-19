@@ -36,7 +36,7 @@ class FeedbackMailer extends Mailable implements ShouldQueue
     public function build(): static
     {
         return $this->from(SettingsHelpers::getSetting('FROM'), SettingsHelpers::getSetting('SITE_NAME'))
-            ->subject('Форма обратной связи')
+            ->subject(__('mail.subject.feedback'))
             ->view('mail.feedback', ['data' => $this->data]);
     }
 }

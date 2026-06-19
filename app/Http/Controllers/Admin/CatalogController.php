@@ -29,7 +29,7 @@ class CatalogController extends Controller
     {
         $catalogTree = $this->service->treeHtml();
 
-        return view('cp.catalog.index', compact('catalogTree'))->with('title', 'Категории');
+        return view('cp.catalog.index', compact('catalogTree'))->with('title', __('interface.admin.catalog.title'));
     }
 
     /**
@@ -43,7 +43,7 @@ class CatalogController extends Controller
         $options = $this->service->options();
         $maxUploadFileSize = StringHelper::maxUploadFileSize();
 
-        return view('cp.catalog.create_edit', compact('parent_id', 'options', 'maxUploadFileSize'))->with('title', 'Добавление категории');
+        return view('cp.catalog.create_edit', compact('parent_id', 'options', 'maxUploadFileSize'))->with('title', __('interface.admin.catalog.create_title'));
     }
 
     /**
@@ -60,7 +60,7 @@ class CatalogController extends Controller
             $request->file('image'),
         );
 
-        return redirect(URL::route('cp.catalog.index'))->with('success', 'Информация успешно добавлена');
+        return redirect(URL::route('cp.catalog.index'))->with('success', __('interface.messages.information_successfully_added'));
     }
 
     /**
@@ -79,7 +79,7 @@ class CatalogController extends Controller
         $maxUploadFileSize = StringHelper::maxUploadFileSize();
         unset($options[$id]);
 
-        return view('cp.catalog.create_edit', compact('row', 'parent_id', 'options', 'maxUploadFileSize'))->with('title', 'Редактирование категории');
+        return view('cp.catalog.create_edit', compact('row', 'parent_id', 'options', 'maxUploadFileSize'))->with('title', __('interface.admin.catalog.edit_title'));
     }
 
     /**
@@ -97,7 +97,7 @@ class CatalogController extends Controller
             $request->input('pic'),
         );
 
-        return redirect(URL::route('cp.catalog.index'))->with('success', 'Данные обновлены');
+        return redirect(URL::route('cp.catalog.index'))->with('success', __('interface.messages.data_updated'));
     }
 
     /**
@@ -110,6 +110,6 @@ class CatalogController extends Controller
     {
         $this->service->deleteWithChildren((int) $request->validated('id'));
 
-        return redirect(URL::route('cp.catalog.index'))->with('success', 'Данные удалены');
+        return redirect(URL::route('cp.catalog.index'))->with('success', __('interface.messages.data_deleted'));
     }
 }

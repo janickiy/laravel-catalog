@@ -11,9 +11,9 @@
         <section class="content-card catalog-section">
             <div class="section-heading">
                 <div>
-                    <span class="eyebrow">Каталог</span>
+                    <span class="eyebrow">{{ __('interface.frontend.catalog') }}</span>
                     <h1>{{ $title }}</h1>
-                    <p>Выберите раздел и найдите подходящие сайты в структурированном каталоге.</p>
+                    <p>{{ __('interface.frontend.catalog_intro') }}</p>
                 </div>
             </div>
 
@@ -63,8 +63,8 @@
             <section class="content-card">
                 <div class="section-heading">
                     <div>
-                        <span class="eyebrow">Сайты</span>
-                        <h2>@if(isset($catalog_name) && $catalog_name) {{ $catalog_name }} @else Недавно добавленные сайты @endif</h2>
+                        <span class="eyebrow">{{ __('interface.frontend.sites') }}</span>
+                        <h2>@if(isset($catalog_name) && $catalog_name) {{ $catalog_name }} @else {{ __('interface.frontend.recent_sites') }} @endif</h2>
                     </div>
                 </div>
 
@@ -75,7 +75,7 @@
                         @endforeach
                     </div>
                 @else
-                    <p class="text-muted">Нет ссылок</p>
+                    <p class="text-muted">{{ __('interface.common.no_links') }}</p>
                 @endif
             </section>
 

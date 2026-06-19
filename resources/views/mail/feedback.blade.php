@@ -1,16 +1,16 @@
 <!doctype html>
-<html lang="ru">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
 </head>
 <body>
 <h1>
-    Сообщение с сайта
+    {{ __('mail.feedback_title') }}
 </h1>
 
-<p>Имя: {{ $data->name }}</p>
+<p>{{ __('mail.name') }}: {{ $data->name }}</p>
 <p>Email: {{ $data->email }}</p>
-<p>Сообщение: {{ $data->message }}</p>
+<p>{{ __('mail.message') }}: {{ $data->message }}</p>
 
 </p>
 </body>

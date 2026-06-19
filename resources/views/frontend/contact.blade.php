@@ -10,23 +10,23 @@
     <section class="content-card form-card">
         <div class="section-heading">
             <div>
-                <span class="eyebrow">Связь</span>
+                <span class="eyebrow">{{ __('interface.frontend.contact_eyebrow') }}</span>
                 <h1>{{ $title }}</h1>
-                <p>Отправьте сообщение администрации каталога через форму обратной связи.</p>
+                <p>{{ __('interface.frontend.contact_intro') }}</p>
             </div>
         </div>
 
         @include('layouts.notifications')
 
         @if (!session('success'))
-            <p class="form-help">Поля со звездочкой обязательны для заполнения.</p>
+            <p class="form-help">{{ __('interface.common.required_fields_frontend') }}</p>
 
             {!! Form::open(['url' =>  URL::route('sendmsg'), 'method' => 'post', 'class' => 'frontend-form']) !!}
                 <div class="form-group">
-                    {!! Form::label('name', 'Ваше имя*', ['class'=> 'form-label']) !!}
+                    {!! Form::label('name', __('interface.frontend.your_name'), ['class'=> 'form-label']) !!}
                     {!! Form::text('name', old('name', null), [
                         'class' => 'form-control' . ($errors->has('name') ? ' is-invalid' : ''),
-                        'placeholder' => 'Ваше имя',
+                        'placeholder' => __('interface.frontend.your_name_placeholder'),
                     ]) !!}
                     @if ($errors->has('name'))
                         <span class="form-error">{{ $errors->first('name') }}</span>
@@ -34,7 +34,7 @@
                 </div>
 
                 <div class="form-group">
-                    {!! Form::label('email', 'Email*', ['class'=> 'form-label']) !!}
+                    {!! Form::label('email', __('interface.common.email') . '*', ['class'=> 'form-label']) !!}
                     {!! Form::text('email', old('email', null), [
                         'class' => 'form-control' . ($errors->has('email') ? ' is-invalid' : ''),
                         'placeholder' => 'mail@example.com',
@@ -45,9 +45,9 @@
                 </div>
 
                 <div class="form-group">
-                    {!! Form::label('message', 'Сообщение*', ['class'=> 'form-label']) !!}
+                    {!! Form::label('message', __('interface.frontend.message'), ['class'=> 'form-label']) !!}
                     {!! Form::textarea('message', old('message', null), [
-                        'placeholder' => 'Ваше сообщение',
+                        'placeholder' => __('interface.frontend.message_placeholder'),
                         'class' => 'form-control' . ($errors->has('message') ? ' is-invalid' : ''),
                         'rows' => 4,
                     ]) !!}
@@ -57,10 +57,10 @@
                 </div>
 
                 <div class="form-group captcha-block">
-                    {!! Form::label('captcha', 'Защитный код*', ['class'=> 'form-label']) !!}
+                    {!! Form::label('captcha', __('interface.frontend.captcha'), ['class'=> 'form-label']) !!}
                     {!! Form::text('captcha', null, [
                         'class' => 'form-control' . ($errors->has('captcha') ? ' is-invalid' : ''),
-                        'placeholder' => 'Введите код с картинки',
+                        'placeholder' => __('interface.frontend.captcha_placeholder'),
                         'id' => 'captcha',
                     ]) !!}
                     <div>@captcha</div>
@@ -72,7 +72,7 @@
                 <div>
                     <button type="submit" class="btn btn-primary btn-lg">
                         <i class="bi bi-send"></i>
-                        Отправить
+                        {{ __('interface.common.submit') }}
                     </button>
                 </div>
             {!! Form::close() !!}

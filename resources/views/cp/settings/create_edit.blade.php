@@ -47,14 +47,14 @@
                         {!! isset($row) ? Form::hidden('id', $row->id) : '' !!}
 
                         <header>
-                            *-обязательные поля
+                            {{ __('interface.common.required_fields') }}
                         </header>
 
                         <fieldset>
 
                             <section>
 
-                                {!! Form::label('name', 'Имя*', ['class' => 'label']) !!}
+                                {!! Form::label('name', __('interface.common.name') . '*', ['class' => 'label']) !!}
 
                                 <label class="input">
 
@@ -70,7 +70,7 @@
 
                             <section>
 
-                                {!! Form::label('value', 'Значение*', ['class' => 'label']) !!}
+                                {!! Form::label('value', __('interface.common.value') . '*', ['class' => 'label']) !!}
 
                                 <label class="input">
 
@@ -86,7 +86,7 @@
 
                             <section>
 
-                                {!! Form::label('description', 'Описание', ['class' => 'label']) !!}
+                                {!! Form::label('description', __('interface.common.description'), ['class' => 'label']) !!}
 
                                 <label class="textarea textarea-resizable">
 
@@ -104,10 +104,10 @@
 
                         <footer>
                             <button type="submit" class="btn btn-primary button-apply">
-                                {{ isset($row) ? 'Изменить' : 'Добавить' }}
+                                {{ isset($row) ? __('interface.common.edit') : __('interface.common.add') }}
                             </button>
                             <a class="btn btn-default" href="{{ URL::route('cp.settings.index') }}">
-                                Назад
+                                {{ __('interface.common.back') }}
                             </a>
                         </footer>
 

@@ -22,11 +22,11 @@
                         <table id="itemList" class="table table-striped table-bordered table-hover" width="100%">
                             <thead>
                             <tr>
-                                <th>Имя</th>
+                                <th>{{ __('interface.common.name') }}</th>
                                 <th>Email</th>
-                                <th>Сообщение</th>
+                                <th>{{ __('interface.common.message') }}</th>
                                 <th>IP</th>
-                                <th>Добавлен</th>
+                                <th>{{ __('interface.common.created_at') }}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -81,20 +81,7 @@
             $('#itemList').dataTable({
                 "sDom": "flrtip",
                 "autoWidth": true,
-                "oLanguage": {
-                    "sLengthMenu": "Отображено _MENU_ записей на страницу",
-                    "sZeroRecords": "Ничего не найдено - извините",
-                    "sInfo": "Показано с _START_ по _END_ из _TOTAL_ записей",
-                    "sInfoEmpty": "Показано с 0 по 0 из 0 записей",
-                    "sInfoFiltered": "(отфильтровано  _MAX_ всего записей)",
-                    "oPaginate": {
-                        "sFirst": "Первая",
-                        "sLast": "Посл.",
-                        "sNext": "След.",
-                        "sPrevious": "Пред.",
-                    },
-                    "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
-                },
+                "oLanguage": window.AdminI18n.datatableLegacy,
                 "preDrawCallback": function () {
                     // Initialize the responsive datatables helper once.
                     if (!responsiveHelper_dt_basic) {

@@ -26,9 +26,9 @@ enum LinkStatus: int
     public function label(): string
     {
         return match ($this) {
-            self::Pending => 'ожидает проверку',
-            self::Published => 'опубликован',
-            self::Blocked => 'в черном списке',
+            self::Pending => __('interface.link_status.pending'),
+            self::Published => __('interface.link_status.published'),
+            self::Blocked => __('interface.link_status.blocked'),
         };
     }
 

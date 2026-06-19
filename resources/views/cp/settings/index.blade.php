@@ -24,7 +24,7 @@
                                 <a href="{{ URL::route('cp.settings.create') }}"
                                    class="btn btn-primary btn-sm d-inline-flex align-items-center gap-1">
                                     <i class="bi bi-plus-lg"></i>
-                                    Добавить
+                                    {{ __('interface.common.add') }}
                                 </a>
                             </div>
                         </div>
@@ -36,10 +36,10 @@
                         <table id="itemList" class="table table-striped table-bordered table-hover" width="100%">
                             <thead>
                             <tr>
-                                <th>Название</th>
-                                <th>Значение</th>
-                                <th>Описание</th>
-                                <th width="20px">Действия</th>
+                                <th>{{ __('interface.common.name') }}</th>
+                                <th>{{ __('interface.common.value') }}</th>
+                                <th>{{ __('interface.common.description') }}</th>
+                                <th width="20px">{{ __('interface.common.actions') }}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -86,20 +86,7 @@
             $('#itemList').dataTable({
                 "sDom": "flrtip",
                 "autoWidth": true,
-                "oLanguage": {
-                    "sLengthMenu": "Отображено _MENU_ записей на страницу",
-                    "sZeroRecords": "Ничего не найдено - извините",
-                    "sInfo": "Показано с _START_ по _END_ из _TOTAL_ записей",
-                    "sInfoEmpty": "Показано с 0 по 0 из 0 записей",
-                    "sInfoFiltered": "(отфильтровано  _MAX_ всего записей)",
-                    "oPaginate": {
-                        "sFirst": "Первая",
-                        "sLast": "Посл.",
-                        "sNext": "След.",
-                        "sPrevious": "Пред.",
-                    },
-                    "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
-                },
+                "oLanguage": window.AdminI18n.datatableLegacy,
                 "preDrawCallback": function () {
                     // Initialize the responsive datatables helper once.
                     if (!responsiveHelper_dt_basic) {
@@ -132,13 +119,13 @@
                 var rowid = $(this).attr('id');
                 var deleteUrl = $(this).data('delete-url');
                 swal({
-                        title: "Вы уверены?",
-                        text: "Вы не сможете восстановить эту информацию!",
+                        title: window.AdminI18n.confirm.title,
+                        text: window.AdminI18n.confirm.text,
                         type: "warning",
                         showCancelButton: true,
                         confirmButtonColor: "#DD6B55",
-                        confirmButtonText: "Да",
-                        cancelButtonText: "Отмена",
+                        confirmButtonText: window.AdminI18n.confirm.confirm,
+                        cancelButtonText: window.AdminI18n.confirm.cancel,
                         closeOnConfirm: false
                     },
                     function (isConfirm) {
@@ -150,10 +137,10 @@
                             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                             success: function () {
                                 $("#rowid_" + rowid).remove();
-                                swal("Сделано!", "Данные успешно удалены!", "success");
+                                swal(window.AdminI18n.confirm.done_title, window.AdminI18n.confirm.delete_success, "success");
                             },
                             error: function (xhr, ajaxOptions, thrownError) {
-                                swal("Ошибка при удалении!", "Попробуйте еще раз", "error");
+                                swal(window.AdminI18n.confirm.delete_error_title, window.AdminI18n.confirm.delete_error_text, "error");
                             }
                         });
                     });

@@ -49,14 +49,14 @@
                         {!! isset($row) ? Form::hidden('id', $row->id) : '' !!}
 
                         <header>
-                            *-обязательные поля
+                            {{ __('interface.common.required_fields') }}
                         </header>
 
                         <fieldset>
 
                             <section>
 
-                                {!! Form::label('name', 'Имя*', ['class' => 'label']) !!}
+                                {!! Form::label('name', __('interface.common.name') . '*', ['class' => 'label']) !!}
 
                                 <label class="input">
 
@@ -72,7 +72,7 @@
 
                             <section>
 
-                                {!! Form::label('login', 'Логин*', ['class' => 'label']) !!}
+                                {!! Form::label('login', __('interface.common.login') . '*', ['class' => 'label']) !!}
 
                                 <label class="input">
 
@@ -88,7 +88,7 @@
 
                             <section>
 
-                                {!! Form::label('password',  isset($row) ? 'Пароль':'Пароль*', ['class' => 'label']) !!}
+                                {!! Form::label('password',  isset($row) ? __('interface.common.password') : __('interface.common.password') . '*', ['class' => 'label']) !!}
 
                                 <label class="input">
 
@@ -104,7 +104,7 @@
 
                             <section>
 
-                                {!! Form::label('password_again', isset($row) ? 'Павтор пароля':'Павтор пароля*', ['class' => 'label']) !!}
+                                {!! Form::label('password_again', isset($row) ? __('interface.common.password_repeat') : __('interface.common.password_repeat') . '*', ['class' => 'label']) !!}
 
                                 <label class="input">
 
@@ -123,10 +123,10 @@
 
                         <footer>
                             <button type="submit" class="btn btn-primary button-apply">
-                                {{ isset($row) ? 'Изменить' : 'Добавить' }}
+                                {{ isset($row) ? __('interface.common.edit') : __('interface.common.add') }}
                             </button>
                             <a class="btn btn-default" href="{{ URL::route('cp.admin.index') }}">
-                                Назад
+                                {{ __('interface.common.back') }}
                             </a>
                         </footer>
 

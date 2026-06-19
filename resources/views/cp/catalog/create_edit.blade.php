@@ -47,16 +47,16 @@
             <div class="col-12 col-xl-8">
                 <div class="card shadow-sm">
                     <div class="card-header">
-                        <h3 class="card-title mb-0">{{ isset($row) ? 'Редактирование категории' : 'Добавление категории' }}</h3>
+                        <h3 class="card-title mb-0">{{ isset($row) ? __('interface.admin.catalog.form_edit_title') : __('interface.admin.catalog.form_create_title') }}</h3>
                     </div>
 
                     <div class="card-body">
                         <div class="catalog-form-section">
-                            <h4 class="fs-6 fw-semibold mb-3">Основные данные</h4>
+                            <h4 class="fs-6 fw-semibold mb-3">{{ __('interface.admin.catalog.main_data') }}</h4>
 
                             <div class="row g-3">
                                 <div class="col-12">
-                                    {!! Form::label('name', 'Имя*', ['class' => 'form-label fw-semibold']) !!}
+                                    {!! Form::label('name', __('interface.common.name') . '*', ['class' => 'form-label fw-semibold']) !!}
                                     {!! Form::text('name', old('name', isset($row) ? $row->name : ''), [
                                         'class' => 'form-control' . ($errors->has('name') ? ' is-invalid' : ''),
                                         'autocomplete' => 'off',
@@ -69,7 +69,7 @@
 
                                 @if ($showParentSelect)
                                     <div class="col-12">
-                                        {!! Form::label('parent_id', 'Раздел', ['class' => 'form-label fw-semibold']) !!}
+                                        {!! Form::label('parent_id', __('interface.admin.catalog.parent'), ['class' => 'form-label fw-semibold']) !!}
                                         {!! Form::select('parent_id', $options, $selectedParentId, [
                                             'id' => 'parent_id',
                                             'class' => 'form-select' . ($errors->has('parent_id') ? ' is-invalid' : ''),
@@ -81,7 +81,7 @@
                                     </div>
                                 @elseif ($parentLabel)
                                     <div class="col-12">
-                                        <div class="form-label fw-semibold mb-1">Родительский раздел</div>
+                                        <div class="form-label fw-semibold mb-1">{{ __('interface.admin.catalog.parent_category') }}</div>
                                         <div class="form-control-plaintext">{{ $parentLabel }}</div>
                                     </div>
                                 @endif
@@ -89,14 +89,14 @@
                         </div>
 
                         <div class="catalog-form-section">
-                            <h4 class="fs-6 fw-semibold mb-3">Описание</h4>
+                            <h4 class="fs-6 fw-semibold mb-3">{{ __('interface.admin.catalog.description_section') }}</h4>
 
                             <div class="row g-3">
                                 <div class="col-12">
-                                    {!! Form::label('description', 'Описание', ['class' => 'form-label fw-semibold']) !!}
+                                    {!! Form::label('description', __('interface.common.description'), ['class' => 'form-label fw-semibold']) !!}
                                     {!! Form::textarea('description', old('description', isset($row) ? $row->description : null), [
                                         'class' => 'form-control' . ($errors->has('description') ? ' is-invalid' : ''),
-                                        'placeholder' => 'Описание',
+                                        'placeholder' => __('interface.common.description'),
                                         'rows' => 4,
                                     ]) !!}
 
@@ -106,7 +106,7 @@
                                 </div>
 
                                 <div class="col-12">
-                                    {!! Form::label('keywords', 'Ключевые слова', ['class' => 'form-label fw-semibold']) !!}
+                                    {!! Form::label('keywords', __('interface.common.keywords'), ['class' => 'form-label fw-semibold']) !!}
                                     {!! Form::textarea('keywords', old('keywords', isset($row) ? $row->keywords : null), [
                                         'class' => 'form-control' . ($errors->has('keywords') ? ' is-invalid' : ''),
                                         'rows' => 3,
@@ -120,7 +120,7 @@
                         </div>
 
                         <div class="catalog-form-section">
-                            <h4 class="fs-6 fw-semibold mb-3">Иконка</h4>
+                            <h4 class="fs-6 fw-semibold mb-3">{{ __('interface.admin.catalog.icon') }}</h4>
 
                             <div class="catalog-upload bg-body-tertiary">
                                 <div class="d-flex flex-column flex-md-row gap-3 align-items-md-center">
@@ -129,7 +129,7 @@
                                     </span>
 
                                     <div class="flex-fill">
-                                        {!! Form::label('image', 'Файл иконки', ['class' => 'form-label fw-semibold']) !!}
+                                        {!! Form::label('image', __('interface.admin.catalog.icon_file'), ['class' => 'form-label fw-semibold']) !!}
                                         {!! Form::file('image', [
                                             'id' => 'image',
                                             'class' => 'form-control' . ($errors->has('image') ? ' is-invalid' : ''),
@@ -140,7 +140,7 @@
                                             <div class="invalid-feedback d-block">{{ $errors->first('image') }}</div>
                                         @endif
 
-                                        <div class="form-text">JPG, GIF или PNG. Максимальный размер: {{ $maxUploadFileSize }}.</div>
+                                        <div class="form-text">{{ __('interface.admin.catalog.icon_hint', ['size' => $maxUploadFileSize]) }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -150,11 +150,11 @@
                     <div class="card-footer d-flex flex-column flex-sm-row gap-2 justify-content-between">
                         <a class="btn btn-outline-secondary" href="{{ URL::route('cp.catalog.index') }}">
                             <i class="bi bi-arrow-left"></i>
-                            Назад
+                            {{ __('interface.common.back') }}
                         </a>
                         <button type="submit" class="btn btn-primary">
                             <i class="bi bi-check2-circle"></i>
-                            {{ isset($row) ? 'Изменить' : 'Добавить' }}
+                            {{ isset($row) ? __('interface.common.edit') : __('interface.common.add') }}
                         </button>
                     </div>
                 </div>
@@ -163,7 +163,7 @@
             <div class="col-12 col-xl-4">
                 <div class="card shadow-sm">
                     <div class="card-header">
-                        <h3 class="card-title mb-0">Состояние</h3>
+                        <h3 class="card-title mb-0">{{ __('interface.admin.catalog.state') }}</h3>
                     </div>
                     <div class="card-body">
                         <div class="d-flex align-items-center gap-3">
@@ -171,20 +171,20 @@
                                 <i class="bi bi-folder fs-4"></i>
                             </span>
                             <div>
-                                <div class="fw-semibold">{{ isset($row) ? 'Категория существует' : 'Новая категория' }}</div>
+                                <div class="fw-semibold">{{ isset($row) ? __('interface.admin.catalog.existing') : __('interface.admin.catalog.new') }}</div>
                                 <div class="text-secondary small">
-                                    {{ isset($row) ? 'ID: ' . $row->id : 'Будет создана после сохранения' }}
+                                    {{ isset($row) ? 'ID: ' . $row->id : __('interface.admin.catalog.will_create_after_save') }}
                                 </div>
                             </div>
                         </div>
 
                         <div class="mt-4">
-                            <div class="text-secondary small mb-2">Родительский раздел</div>
+                            <div class="text-secondary small mb-2">{{ __('interface.admin.catalog.parent_category') }}</div>
                             <div class="fw-semibold">
                                 @if ($showParentSelect)
-                                    {{ $options[$selectedParentId] ?? 'Выберите' }}
+                                    {{ $options[$selectedParentId] ?? __('interface.common.choose') }}
                                 @else
-                                    {{ $parentLabel ?? 'Выберите' }}
+                                    {{ $parentLabel ?? __('interface.common.choose') }}
                                 @endif
                             </div>
                         </div>
@@ -193,14 +193,14 @@
 
                 <div class="card shadow-sm mt-3">
                     <div class="card-header">
-                        <h3 class="card-title mb-0">Текущая иконка</h3>
+                        <h3 class="card-title mb-0">{{ __('interface.admin.catalog.current_icon') }}</h3>
                     </div>
                     <div class="card-body">
                         @if ($currentImage)
                             <img class="img-fluid rounded border" src="{{ url('uploads/catalog/' . $currentImage) }}" alt="">
                             <div class="small text-secondary mt-2 text-break">{{ $currentImage }}</div>
                         @else
-                            <div class="text-secondary">Иконка не загружена</div>
+                            <div class="text-secondary">{{ __('interface.admin.catalog.icon_missing') }}</div>
                         @endif
                     </div>
                 </div>

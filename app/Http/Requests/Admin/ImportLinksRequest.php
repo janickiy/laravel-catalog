@@ -30,8 +30,8 @@ class ImportLinksRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'required' => 'Это поле обязательно для заполнения!',
-            'mimes' => 'Разрешено загружать файлы: csv,xlsx,xls,txt!',
+            'required' => __('interface.validation.required'),
+            'mimes' => __('interface.validation.import_mimes'),
         ];
     }
 }

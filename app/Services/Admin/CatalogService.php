@@ -39,9 +39,9 @@ class CatalogService
     /**
      * Возвращает список разделов для select-полей.
      */
-    public function options(array $base = [0 => 'Выберите']): array
+    public function options(?array $base = null): array
     {
-        return $this->catalogs->options($base);
+        return $this->catalogs->options($base ?? [0 => __('interface.common.choose')]);
     }
 
     /**
@@ -134,8 +134,8 @@ class CatalogService
      */
     private function actionsHtml(int $catalogId): string
     {
-        return '<a title="Добавить подкатегорию" class="btn btn-xs btn-primary" href="'.route('cp.catalog.create', ['parent_id' => $catalogId]).'"><span class="bi bi-plus-lg"></span></a> '
-            .'<a title="Редактировать" href="'.route('cp.catalog.edit', ['id' => $catalogId]).'"> <span class="fa fa-pencil"></span> </a> '
-            .'<a title="Удалить" href="'.route('cp.catalog.delete', $catalogId).'"> <span class="fa fa-trash-o"></span> </a>';
+        return '<a title="'.e(__('interface.common.add_subcategory')).'" class="btn btn-xs btn-primary" href="'.route('cp.catalog.create', ['parent_id' => $catalogId]).'"><span class="bi bi-plus-lg"></span></a> '
+            .'<a title="'.e(__('interface.common.edit')).'" href="'.route('cp.catalog.edit', ['id' => $catalogId]).'"> <span class="fa fa-pencil"></span> </a> '
+            .'<a title="'.e(__('interface.common.delete')).'" href="'.route('cp.catalog.delete', $catalogId).'"> <span class="fa fa-trash-o"></span> </a>';
     }
 }

@@ -17,6 +17,6 @@ class DashboardController extends Controller
      */
     public function index(): View
     {
-        return view('cp.dashboard.index', $this->dashboard->data())->with('title', 'Главная');
+        return view('cp.dashboard.index', $this->dashboard->data())->with('title', __('interface.admin.dashboard'));
     }
 }

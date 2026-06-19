@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="utf-8">
-    <title>Панель управления | @yield('title')</title>
+    <title>{{ __('interface.admin.panel') }} | @yield('title')</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -154,6 +154,11 @@
 
     <script>
         window.SITE_URL = "{{ url('/') }}";
+        window.AdminI18n = @json([
+            'datatable' => trans('interface.datatable'),
+            'datatableLegacy' => trans('interface.datatable_legacy'),
+            'confirm' => trans('interface.confirm'),
+        ]);
     </script>
 </head>
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
@@ -169,17 +174,43 @@
             </ul>
 
             <ul class="navbar-nav ms-auto">
+                @php
+                    $currentLocale = app()->getLocale();
+                    $languages = config('app.languages', []);
+                @endphp
+                <li class="nav-item dropdown">
+                    <button class="nav-link btn btn-link dropdown-toggle d-inline-flex align-items-center gap-1"
+                            type="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                            title="{{ __('interface.language.label') }}">
+                        <i class="bi bi-translate"></i>
+                        <span>{{ strtoupper($currentLocale) }}</span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end">
+                        @foreach($languages as $code => $languageName)
+                            <form method="post" action="{{ route('language.change') }}">
+                                @csrf
+                                <input type="hidden" name="locale" value="{{ $code }}">
+                                <button type="submit" class="dropdown-item d-flex align-items-center justify-content-between gap-3 {{ $currentLocale === $code ? 'active' : '' }}">
+                                    <span>{{ $languageName }}</span>
+                                    <span class="text-uppercase">{{ $code }}</span>
+                                </button>
+                            </form>
+                        @endforeach
+                    </div>
+                </li>
                 @php($currentAdmin = auth('admin')->user())
                 @if ($currentAdmin)
                     <li class="nav-item d-flex align-items-center">
                         <span class="navbar-text admin-user-label" title="{{ $currentAdmin->login ?: $currentAdmin->name }}">
                             <i class="bi bi-person-circle"></i>
-                            <span>{{ $currentAdmin->login ?: ($currentAdmin->name ?: 'Администратор') }}</span>
+                            <span>{{ $currentAdmin->login ?: ($currentAdmin->name ?: __('interface.common.administrator')) }}</span>
                         </span>
                     </li>
                 @endif
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ URL::route('logout') }}" title="Выйти">
+                    <a class="nav-link" href="{{ URL::route('logout') }}" title="{{ __('interface.admin.logout') }}">
                         <i class="bi bi-box-arrow-right"></i>
                     </a>
                 </li>
@@ -200,37 +231,37 @@
                     <li class="nav-item">
                         <a href="{{ URL::route('cp.dashbaord.index') }}" class="nav-link {{ request()->routeIs('cp.dashbaord.index') ? 'active' : '' }}">
                             <i class="nav-icon bi bi-speedometer2"></i>
-                            <p>Главная</p>
+                            <p>{{ __('interface.admin.dashboard') }}</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ URL::route('cp.links.index') }}" class="nav-link {{ request()->is('cp/links*') ? 'active' : '' }}">
                             <i class="nav-icon bi bi-link-45deg"></i>
-                            <p>Ссылки</p>
+                            <p>{{ __('interface.admin.links.title') }}</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ URL::route('cp.catalog.index') }}" class="nav-link {{ request()->is('cp/catalog*') ? 'active' : '' }}">
                             <i class="nav-icon bi bi-list-ul"></i>
-                            <p>Категории</p>
+                            <p>{{ __('interface.admin.catalog.title') }}</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ URL::route('cp.feedback.index') }}" class="nav-link {{ request()->is('cp/feedback*') ? 'active' : '' }}">
                             <i class="nav-icon bi bi-envelope"></i>
-                            <p>Сообщения с сайта</p>
+                            <p>{{ __('interface.admin.feedback') }}</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ URL::route('cp.admin.index') }}" class="nav-link {{ request()->is('cp/admins*') ? 'active' : '' }}">
                             <i class="nav-icon bi bi-people"></i>
-                            <p>Администраторы</p>
+                            <p>{{ __('interface.admin.administrators') }}</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ URL::route('cp.settings.index') }}" class="nav-link {{ request()->is('cp/settings*') ? 'active' : '' }}">
                             <i class="nav-icon bi bi-gear"></i>
-                            <p>Настройки</p>
+                            <p>{{ __('interface.admin.settings.title') }}</p>
                         </a>
                     </li>
                 </ul>
@@ -249,7 +280,7 @@
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-end mb-0">
-                            <li class="breadcrumb-item">Панель управления</li>
+                            <li class="breadcrumb-item">{{ __('interface.admin.breadcrumb_panel') }}</li>
                             <li class="breadcrumb-item active" aria-current="page">@yield('title')</li>
                         </ol>
                     </div>
@@ -298,7 +329,7 @@
                 icon: options.type || options.icon,
                 showCancelButton: options.showCancelButton || false,
                 confirmButtonText: options.confirmButtonText || 'OK',
-                cancelButtonText: options.cancelButtonText || 'Cancel',
+                cancelButtonText: options.cancelButtonText || @json(__('interface.confirm.cancel')),
                 confirmButtonColor: options.confirmButtonColor
             }).then(function (result) {
                 if (typeof callbackOrText === 'function') {

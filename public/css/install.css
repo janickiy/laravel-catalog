@@ -1,0 +1,379 @@
+:root {
+    --install-bg: #eef6fb;
+    --install-card: #ffffff;
+    --install-border: #d8e7f3;
+    --install-text: #162b4d;
+    --install-muted: #667892;
+    --install-blue: #126df2;
+    --install-cyan: #09a9c7;
+    --install-green: #21b989;
+    --install-red: #d94b54;
+    --install-shadow: 0 24px 70px rgba(22, 43, 77, .14);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background:
+        radial-gradient(circle at top left, rgba(18, 109, 242, .1), transparent 34rem),
+        linear-gradient(135deg, #f8fcff 0%, var(--install-bg) 100%);
+    color: var(--install-text);
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    margin: 0;
+    min-height: 100vh;
+}
+
+.install-shell {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: minmax(18rem, 22rem) minmax(0, 42rem);
+    justify-content: center;
+    min-height: 100vh;
+    padding: 3rem 1.5rem;
+}
+
+.install-sidebar,
+.install-card {
+    background: rgba(255, 255, 255, .92);
+    border: 1px solid var(--install-border);
+    border-radius: 1rem;
+    box-shadow: var(--install-shadow);
+}
+
+.install-sidebar {
+    align-self: start;
+    padding: 1.5rem;
+    position: sticky;
+    top: 1.5rem;
+}
+
+.install-logo {
+    display: inline-flex;
+}
+
+.install-logo img {
+    display: block;
+    height: auto;
+    width: 16rem;
+}
+
+.install-sidebar__intro {
+    border-bottom: 1px solid var(--install-border);
+    margin: 1.5rem 0;
+    padding-bottom: 1.25rem;
+}
+
+.install-sidebar__intro h1,
+.install-heading h2,
+.install-result h2 {
+    color: var(--install-text);
+    font-size: 1.8rem;
+    font-weight: 750;
+    line-height: 1.15;
+    margin: 0 0 .75rem;
+}
+
+.install-sidebar__intro p,
+.install-heading p,
+.install-result p,
+.install-field small {
+    color: var(--install-muted);
+}
+
+.install-eyebrow {
+    color: var(--install-cyan) !important;
+    font-size: .78rem;
+    font-weight: 800;
+    letter-spacing: .08em;
+    margin: 0 0 .45rem;
+    text-transform: uppercase;
+}
+
+.install-steps {
+    display: grid;
+    gap: .65rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.install-steps li {
+    align-items: center;
+    border: 1px solid transparent;
+    border-radius: .75rem;
+    color: var(--install-muted);
+    display: grid;
+    gap: .75rem;
+    grid-template-columns: 2rem minmax(0, 1fr);
+    padding: .65rem;
+}
+
+.install-steps__number {
+    align-items: center;
+    background: #e7f8fa;
+    border-radius: .65rem;
+    color: var(--install-blue);
+    display: inline-flex;
+    font-weight: 800;
+    height: 2rem;
+    justify-content: center;
+    width: 2rem;
+}
+
+.install-steps li.is-current {
+    background: #f1f8ff;
+    border-color: #b9d4ff;
+    color: var(--install-text);
+}
+
+.install-steps li.is-done .install-steps__number {
+    background: rgba(33, 185, 137, .14);
+    color: var(--install-green);
+}
+
+.install-content {
+    align-self: center;
+}
+
+.install-card {
+    min-height: 32rem;
+    padding: 1.5rem;
+}
+
+.install-toolbar {
+    align-items: center;
+    display: flex;
+    gap: .75rem;
+    justify-content: flex-end;
+    margin-bottom: 1.5rem;
+}
+
+.install-toolbar label {
+    color: var(--install-muted);
+    font-size: .9rem;
+    margin: 0;
+}
+
+.install-language,
+.install-field input {
+    background: #fff;
+    border: 1px solid var(--install-border);
+    border-radius: .7rem;
+    color: var(--install-text);
+    min-height: 2.8rem;
+    outline: none;
+    padding: .7rem .85rem;
+    transition: border-color .16s ease, box-shadow .16s ease;
+    width: 100%;
+}
+
+.install-language {
+    min-height: 2.4rem;
+    width: auto;
+}
+
+.install-language:focus,
+.install-field input:focus {
+    border-color: #9bc5ff;
+    box-shadow: 0 0 0 .25rem rgba(18, 109, 242, .12);
+}
+
+.install-heading {
+    margin-bottom: 1.35rem;
+}
+
+.install-license {
+    border: 1px solid var(--install-border);
+    border-radius: .85rem;
+    color: var(--install-muted);
+    line-height: 1.65;
+    min-height: 12rem;
+    padding: 1rem;
+    resize: vertical;
+    width: 100%;
+}
+
+.install-check-list {
+    border: 1px solid var(--install-border);
+    border-radius: .85rem;
+    overflow: hidden;
+}
+
+.install-check-list__item {
+    align-items: center;
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    padding: .9rem 1rem;
+}
+
+.install-check-list__item + .install-check-list__item {
+    border-top: 1px solid var(--install-border);
+}
+
+.install-badge {
+    border-radius: 999px;
+    color: #fff;
+    font-size: .76rem;
+    font-weight: 800;
+    min-width: 4.2rem;
+    padding: .35rem .65rem;
+    text-align: center;
+}
+
+.install-badge--success {
+    background: var(--install-green);
+}
+
+.install-badge--danger {
+    background: var(--install-red);
+}
+
+.install-alert {
+    border-radius: .85rem;
+    display: grid;
+    gap: .35rem;
+    margin: 1rem 0 0;
+    padding: 1rem;
+}
+
+.install-alert--danger {
+    background: rgba(217, 75, 84, .1);
+    border: 1px solid rgba(217, 75, 84, .28);
+    color: #a72c36;
+}
+
+.install-alert--info {
+    background: rgba(18, 109, 242, .08);
+    border: 1px solid rgba(18, 109, 242, .2);
+    color: var(--install-text);
+}
+
+.install-form {
+    display: grid;
+    gap: 1rem;
+}
+
+.install-grid {
+    display: grid;
+    gap: 1rem;
+}
+
+.install-grid--two {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.install-field {
+    display: grid;
+    gap: .45rem;
+    margin: 0;
+}
+
+.install-field span {
+    color: var(--install-text);
+    font-weight: 750;
+}
+
+.install-field small {
+    line-height: 1.45;
+}
+
+.install-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1.35rem;
+}
+
+.install-button {
+    align-items: center;
+    background: linear-gradient(135deg, var(--install-blue), var(--install-cyan));
+    border: 0;
+    border-radius: .75rem;
+    box-shadow: 0 12px 28px rgba(18, 109, 242, .22);
+    color: #fff;
+    cursor: pointer;
+    display: inline-flex;
+    font-weight: 800;
+    justify-content: center;
+    min-height: 2.9rem;
+    padding: .75rem 1.25rem;
+    text-decoration: none;
+    transition: transform .16s ease, box-shadow .16s ease;
+}
+
+.install-button:hover,
+.install-button:focus {
+    box-shadow: 0 16px 34px rgba(18, 109, 242, .28);
+    color: #fff;
+    text-decoration: none;
+    transform: translateY(-1px);
+}
+
+.install-result {
+    display: grid;
+    justify-items: center;
+    margin: 2rem auto;
+    max-width: 34rem;
+    text-align: center;
+}
+
+.install-result__icon {
+    align-items: center;
+    border-radius: 1rem;
+    color: #fff;
+    display: inline-flex;
+    font-size: 2rem;
+    font-weight: 900;
+    height: 4.5rem;
+    justify-content: center;
+    margin-bottom: 1rem;
+    width: 4.5rem;
+}
+
+.install-result--success .install-result__icon {
+    background: var(--install-green);
+}
+
+.install-result--danger .install-result__icon {
+    background: var(--install-red);
+}
+
+@media (max-width: 900px) {
+    .install-shell {
+        grid-template-columns: minmax(0, 1fr);
+        padding: 1rem;
+    }
+
+    .install-sidebar {
+        position: static;
+    }
+
+    .install-logo img {
+        width: 13rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .install-card,
+    .install-sidebar {
+        border-radius: .85rem;
+        padding: 1rem;
+    }
+
+    .install-grid--two {
+        grid-template-columns: 1fr;
+    }
+
+    .install-toolbar,
+    .install-actions {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .install-language,
+    .install-button {
+        width: 100%;
+    }
+}

@@ -46,7 +46,7 @@ class FrontendController extends Controller
     {
         return view('frontend.addurl', [
             'options' => $this->frontend->catalogOptions(),
-            'title' => 'Добавить сайт',
+            'title' => __('interface.frontend.add_site_title'),
         ]);
     }
 
@@ -73,7 +73,7 @@ class FrontendController extends Controller
      */
     public function rules(): View
     {
-        return view('frontend.rules')->with('title', 'Правила каталога сайтов');
+        return view('frontend.rules')->with('title', __('interface.frontend.rules_title'));
     }
 
     /**
@@ -81,7 +81,7 @@ class FrontendController extends Controller
      */
     public function contact(): View
     {
-        return view('frontend.contact')->with('title', 'Обратная связь');
+        return view('frontend.contact')->with('title', __('interface.frontend.contact_title'));
     }
 
     /**
@@ -93,7 +93,7 @@ class FrontendController extends Controller
             FeedbackMessageData::fromArray($request->validated(), $request->ip())
         );
 
-        return redirect()->route('contact')->with('success', 'Ваше сообщение успешно отправлено');
+        return redirect()->route('contact')->with('success', __('interface.frontend.message_sent'));
     }
 
     /**

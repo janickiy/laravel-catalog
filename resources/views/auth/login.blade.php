@@ -2,7 +2,7 @@
 <html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
-    <title>Авторизация | My Links Manager</title>
+    <title>{{ __('interface.auth.page_title') }} | My Links Manager</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -92,7 +92,7 @@
 
             <div class="card-body p-4">
                 <div class="mb-4">
-                    <p class="auth-title">Вход в панель управления</p>
+                    <p class="auth-title">{{ __('interface.auth.title') }}</p>
                 </div>
 
                 {!! Form::open(['url' => URL::route('singin'), 'method' => 'post', 'novalidate' => true]) !!}
@@ -104,7 +104,7 @@
                     @endif
 
                     <div class="mb-3">
-                        {!! Form::label('login', 'Логин', ['class' => 'form-label fw-semibold']) !!}
+                        {!! Form::label('login', __('interface.common.login'), ['class' => 'form-label fw-semibold']) !!}
                         <div class="input-group has-validation">
                             <span class="input-group-text">
                                 <i class="bi bi-person"></i>
@@ -112,7 +112,7 @@
                             {!! Form::text('login', old('login'), [
                                 'id' => 'login',
                                 'class' => 'form-control' . ($errors->has('login') ? ' is-invalid' : ''),
-                                'placeholder' => 'Введите логин',
+                                'placeholder' => __('interface.auth.login_placeholder'),
                                 'autocomplete' => 'username',
                                 'autofocus' => true,
                             ]) !!}
@@ -123,7 +123,7 @@
                     </div>
 
                     <div class="mb-3">
-                        {!! Form::label('password', 'Пароль', ['class' => 'form-label fw-semibold']) !!}
+                        {!! Form::label('password', __('interface.common.password'), ['class' => 'form-label fw-semibold']) !!}
                         <div class="input-group has-validation">
                             <span class="input-group-text">
                                 <i class="bi bi-lock"></i>
@@ -131,7 +131,7 @@
                             {!! Form::password('password', [
                                 'id' => 'password',
                                 'class' => 'form-control' . ($errors->has('password') ? ' is-invalid' : ''),
-                                'placeholder' => 'Введите пароль',
+                                'placeholder' => __('interface.auth.password_placeholder'),
                                 'autocomplete' => 'current-password',
                             ]) !!}
                             @if ($errors->has('password'))
@@ -145,12 +145,12 @@
                             'id' => 'remember',
                             'class' => 'form-check-input',
                         ]) !!}
-                        {!! Form::label('remember', 'Запомнить меня', ['class' => 'form-check-label']) !!}
+                        {!! Form::label('remember', __('interface.auth.remember'), ['class' => 'form-check-label']) !!}
                     </div>
 
                     <button type="submit" class="btn btn-primary btn-login w-100">
                         <i class="bi bi-box-arrow-in-right"></i>
-                        <span>Войти</span>
+                        <span>{{ __('interface.auth.submit') }}</span>
                     </button>
                 {!! Form::close() !!}
             </div>

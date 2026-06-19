@@ -5,6 +5,9 @@ namespace App\Http;
 use App\Http\Middleware\AdminPanelMiddleware;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\EncryptCookies;
+use App\Http\Middleware\Install;
+use App\Http\Middleware\Locale;
+use App\Http\Middleware\PrepareInstallation;
 use App\Http\Middleware\PreventRequestsDuringMaintenance;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Middleware\TrimStrings;
@@ -54,9 +57,12 @@ class Kernel extends HttpKernel
     protected $middlewareGroups = [
         'web' => [
             // \App\Http\Middleware\HttpsMiddleware::class,
+            PrepareInstallation::class,
             EncryptCookies::class,
             AddQueuedCookiesToResponse::class,
             StartSession::class,
+            Locale::class,
+            Install::class,
             // \Illuminate\Session\Middleware\AuthenticateSession::class,
             ShareErrorsFromSession::class,
             VerifyCsrfToken::class,
@@ -71,9 +77,12 @@ class Kernel extends HttpKernel
 
         'admin' => [
             //  \App\Http\Middleware\HttpsMiddleware::class,
+            PrepareInstallation::class,
             EncryptCookies::class,
             AddQueuedCookiesToResponse::class,
             StartSession::class,
+            Locale::class,
+            Install::class,
             // \App\Http\Middleware\StartSessionLog::class,
             ShareErrorsFromSession::class,
             VerifyCsrfToken::class,

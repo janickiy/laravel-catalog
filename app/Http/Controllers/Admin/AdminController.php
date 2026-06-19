@@ -27,7 +27,7 @@ class AdminController extends Controller
      */
     public function index(): View
     {
-        return view('cp.admin.index')->with('title', 'Администраторы');
+        return view('cp.admin.index')->with('title', __('interface.admin.admin_users.title'));
     }
 
     /**
@@ -35,7 +35,7 @@ class AdminController extends Controller
      */
     public function create(): View
     {
-        return view('cp.admin.create_edit')->with('title', 'Добавление администратора');
+        return view('cp.admin.create_edit')->with('title', __('interface.admin.admin_users.create_title'));
     }
 
     /**
@@ -48,7 +48,7 @@ class AdminController extends Controller
     {
         $this->service->create(AdminData::fromArray($request->validated()));
 
-        return redirect(URL::route('cp.admin.index'))->with('success', trans('message.information_successfully_added'));
+        return redirect(URL::route('cp.admin.index'))->with('success', __('interface.messages.information_successfully_added'));
     }
 
     /**
@@ -62,7 +62,7 @@ class AdminController extends Controller
         $row = $this->admins->find($id);
         abort_if(! $row, 404);
 
-        return view('cp.admin.create_edit', compact('row'))->with('title', 'Редактирование администратора');
+        return view('cp.admin.create_edit', compact('row'))->with('title', __('interface.admin.admin_users.edit_title'));
     }
 
 
@@ -76,7 +76,7 @@ class AdminController extends Controller
     {
         $this->service->update(AdminData::fromArray($request->validated()));
 
-        return redirect(URL::route('cp.admin.index'))->with('success', trans('message.data_updated'));
+        return redirect(URL::route('cp.admin.index'))->with('success', __('interface.messages.data_updated'));
     }
 
     /**

@@ -65,7 +65,7 @@
         <div class="col-12 col-xl-4">
             <div class="card h-100 shadow-sm">
                 <div class="card-header">
-                    <h3 class="card-title mb-0">Статусы ссылок</h3>
+                    <h3 class="card-title mb-0">{{ __('interface.admin.dashboard_sections.link_statuses') }}</h3>
                 </div>
                 <div class="card-body">
                     @foreach ($linkStatuses as $status)
@@ -88,7 +88,7 @@
         <div class="col-12 col-xl-4">
             <div class="card h-100 shadow-sm">
                 <div class="card-header">
-                    <h3 class="card-title mb-0">Быстрые действия</h3>
+                    <h3 class="card-title mb-0">{{ __('interface.admin.dashboard_sections.quick_actions') }}</h3>
                 </div>
                 <div class="list-group list-group-flush">
                     @foreach ($quickActions as $action)
@@ -104,15 +104,15 @@
         <div class="col-12 col-xl-4">
             <div class="card h-100 shadow-sm">
                 <div class="card-header">
-                    <h3 class="card-title mb-0">Топ просмотров</h3>
+                    <h3 class="card-title mb-0">{{ __('interface.admin.dashboard_sections.top_views') }}</h3>
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
                         <table class="table table-sm dashboard-table mb-0">
                             <thead>
                             <tr>
-                                <th>Сайт</th>
-                                <th class="text-end">Просмотры</th>
+                                <th>{{ __('interface.common.site') }}</th>
+                                <th class="text-end">{{ __('interface.common.views') }}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -120,13 +120,13 @@
                                 <tr>
                                     <td>
                                         <a href="{{ URL::route('cp.links.edit', ['id' => $link->id]) }}">{{ $link->name }}</a>
-                                        <div class="small text-secondary">{{ $link->catalog->name ?? 'Разное' }}</div>
+                                        <div class="small text-secondary">{{ $link->catalog->name ?? __('interface.common.misc') }}</div>
                                     </td>
                                     <td class="text-end">{{ number_format((int) $link->views, 0, '.', ' ') }}</td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="2" class="text-secondary text-center py-4">Нет данных</td>
+                                    <td colspan="2" class="text-secondary text-center py-4">{{ __('interface.common.no_data') }}</td>
                                 </tr>
                             @endforelse
                             </tbody>
@@ -141,18 +141,18 @@
         <div class="col-12 col-xl-8">
             <div class="card shadow-sm">
                 <div class="card-header d-flex align-items-center justify-content-between">
-                    <h3 class="card-title mb-0">Последние ссылки</h3>
-                    <a class="btn btn-sm btn-outline-primary" href="{{ URL::route('cp.links.index') }}">Все ссылки</a>
+                    <h3 class="card-title mb-0">{{ __('interface.admin.dashboard_sections.latest_links') }}</h3>
+                    <a class="btn btn-sm btn-outline-primary" href="{{ URL::route('cp.links.index') }}">{{ __('interface.admin.dashboard_sections.all_links') }}</a>
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
                         <table class="table dashboard-table mb-0">
                             <thead>
                             <tr>
-                                <th>Название</th>
-                                <th>Категория</th>
-                                <th>Статус</th>
-                                <th class="text-end">Дата</th>
+                                <th>{{ __('interface.common.name') }}</th>
+                                <th>{{ __('interface.common.category') }}</th>
+                                <th>{{ __('interface.common.status') }}</th>
+                                <th class="text-end">{{ __('interface.common.date') }}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -162,7 +162,7 @@
                                         <a href="{{ URL::route('cp.links.edit', ['id' => $link->id]) }}">{{ $link->name }}</a>
                                         <div class="small text-secondary">{{ $link->url }}</div>
                                     </td>
-                                    <td>{{ $link->catalog->name ?? 'Разное' }}</td>
+                                    <td>{{ $link->catalog->name ?? __('interface.common.misc') }}</td>
                                     <td>
                                         <span class="badge {{ \App\Enums\LinkStatus::cssColorFor($link->status) }}">{{ \App\Enums\LinkStatus::labelFor($link->status) }}</span>
                                     </td>
@@ -170,7 +170,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="4" class="text-secondary text-center py-4">Ссылок пока нет</td>
+                                    <td colspan="4" class="text-secondary text-center py-4">{{ __('interface.common.no_links') }}</td>
                                 </tr>
                             @endforelse
                             </tbody>
@@ -183,8 +183,8 @@
         <div class="col-12 col-xl-4">
             <div class="card shadow-sm">
                 <div class="card-header d-flex align-items-center justify-content-between">
-                    <h3 class="card-title mb-0">Последние сообщения</h3>
-                    <a class="btn btn-sm btn-outline-primary" href="{{ URL::route('cp.feedback.index') }}">Все</a>
+                    <h3 class="card-title mb-0">{{ __('interface.admin.dashboard_sections.latest_messages') }}</h3>
+                    <a class="btn btn-sm btn-outline-primary" href="{{ URL::route('cp.feedback.index') }}">{{ __('interface.common.all') }}</a>
                 </div>
                 <div class="list-group list-group-flush">
                     @forelse ($latestFeedback as $message)
@@ -197,14 +197,14 @@
                             <div class="dashboard-message text-truncate mt-1">{{ $message->message }}</div>
                         </div>
                     @empty
-                        <div class="list-group-item text-secondary text-center py-4">Сообщений пока нет</div>
+                        <div class="list-group-item text-secondary text-center py-4">{{ __('interface.common.no_messages') }}</div>
                     @endforelse
                 </div>
             </div>
 
             <div class="card shadow-sm mt-3">
                 <div class="card-header">
-                    <h3 class="card-title mb-0">Администраторы</h3>
+                    <h3 class="card-title mb-0">{{ __('interface.admin.dashboard_sections.administrators') }}</h3>
                 </div>
                 <div class="list-group list-group-flush">
                     @forelse ($latestAdmins as $admin)
@@ -214,7 +214,7 @@
                             <span class="small text-secondary">{{ $admin->login }}</span>
                         </a>
                     @empty
-                        <div class="list-group-item text-secondary text-center py-4">Администраторов нет</div>
+                        <div class="list-group-item text-secondary text-center py-4">{{ __('interface.common.no_admins') }}</div>
                     @endforelse
                 </div>
             </div>

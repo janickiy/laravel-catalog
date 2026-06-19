@@ -29,16 +29,16 @@
             <div class="col-12 col-xl-8">
                 <div class="card shadow-sm">
                     <div class="card-header">
-                        <h3 class="card-title mb-0">{{ isset($row) ? 'Редактирование ссылки' : 'Добавление ссылки' }}</h3>
+                        <h3 class="card-title mb-0">{{ isset($row) ? __('interface.admin.links.form_edit_title') : __('interface.admin.links.form_create_title') }}</h3>
                     </div>
 
                     <div class="card-body">
                         <div class="link-form-section">
-                            <h4 class="fs-6 fw-semibold mb-3">Основные данные</h4>
+                            <h4 class="fs-6 fw-semibold mb-3">{{ __('interface.admin.links.main_data') }}</h4>
 
                             <div class="row g-3">
                                 <div class="col-12 col-lg-7">
-                                    {!! Form::label('name', 'Имя*', ['class' => 'form-label fw-semibold']) !!}
+                                    {!! Form::label('name', __('interface.common.name') . '*', ['class' => 'form-label fw-semibold']) !!}
                                     {!! Form::text('name', old('name', isset($row) ? $row->name : ''), [
                                         'class' => 'form-control' . ($errors->has('name') ? ' is-invalid' : ''),
                                         'autocomplete' => 'off',
@@ -50,9 +50,9 @@
                                 </div>
 
                                 <div class="col-12 col-lg-5">
-                                    {!! Form::label('catalog_id', 'Категория*', ['class' => 'form-label fw-semibold']) !!}
+                                    {!! Form::label('catalog_id', __('interface.common.category') . '*', ['class' => 'form-label fw-semibold']) !!}
                                     {!! Form::select('catalog_id', $options, old('catalog_id', isset($row) ? $row->catalog_id : null), [
-                                        'placeholder' => 'Выберите',
+                                        'placeholder' => __('interface.common.choose'),
                                         'class' => 'form-select' . ($errors->has('catalog_id') ? ' is-invalid' : ''),
                                     ]) !!}
 
@@ -79,11 +79,11 @@
                         </div>
 
                         <div class="link-form-section">
-                            <h4 class="fs-6 fw-semibold mb-3">Контакты</h4>
+                            <h4 class="fs-6 fw-semibold mb-3">{{ __('interface.admin.links.contacts') }}</h4>
 
                             <div class="row g-3">
                                 <div class="col-12 col-lg-4">
-                                    {!! Form::label('phone', 'Телефон', ['class' => 'form-label fw-semibold']) !!}
+                                    {!! Form::label('phone', __('interface.common.phone'), ['class' => 'form-label fw-semibold']) !!}
                                     {!! Form::text('phone', old('phone', isset($row) ? $row->phone : ''), [
                                         'class' => 'form-control' . ($errors->has('phone') ? ' is-invalid' : ''),
                                         'autocomplete' => 'off',
@@ -95,7 +95,7 @@
                                 </div>
 
                                 <div class="col-12 col-lg-4">
-                                    {!! Form::label('email', 'Email', ['class' => 'form-label fw-semibold']) !!}
+                                    {!! Form::label('email', __('interface.common.email'), ['class' => 'form-label fw-semibold']) !!}
                                     {!! Form::text('email', old('email', isset($row) ? $row->email : ''), [
                                         'class' => 'form-control' . ($errors->has('email') ? ' is-invalid' : ''),
                                         'autocomplete' => 'off',
@@ -107,7 +107,7 @@
                                 </div>
 
                                 <div class="col-12 col-lg-4">
-                                    {!! Form::label('city', 'Город', ['class' => 'form-label fw-semibold']) !!}
+                                    {!! Form::label('city', __('interface.common.city'), ['class' => 'form-label fw-semibold']) !!}
                                     {!! Form::text('city', old('city', isset($row) ? $row->city : ''), [
                                         'class' => 'form-control' . ($errors->has('city') ? ' is-invalid' : ''),
                                         'autocomplete' => 'off',
@@ -121,11 +121,11 @@
                         </div>
 
                         <div class="link-form-section">
-                            <h4 class="fs-6 fw-semibold mb-3">Описание</h4>
+                            <h4 class="fs-6 fw-semibold mb-3">{{ __('interface.admin.links.description_section') }}</h4>
 
                             <div class="row g-3">
                                 <div class="col-12">
-                                    {!! Form::label('description', 'Описание*', ['class' => 'form-label fw-semibold']) !!}
+                                    {!! Form::label('description', __('interface.common.description') . '*', ['class' => 'form-label fw-semibold']) !!}
                                     {!! Form::textarea('description', old('description', isset($row) ? $row->description : null), [
                                         'class' => 'form-control' . ($errors->has('description') ? ' is-invalid' : ''),
                                         'rows' => 3,
@@ -137,7 +137,7 @@
                                 </div>
 
                                 <div class="col-12">
-                                    {!! Form::label('full_description', 'Полное описание*', ['class' => 'form-label fw-semibold']) !!}
+                                    {!! Form::label('full_description', __('interface.common.full_description') . '*', ['class' => 'form-label fw-semibold']) !!}
                                     {!! Form::textarea('full_description', old('full_description', isset($row) ? $row->full_description : null), [
                                         'class' => 'form-control' . ($errors->has('full_description') ? ' is-invalid' : ''),
                                         'rows' => 5,
@@ -149,7 +149,7 @@
                                 </div>
 
                                 <div class="col-12">
-                                    {!! Form::label('keywords', 'Ключевые слова', ['class' => 'form-label fw-semibold']) !!}
+                                    {!! Form::label('keywords', __('interface.common.keywords'), ['class' => 'form-label fw-semibold']) !!}
                                     {!! Form::textarea('keywords', old('keywords', isset($row) ? $row->keywords : null), [
                                         'class' => 'form-control' . ($errors->has('keywords') ? ' is-invalid' : ''),
                                         'rows' => 3,
@@ -166,11 +166,11 @@
                     <div class="card-footer d-flex flex-column flex-sm-row gap-2 justify-content-between">
                         <a class="btn btn-outline-secondary" href="{{ URL::route('cp.links.index') }}">
                             <i class="bi bi-arrow-left"></i>
-                            Назад
+                            {{ __('interface.common.back') }}
                         </a>
                         <button type="submit" class="btn btn-primary">
                             <i class="bi bi-check2-circle"></i>
-                            {{ isset($row) ? 'Изменить' : 'Добавить' }}
+                            {{ isset($row) ? __('interface.common.edit') : __('interface.common.add') }}
                         </button>
                     </div>
                 </div>
@@ -179,7 +179,7 @@
             <div class="col-12 col-xl-4">
                 <div class="card shadow-sm">
                     <div class="card-header">
-                        <h3 class="card-title mb-0">Состояние</h3>
+                        <h3 class="card-title mb-0">{{ __('interface.admin.links.state') }}</h3>
                     </div>
                     <div class="card-body">
                         <div class="d-flex align-items-center gap-3">
@@ -187,16 +187,16 @@
                                 <i class="bi bi-link-45deg fs-4"></i>
                             </span>
                             <div>
-                                <div class="fw-semibold">{{ isset($row) ? 'Запись существует' : 'Новая запись' }}</div>
+                                <div class="fw-semibold">{{ isset($row) ? __('interface.admin.links.existing') : __('interface.admin.links.new') }}</div>
                                 <div class="text-secondary small">
-                                    {{ isset($row) ? 'ID: ' . $row->id : 'Будет опубликована после сохранения' }}
+                                    {{ isset($row) ? 'ID: ' . $row->id : __('interface.admin.links.will_publish_after_save') }}
                                 </div>
                             </div>
                         </div>
 
                         @if (isset($row) && !empty($row->image))
                             <div class="mt-4">
-                                <div class="text-secondary small mb-2">Снимок сайта</div>
+                                <div class="text-secondary small mb-2">{{ __('interface.admin.links.screenshot') }}</div>
                                 <img class="img-fluid rounded border" src="{{ url('uploads/url/' . $row->image) }}" alt="">
                             </div>
                         @endif

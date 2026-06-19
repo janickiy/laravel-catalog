@@ -5,7 +5,7 @@
 
 <article class="link-card">
     <a class="link-card__media" href="{{ \App\Helpers\StringHelper::urlWithPrefix($link->url) }}" target="_blank" rel="noopener nofollow">
-        <img src="{{ $imageUrl }}" alt="{{ $hasImage ? $link->name : 'Нет изображения сайта' }}" loading="lazy" decoding="async">
+        <img src="{{ $imageUrl }}" alt="{{ $hasImage ? $link->name : __('interface.frontend.no_site_image') }}" loading="lazy" decoding="async">
     </a>
 
     <div class="link-card__body">
@@ -20,11 +20,11 @@
         <div class="link-card__footer">
             <span class="link-card__date">
                 <i class="bi bi-calendar3"></i>
-                {{ \App\Helpers\StringHelper::mysql_russian_date($link->created_at) }}
+                {{ \App\Helpers\StringHelper::mysql_localized_date($link->created_at) }}
             </span>
 
             <a class="link-card__more" href="{{ URL::route('info', ['id' => $link->id]) }}">
-                Подробнее
+                {{ __('interface.frontend.more') }}
                 <i class="bi bi-arrow-right"></i>
             </a>
         </div>
