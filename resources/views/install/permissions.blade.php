@@ -18,6 +18,9 @@
     </div>
 
     <div class="install-actions">
+        <a href="{{ route('install.requirements') }}" class="install-button install-button--secondary">
+            {{ __('install.button.back') }}
+        </a>
         @if($allGranted)
             <a href="{{ route('install.database') }}" class="install-button">
                 {{ __('install.button.next') }}

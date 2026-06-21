@@ -20,11 +20,11 @@ class InstallRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'host' => ['required', 'string', 'max:255'],
-            'port' => ['required', 'integer', 'min:1', 'max:65535'],
-            'database' => ['required', 'string', 'max:255'],
-            'username' => ['required', 'string', 'max:255'],
-            'password' => ['nullable', 'string', 'max:255'],
+            'db_host' => ['required', 'string', 'max:255'],
+            'db_port' => ['required', 'integer', 'min:1', 'max:65535'],
+            'db_database' => ['required', 'string', 'max:255'],
+            'db_username' => ['required', 'string', 'max:255'],
+            'db_password' => ['nullable', 'string', 'max:255'],
         ];
     }
 }

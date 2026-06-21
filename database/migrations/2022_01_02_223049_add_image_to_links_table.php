@@ -13,9 +13,11 @@ class AddImageToLinksTable extends Migration
      */
     public function up()
     {
-        Schema::table('links', function (Blueprint $table) {
-            $table->string('image')->nullable();
-        });
+        if (! Schema::hasColumn('links', 'image')) {
+            Schema::table('links', function (Blueprint $table) {
+                $table->string('image')->nullable();
+            });
+        }
     }
 
     /**
@@ -25,8 +27,10 @@ class AddImageToLinksTable extends Migration
      */
     public function down()
     {
-        Schema::table('links', function (Blueprint $table) {
-            $table->dropColumn('image');
-        });
+        if (Schema::hasColumn('links', 'image')) {
+            Schema::table('links', function (Blueprint $table) {
+                $table->dropColumn('image');
+            });
+        }
     }
 }

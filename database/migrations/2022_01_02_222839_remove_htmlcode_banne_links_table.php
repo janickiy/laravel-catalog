@@ -13,9 +13,11 @@ class RemoveHtmlcodeBanneLinksTable extends Migration
      */
     public function up()
     {
-        Schema::table('links', function (Blueprint $table) {
-            $table->dropColumn('htmlcode_banner');
-        });
+        if (Schema::hasColumn('links', 'htmlcode_banner')) {
+            Schema::table('links', function (Blueprint $table) {
+                $table->dropColumn('htmlcode_banner');
+            });
+        }
     }
 
     /**
@@ -25,8 +27,10 @@ class RemoveHtmlcodeBanneLinksTable extends Migration
      */
     public function down()
     {
-        Schema::table('links', function (Blueprint $table) {
-            $table->text('htmlcode_banner')->nullable();
-        });
+        if (! Schema::hasColumn('links', 'htmlcode_banner')) {
+            Schema::table('links', function (Blueprint $table) {
+                $table->text('htmlcode_banner')->nullable();
+            });
+        }
     }
 }

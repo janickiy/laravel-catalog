@@ -7,9 +7,12 @@
         <p>{{ __('install.str.welcome') }}</p>
     </div>
 
-    <textarea class="install-license" readonly>{{ __('install.license') }}</textarea>
+    <textarea class="install-license" readonly>{{ __('license.agreement') }}</textarea>
 
     <div class="install-actions">
+        <button type="button" class="install-button install-button--secondary" onclick="window.history.back()">
+            {{ __('install.button.back') }}
+        </button>
         <a href="{{ route('install.requirements') }}" class="install-button">
             {{ __('install.button.next') }}
         </a>

@@ -74,13 +74,12 @@ return [
     | Installation State
     |--------------------------------------------------------------------------
     |
-    | Fresh deployments copied from .env.example start as not installed and are
-    | redirected to the installer. Existing projects without this flag remain
-    | treated as installed when an .env file is already present.
+    | The application is considered installed only when the root .env file
+    | exists. Without .env every non-installer request is sent to the installer.
     |
     */
 
-    'installed' => env('APP_INSTALLED', file_exists(base_path('.env'))),
+    'installed' => file_exists(base_path('.env')),
 
     /*
     |--------------------------------------------------------------------------

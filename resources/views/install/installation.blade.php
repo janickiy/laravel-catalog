@@ -6,7 +6,7 @@
         <h2>{{ __('install.str.ready_to_install') }}</h2>
     </div>
 
-    <form method="post" action="{{ route('install.install') }}" class="install-form">
+    <form method="post" action="{{ route('install.install') }}" class="install-form install-form--compact">
         @csrf
 
         <label class="install-field">
@@ -32,6 +32,9 @@
         </div>
 
         <div class="install-actions">
+            <a href="{{ route('install.database') }}" class="install-button install-button--secondary">
+                {{ __('install.button.back') }}
+            </a>
             <button type="submit" class="install-button">{{ __('install.button.install') }}</button>
         </div>
     </form>

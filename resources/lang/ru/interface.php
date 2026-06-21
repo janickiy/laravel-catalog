@@ -15,6 +15,7 @@ return [
         'all' => 'Все',
         'all_categories' => 'Все категории',
         'archive' => 'Архив',
+        'author' => 'Автор',
         'back' => 'Назад',
         'category' => 'Категория',
         'catalog' => 'Каталог',

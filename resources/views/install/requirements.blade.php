@@ -25,6 +25,9 @@
     @endunless
 
     <div class="install-actions">
+        <a href="{{ route('install.start') }}" class="install-button install-button--secondary">
+            {{ __('install.button.back') }}
+        </a>
         @if($allLoaded)
             <a href="{{ route('install.permissions') }}" class="install-button">
                 {{ __('install.button.next') }}

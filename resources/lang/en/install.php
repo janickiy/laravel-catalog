@@ -2,6 +2,7 @@
 
 return [
     'button' => [
+        'back' => 'Back',
         'install' => 'Install',
         'next' => 'Next',
     ],

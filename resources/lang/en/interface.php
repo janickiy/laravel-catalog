@@ -15,6 +15,7 @@ return [
         'all' => 'All',
         'all_categories' => 'All categories',
         'archive' => 'Archive',
+        'author' => 'Author',
         'back' => 'Back',
         'category' => 'Category',
         'catalog' => 'Catalog',

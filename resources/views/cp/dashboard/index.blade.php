@@ -5,16 +5,31 @@
 @section('css')
     <style>
         .dashboard-stat {
-            min-height: 8.75rem;
+            min-height: 9.5rem;
+        }
+
+        .dashboard-stat .card-body {
+            align-items: center !important;
+            min-height: 9.5rem;
+            padding: 1.5rem;
         }
 
         .dashboard-stat .stat-icon {
             align-items: center;
-            border-radius: .5rem;
+            border-radius: .75rem;
             display: inline-flex;
-            height: 2.75rem;
+            flex: 0 0 auto;
+            font-size: 1.625rem;
+            height: 3.75rem;
             justify-content: center;
-            width: 2.75rem;
+            line-height: 1;
+            text-align: center;
+            width: 3.75rem;
+        }
+
+        .dashboard-stat .stat-icon i {
+            display: block;
+            line-height: 1;
         }
 
         .dashboard-action {
@@ -27,7 +42,11 @@
         }
 
         .dashboard-action i {
-            font-size: 1.25rem;
+            display: inline-flex;
+            font-size: 1.5rem;
+            justify-content: center;
+            line-height: 1;
+            width: 2rem;
         }
 
         .dashboard-table td,

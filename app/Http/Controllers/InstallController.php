@@ -83,7 +83,13 @@ class InstallController extends Controller
             return redirect()->route('install.permissions');
         }
 
-        $dbCredentials = $request->only('host', 'port', 'username', 'password', 'database');
+        $dbCredentials = [
+            'host' => (string) $request->input('db_host'),
+            'port' => (int) $request->input('db_port'),
+            'database' => (string) $request->input('db_database'),
+            'username' => (string) $request->input('db_username'),
+            'password' => (string) $request->input('db_password', ''),
+        ];
 
         if (! $this->dbCredentialsAreValid($dbCredentials)) {
             return redirect()
@@ -125,7 +131,6 @@ class InstallController extends Controller
 
             $installLocale = $this->getInstallLocale();
             $env = $this->environmentTemplate();
-            $env = $this->setEnvValue($env, 'APP_INSTALLED', 'true');
             $env = $this->setEnvValue($env, 'APP_URL', url('/'));
             $env = $this->setEnvValue($env, 'APP_LOCALE', $installLocale);
             $env = $this->setEnvValue($env, 'APP_FALLBACK_LOCALE', Config::get('app.fallback_locale', 'ru'));
@@ -159,10 +164,8 @@ class InstallController extends Controller
                 ],
             );
 
-            Session::put('install.completed', true);
-
             return redirect()
-                ->route('install.complete')
+                ->route('index')
                 ->withCookie(Cookie::forever('lang', $installLocale));
         } catch (\Throwable $exception) {
             $this->restoreEnvironment($previousEnv);
@@ -221,7 +224,6 @@ class InstallController extends Controller
     {
         return [
             'PHP Version (>= 8.3.0)' => version_compare(PHP_VERSION, '8.3.0', '>='),
-            'BCMath Extension' => extension_loaded('bcmath'),
             'Ctype Extension' => extension_loaded('ctype'),
             'cURL Extension' => extension_loaded('curl'),
             'Fileinfo Extension' => extension_loaded('fileinfo'),
