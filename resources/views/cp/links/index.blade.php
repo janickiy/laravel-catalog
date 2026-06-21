@@ -29,13 +29,8 @@
 
 @section('content')
     <div class="card links-table-card shadow-sm">
-        <div class="card-header d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3">
-            <div>
-                <h3 class="card-title mb-0">{{ __('interface.admin.links.title') }}</h3>
-                <div class="text-secondary small">{{ __('interface.admin.links.subtitle') }}</div>
-            </div>
-
-            <div class="links-actions d-flex flex-wrap">
+        <div class="card-header d-flex flex-column flex-lg-row align-items-lg-center justify-content-center gap-3">
+            <div class="links-actions d-flex flex-wrap justify-content-center">
                 <a class="btn btn-primary btn-sm d-inline-flex align-items-center gap-1"
                    href="{{ URL::route('cp.links.create') }}">
                     <i class="bi bi-plus-lg"></i>

@@ -51,7 +51,8 @@ Route::group(['prefix' => 'cp'], function () {
     });
 
     Route::group(['prefix' => 'feedback'], function () {
-        Route::get('',FeedbackController::class)->name('cp.feedback.index');
+        Route::get('', [FeedbackController::class, 'index'])->name('cp.feedback.index');
+        Route::get('show/{id}', [FeedbackController::class, 'show'])->name('cp.feedback.show')->where('id', '[0-9]+');
     });
 
     Route::group(['prefix' => 'admins'], function () {
@@ -80,9 +81,6 @@ Route::group(['prefix' => 'cp'], function () {
     });
 
 });
-
-
-
 
 
 

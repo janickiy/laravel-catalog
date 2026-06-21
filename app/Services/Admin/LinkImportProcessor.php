@@ -6,12 +6,9 @@ use App\Enums\LinkStatus;
 use App\Helpers\StringHelper;
 use App\Repositories\CatalogRepository;
 use App\Repositories\LinksRepository;
-use App\Services\DomainAvailabilityService;
 
 class LinkImportProcessor
 {
-    private const DOMAIN_TIMEOUT = 5;
-
     private int $importedCount = 0;
 
     private array $categoryCache = [];
@@ -21,7 +18,6 @@ class LinkImportProcessor
     public function __construct(
         private readonly LinksRepository $links,
         private readonly CatalogRepository $catalogs,
-        private readonly DomainAvailabilityService $domainAvailability,
     ) {}
 
     /**
@@ -51,31 +47,23 @@ class LinkImportProcessor
     public function importRow(array $row): bool
     {
         $row = $this->normalizeRow($row);
-
-        if ($row['url'] === '' || ! $this->domainAvailability->isAvailable($row['url'], self::DOMAIN_TIMEOUT)) {
-            return false;
-        }
-
         $url = $this->normalizeUrl($row['url']);
 
         if ($url === '' || $this->urlExists($url)) {
             return false;
         }
 
-        $tags = $this->metaTags($row['url']);
-        $description = $tags['description'] ?? $tags['keywords'] ?? '';
-
-        if ($description === '') {
-            return false;
-        }
+        $name = $row['name'] !== '' ? $row['name'] : $url;
+        $description = $this->description($row, $name);
 
         $this->links->create([
-            'name' => $row['name'],
+            'name' => $name,
             'url' => $url,
             'phone' => $row['phone'],
             'city' => $row['city'],
+            'email' => $row['email'],
             'description' => $description,
-            'keywords' => $tags['keywords'] ?? '',
+            'keywords' => $row['category'],
             'full_description' => $description,
             'catalog_id' => $this->catalogId($row['category']),
             'status' => LinkStatus::Published->value,
@@ -95,12 +83,26 @@ class LinkImportProcessor
      */
     private function normalizeRow(array $row): array
     {
+        $urlIndex = $this->urlIndex($row);
+
+        if ($urlIndex === 3) {
+            return [
+                'city' => $this->cell($row, 0),
+                'name' => $this->cell($row, 1),
+                'category' => $this->cell($row, 2),
+                'url' => $this->cell($row, 3),
+                'phone' => $this->cell($row, 4),
+                'email' => $this->cell($row, 5),
+            ];
+        }
+
         return [
             'city' => $this->cell($row, 0),
             'name' => $this->cell($row, 1),
             'category' => $this->cell($row, 3),
-            'url' => trim((string) ($row[5] ?? '')),
+            'url' => $this->cell($row, 5),
             'phone' => $this->cell($row, 7),
+            'email' => $this->cell($row, 8),
         ];
     }
 
@@ -124,9 +126,19 @@ class LinkImportProcessor
      */
     private function normalizeUrl(string $url): string
     {
-        $url = preg_replace('#^https?://#i', '', trim($url)) ?? '';
+        $url = trim(StringHelper::str_to_utf8($url));
 
-        return explode('/', $url, 2)[0] ?? '';
+        if ($url === '') {
+            return '';
+        }
+
+        if (! preg_match('#^https?://#i', $url)) {
+            $url = 'http://'.$url;
+        }
+
+        $host = parse_url($url, PHP_URL_HOST);
+
+        return is_string($host) ? mb_strtolower(trim($host), 'UTF-8') : '';
     }
 
     /**
@@ -151,23 +163,47 @@ class LinkImportProcessor
     }
 
     /**
-     * Загружает meta-теги сайта и приводит строковые значения к UTF-8.
-     *
-     * @param string $url
-     * @return array
+     * Определяет индекс колонки с URL для текущего и legacy-формата импорта.
      */
-    private function metaTags(string $url): array
+    private function urlIndex(array $row): int
     {
-        $tags = @get_meta_tags($url);
-
-        if (! is_array($tags)) {
-            return [];
+        foreach ([3, 5] as $index) {
+            if ($this->looksLikeUrl($this->cell($row, $index))) {
+                return $index;
+            }
         }
 
-        return array_map(
-            fn ($value) => is_string($value) ? StringHelper::str_to_utf8($value) : $value,
-            $tags,
-        );
+        foreach ($row as $index => $value) {
+            if (is_int($index) && $this->looksLikeUrl($this->cell($row, $index))) {
+                return $index;
+            }
+        }
+
+        return 5;
+    }
+
+    /**
+     * Проверяет, похоже ли значение ячейки на домен или URL.
+     */
+    private function looksLikeUrl(string $value): bool
+    {
+        $host = $this->normalizeUrl($value);
+
+        return $host !== '' && str_contains($host, '.');
+    }
+
+    /**
+     * Собирает описание ссылки из данных импортируемой строки.
+     */
+    private function description(array $row, string $name): string
+    {
+        $parts = array_filter([
+            $name,
+            $row['category'],
+            $row['city'],
+        ]);
+
+        return implode('. ', $parts);
     }
 
     /**

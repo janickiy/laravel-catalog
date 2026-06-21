@@ -303,7 +303,6 @@
     <footer class="app-footer">
         <strong>
             © {{ date('Y') }} My Links Manager.
-            {{ __('interface.common.author') }}:
             <a href="https://janickiy.com" target="_blank" rel="noopener noreferrer">Alexander Yanitsky</a>
         </strong>
     </footer>

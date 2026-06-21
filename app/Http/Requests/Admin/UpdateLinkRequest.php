@@ -4,6 +4,7 @@ namespace App\Http\Requests\Admin;
 
 use App\Models\Catalog;
 use App\Models\Links;
+use App\Rules\DomainOrUrl;
 use Illuminate\Validation\Rule;
 
 class UpdateLinkRequest extends StoreLinkRequest
@@ -16,7 +17,7 @@ class UpdateLinkRequest extends StoreLinkRequest
         return [
             'id' => 'required|integer|exists:'.Links::getTableName().',id',
             'name' => 'required',
-            'url' => 'required|url|unique:'.Links::getTableName().',url,'.$this->input('id'),
+            'url' => ['required', new DomainOrUrl(__('interface.validation.url')), 'unique:'.Links::getTableName().',url,'.$this->input('id')],
             'city' => 'nullable|string',
             'phone' => 'nullable|string',
             'email' => 'nullable|email',

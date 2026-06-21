@@ -84,7 +84,6 @@
         <div class="container site-footer__inner">
             <span>
                 © {{ date('Y') }} My Links Manager.
-                {{ __('interface.common.author') }}:
                 <a href="https://janickiy.com" target="_blank" rel="noopener noreferrer">Alexander Yanitsky</a>
             </span>
             <a href="{{ URL::route('rules') }}">{{ __('interface.frontend.footer_rules') }}</a>

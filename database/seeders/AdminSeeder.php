@@ -10,7 +10,7 @@ class AdminSeeder extends Seeder
     public function run()
     {
         Admin::create([
-			'name' => 'Админ',
+			'name' => 'Administrator',
             'login' => 'admin',
             'password' => app('hash')->make('1234567'),
         ]);

@@ -140,6 +140,13 @@ return [
             'import_heading' => 'Import links',
             'import_file' => 'Import file',
             'import_submit' => 'Import',
+            'import_processing' => 'Importing...',
+            'import_archive_heading' => 'Import from archive',
+            'import_archive_file' => 'ZIP archive for import',
+            'import_archive_hint' => 'The archive may contain CSV, TXT, XLS or XLSX files.',
+            'import_archive_submit' => 'Import archive',
+            'import_archive_processing' => 'Importing archive...',
+            'archive_format' => 'Archive format',
             'file_parameters' => 'File parameters',
             'export_title' => 'Export',
             'export_heading' => 'Export links',
@@ -175,12 +182,20 @@ return [
 
         'admin_users' => [
             'title' => 'Administrators',
+            'subtitle' => 'Manage control panel users',
             'create_title' => 'Add administrator',
             'edit_title' => 'Edit administrator',
         ],
 
+        'feedback_messages' => [
+            'subtitle' => 'Messages sent through the feedback form',
+            'show_title' => 'View message',
+            'message_text' => 'Message text',
+        ],
+
         'settings' => [
             'title' => 'Settings',
+            'subtitle' => 'Manage project options',
             'create_title' => 'Add setting',
             'edit_title' => 'Edit setting',
         ],
@@ -300,6 +315,9 @@ HTML,
         'data_deleted' => 'Data deleted',
         'information_successfully_added' => 'Information added successfully',
         'import_completed' => 'Import completed. Imported :count links',
+        'import_failed' => 'Failed to import links. Check the file and try again.',
+        'import_success_title' => 'Import completed',
+        'import_error_title' => 'Import error',
     ],
 
     'datatable' => [
@@ -346,7 +364,9 @@ HTML,
 
     'validation' => [
         'required' => 'This field is required!',
+        'import_required' => 'Choose an import file or a ZIP archive.',
         'import_mimes' => 'Allowed file types: csv,xlsx,xls,txt!',
+        'import_archive_mimes' => 'Only ZIP archives are allowed!',
         'url' => 'The URL address is invalid',
         'url_unique' => 'A site with this URL already exists in the catalog!',
         'name_required' => 'Name is required!',

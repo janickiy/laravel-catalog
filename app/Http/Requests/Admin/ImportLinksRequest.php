@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Validator;
 
 class ImportLinksRequest extends FormRequest
 {
@@ -20,8 +21,21 @@ class ImportLinksRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'file' => 'required|mimes:csv,xlsx,xls,txt',
+            'file' => 'nullable|file|mimes:csv,xlsx,xls,txt',
+            'archive' => 'nullable|file|mimes:zip',
         ];
+    }
+
+    /**
+     * Проверяет, что выбран хотя бы один источник импорта.
+     */
+    public function withValidator(Validator $validator): void
+    {
+        $validator->after(function (Validator $validator): void {
+            if (! $this->hasFile('file') && ! $this->hasFile('archive')) {
+                $validator->errors()->add('file', __('interface.validation.import_required'));
+            }
+        });
     }
 
     /**
@@ -31,7 +45,10 @@ class ImportLinksRequest extends FormRequest
     {
         return [
             'required' => __('interface.validation.required'),
-            'mimes' => __('interface.validation.import_mimes'),
+            'file.file' => __('interface.validation.required'),
+            'file.mimes' => __('interface.validation.import_mimes'),
+            'archive.file' => __('interface.validation.required'),
+            'archive.mimes' => __('interface.validation.import_archive_mimes'),
         ];
     }
 }

@@ -20,6 +20,8 @@ class LinkImportExportService
 {
     private const CSV_EXTENSIONS = ['csv', 'txt'];
 
+    private const IMPORT_EXTENSIONS = ['csv', 'txt', 'xls', 'xlsx'];
+
     private const SPREADSHEET_READER_TYPES = [
         'xls' => ExcelReader::XLS,
         'xlsx' => ExcelReader::XLSX,
@@ -41,15 +43,83 @@ class LinkImportExportService
     {
         set_time_limit(0);
 
-        $extension = strtolower($file->getClientOriginalExtension());
         $this->importProcessor->reset();
 
+        return $this->importPath($file->getRealPath(), $file->getClientOriginalExtension());
+    }
+
+    /**
+     * Импортирует ссылки из ZIP-архива с CSV, TXT, XLS или XLSX файлами.
+     *
+     * @param UploadedFile $file
+     * @return int
+     */
+    public function importArchive(UploadedFile $file): int
+    {
+        set_time_limit(0);
+
+        $zip = new ZipArchive;
+        $openResult = $zip->open($file->getRealPath());
+
+        if ($openResult !== true) {
+            throw new InvalidArgumentException('Unable to open import archive.');
+        }
+
+        $this->importProcessor->reset();
+        $temporaryDirectory = $this->temporaryDirectory();
+        $hasImportFiles = false;
+
+        try {
+            for ($index = 0; $index < $zip->numFiles; $index++) {
+                $name = $zip->getNameIndex($index);
+
+                if (! is_string($name) || str_ends_with($name, '/')) {
+                    continue;
+                }
+
+                $extension = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+
+                if (! in_array($extension, self::IMPORT_EXTENSIONS, true)) {
+                    continue;
+                }
+
+                $hasImportFiles = true;
+                $path = $this->copyArchiveEntry($zip, $name, $extension, $temporaryDirectory);
+                $this->importPath($path, $extension);
+            }
+        } finally {
+            $zip->close();
+            $this->removeDirectory($temporaryDirectory);
+        }
+
+        if (! $hasImportFiles) {
+            throw new InvalidArgumentException('Import archive does not contain supported files.');
+        }
+
+        return $this->importProcessor->importedCount();
+    }
+
+    /**
+     * Импортирует файл по абсолютному пути без сброса состояния процессора.
+     *
+     * @param string|false $path
+     * @param string $extension
+     * @return int
+     */
+    private function importPath(string|false $path, string $extension): int
+    {
+        if (! is_string($path) || $path === '') {
+            throw new InvalidArgumentException('Import file path is invalid.');
+        }
+
+        $extension = strtolower($extension);
+
         if (in_array($extension, self::CSV_EXTENSIONS, true)) {
-            return (new LinksImportFromCsv($this->importProcessor))->import($file->getRealPath());
+            return (new LinksImportFromCsv($this->importProcessor))->import($path);
         }
 
         $import = new LinksImport($this->importProcessor);
-        Excel::import($import, $file, null, $this->spreadsheetReaderType($extension));
+        Excel::import($import, $path, null, $this->spreadsheetReaderType($extension));
 
         return $import->importedCount();
     }
@@ -176,6 +246,73 @@ class LinkImportExportService
         return response()->download($zipPath, 'emailexport_'.date('d_m_Y').'.zip')->deleteFileAfterSend(true);
     }
 
+    /**
+     * Создает временную директорию для безопасной обработки архива.
+     *
+     * @return string
+     */
+    private function temporaryDirectory(): string
+    {
+        $path = sys_get_temp_dir().DIRECTORY_SEPARATOR.'links_import_'.bin2hex(random_bytes(8));
+        mkdir($path, 0700, true);
+
+        return $path;
+    }
+
+    /**
+     * Копирует один файл из ZIP-архива во временную директорию.
+     *
+     * @param ZipArchive $zip
+     * @param string $name
+     * @param string $extension
+     * @param string $directory
+     * @return string
+     */
+    private function copyArchiveEntry(ZipArchive $zip, string $name, string $extension, string $directory): string
+    {
+        $stream = $zip->getStream($name);
+
+        if (! is_resource($stream)) {
+            throw new InvalidArgumentException('Unable to read import archive entry: '.$name);
+        }
+
+        $temporaryPath = tempnam($directory, 'entry_');
+        $path = $temporaryPath.'.'.$extension;
+        rename($temporaryPath, $path);
+
+        $target = fopen($path, 'wb');
+
+        if (! is_resource($target)) {
+            fclose($stream);
+
+            throw new InvalidArgumentException('Unable to write temporary import file.');
+        }
+
+        stream_copy_to_stream($stream, $target);
+        fclose($stream);
+        fclose($target);
+
+        return $path;
+    }
+
+    /**
+     * Удаляет временную директорию с файлами импорта.
+     *
+     * @param string $directory
+     * @return void
+     */
+    private function removeDirectory(string $directory): void
+    {
+        if (! is_dir($directory)) {
+            return;
+        }
+
+        foreach (glob($directory.DIRECTORY_SEPARATOR.'*') ?: [] as $path) {
+            is_dir($path) ? $this->removeDirectory($path) : @unlink($path);
+        }
+
+        @rmdir($directory);
+    }
 
     /**
      * Возвращает тип reader для импорта таблицы по расширению файла.

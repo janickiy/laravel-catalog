@@ -34,18 +34,23 @@
                     <h3 class="card-title mb-0">{{ __('interface.admin.links.import_heading') }}</h3>
                 </div>
 
-                {!! Form::open(['url' => URL::route('cp.links.importlink'), 'files' => true, 'method' => 'post']) !!}
+                {!! Form::open([
+                    'url' => URL::route('cp.links.importlink'),
+                    'files' => true,
+                    'method' => 'post',
+                    'data-import-form' => true,
+                ]) !!}
                     <div class="card-body">
-                        <div class="import-upload bg-body-tertiary">
+                        <div class="import-upload bg-body-tertiary mb-3">
                             <div class="d-flex flex-column flex-md-row gap-3 align-items-md-center">
                                 <span class="import-upload-icon text-bg-primary">
                                     <i class="bi bi-file-earmark-arrow-up fs-4"></i>
                                 </span>
 
                                 <div class="flex-fill">
-                                    {!! Form::label('file', __('interface.admin.links.import_file'), ['class' => 'form-label fw-semibold']) !!}
+                                    {!! Form::label('import_file', __('interface.admin.links.import_file'), ['class' => 'form-label fw-semibold']) !!}
                                     {!! Form::file('file', [
-                                        'id' => 'file',
+                                        'id' => 'import_file',
                                         'class' => 'form-control' . ($errors->has('file') ? ' is-invalid' : ''),
                                         'accept' => '.csv,.txt,.xls,.xlsx',
                                     ]) !!}
@@ -56,6 +61,29 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="import-upload bg-body-tertiary">
+                            <div class="d-flex flex-column flex-md-row gap-3 align-items-md-center">
+                                <span class="import-upload-icon text-bg-warning">
+                                    <i class="bi bi-file-earmark-zip fs-4"></i>
+                                </span>
+
+                                <div class="flex-fill">
+                                    {!! Form::label('archive', __('interface.admin.links.import_archive_file'), ['class' => 'form-label fw-semibold']) !!}
+                                    {!! Form::file('archive', [
+                                        'id' => 'archive',
+                                        'class' => 'form-control' . ($errors->has('archive') ? ' is-invalid' : ''),
+                                        'accept' => '.zip',
+                                    ]) !!}
+
+                                    @if ($errors->has('archive'))
+                                        <div class="invalid-feedback d-block">{{ $errors->first('archive') }}</div>
+                                    @endif
+
+                                    <div class="form-text">{{ __('interface.admin.links.import_archive_hint') }}</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="card-footer d-flex flex-column flex-sm-row gap-2 justify-content-between">
@@ -63,9 +91,11 @@
                             <i class="bi bi-arrow-left"></i>
                             {{ __('interface.common.back') }}
                         </a>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-cloud-arrow-up"></i>
-                            {{ __('interface.admin.links.import_submit') }}
+                        <button type="submit" class="btn btn-primary" data-import-submit data-processing-label="{{ __('interface.admin.links.import_processing') }}">
+                            <span class="import-submit-content">
+                                <i class="bi bi-cloud-arrow-up"></i>
+                                {{ __('interface.admin.links.import_submit') }}
+                            </span>
                         </button>
                     </div>
                 {!! Form::close() !!}
@@ -83,6 +113,10 @@
                         <span class="fw-semibold text-end">CSV, TXT, XLS, XLSX</span>
                     </div>
                     <div class="d-flex justify-content-between gap-3">
+                        <span class="text-secondary">{{ __('interface.admin.links.archive_format') }}</span>
+                        <span class="fw-semibold text-end">ZIP</span>
+                    </div>
+                    <div class="d-flex justify-content-between gap-3">
                         <span class="text-secondary">{{ __('interface.common.max_size') }}</span>
                         <span class="fw-semibold text-end">{{ $maxUploadFileSize }}</span>
                     </div>
@@ -93,4 +127,48 @@
 @endsection
 
 @section('js')
+    @php
+        $importErrorMessage = session('error') ?: ($errors->any() ? implode("\n", $errors->all()) : null);
+    @endphp
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('[data-import-form]').forEach(function (form) {
+                const submitButton = form.querySelector('[data-import-submit]');
+                const submitContent = submitButton ? submitButton.querySelector('.import-submit-content') : null;
+
+                if (! submitButton || ! submitContent) {
+                    return;
+                }
+
+                form.addEventListener('submit', function () {
+                    submitButton.disabled = true;
+                    submitButton.setAttribute('aria-busy', 'true');
+                    submitContent.innerHTML = [
+                        '<span class="spinner-border spinner-border-sm" aria-hidden="true"></span>',
+                        submitButton.dataset.processingLabel || @json(__('interface.admin.links.import_processing')),
+                    ].join(' ');
+                });
+            });
+
+            const successMessage = @json(session('success'));
+            const errorMessage = @json($importErrorMessage);
+
+            if (successMessage) {
+                Swal.fire({
+                    icon: 'success',
+                    title: @json(__('interface.messages.import_success_title')),
+                    text: successMessage,
+                    confirmButtonText: @json(__('interface.common.close')),
+                });
+            } else if (errorMessage) {
+                Swal.fire({
+                    icon: 'error',
+                    title: @json(__('interface.messages.import_error_title')),
+                    text: errorMessage,
+                    confirmButtonText: @json(__('interface.common.close')),
+                });
+            }
+        });
+    </script>
 @endsection

@@ -285,22 +285,6 @@
                 </div>
             </div>
 
-            <div class="card shadow-sm mt-3">
-                <div class="card-header">
-                    <h3 class="card-title mb-0">{{ __('interface.admin.dashboard_sections.administrators') }}</h3>
-                </div>
-                <div class="list-group list-group-flush">
-                    @forelse ($latestAdmins as $admin)
-                        <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-                           href="{{ URL::route('cp.admin.edit', ['id' => $admin->id]) }}">
-                            <span>{{ $admin->name ?? $admin->login }}</span>
-                            <span class="small text-secondary">{{ $admin->login }}</span>
-                        </a>
-                    @empty
-                        <div class="list-group-item text-secondary text-center py-4">{{ __('interface.common.no_admins') }}</div>
-                    @endforelse
-                </div>
-            </div>
         </div>
     </div>
 @endsection

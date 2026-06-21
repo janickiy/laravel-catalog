@@ -3,11 +3,9 @@
 namespace App\Services\Admin;
 
 use App\Enums\LinkStatus;
-use App\Repositories\AdminRepository;
 use App\Repositories\CatalogRepository;
 use App\Repositories\FeedbackRepository;
 use App\Repositories\LinksRepository;
-use App\Repositories\SettingsRepository;
 
 class DashboardService
 {
@@ -15,8 +13,6 @@ class DashboardService
         private readonly LinksRepository $links,
         private readonly CatalogRepository $catalogs,
         private readonly FeedbackRepository $feedback,
-        private readonly AdminRepository $admins,
-        private readonly SettingsRepository $settings,
     ) {}
 
     /**
@@ -33,7 +29,6 @@ class DashboardService
             'latestLinks' => $this->links->latestForDashboard(8),
             'topViewedLinks' => $this->links->topViewed(5),
             'latestFeedback' => $this->feedback->latest(5),
-            'latestAdmins' => $this->admins->latest(5),
         ];
     }
 
@@ -66,22 +61,6 @@ class DashboardService
                 'icon' => 'bi-envelope',
                 'variant' => 'warning',
                 'url' => route('cp.feedback.index'),
-            ],
-            [
-                'label' => __('interface.admin.dashboard_cards.administrators'),
-                'description' => __('interface.admin.dashboard_card_descriptions.administrators'),
-                'value' => $this->admins->countAll(),
-                'icon' => 'bi-people',
-                'variant' => 'info',
-                'url' => route('cp.admin.index'),
-            ],
-            [
-                'label' => __('interface.admin.dashboard_cards.settings'),
-                'description' => __('interface.admin.dashboard_card_descriptions.settings'),
-                'value' => $this->settings->countAll(),
-                'icon' => 'bi-gear',
-                'variant' => 'secondary',
-                'url' => route('cp.settings.index'),
             ],
             [
                 'label' => __('interface.admin.dashboard_cards.pending'),

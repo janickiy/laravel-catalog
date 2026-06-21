@@ -155,6 +155,10 @@ class InstallController extends Controller
             Artisan::call('config:clear');
             Artisan::call('key:generate', ['--force' => true]);
             Artisan::call('migrate', ['--force' => true]);
+            Artisan::call('db:seed', [
+                '--class' => 'Database\\Seeders\\CatalogSeeder',
+                '--force' => true,
+            ]);
 
             Admin::updateOrCreate(
                 ['login' => (string) $request->input('login')],

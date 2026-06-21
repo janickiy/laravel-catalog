@@ -10,6 +10,7 @@ use App\Repositories\SettingsRepository;
 use DateTimeInterface;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
 
 class DataTableService
@@ -28,12 +29,12 @@ class DataTableService
     {
         return DataTables::of($this->admins->query())
             ->addColumn('action', function ($row) {
-                $editBtn = '<a title="'.e(__('interface.common.edit')).'" class="btn btn-xs btn-primary" href="'.route('cp.admin.edit', ['id' => $row->id]).'"><span class="fa fa-edit"></span></a> &nbsp;';
+                $editBtn = '<a title="'.e(__('interface.common.edit')).'" class="btn btn-sm btn-outline-primary" href="'.route('cp.admin.edit', ['id' => $row->id]).'"><span class="bi bi-pencil-square"></span></a>';
                 $deleteBtn = $row->id !== Auth::id()
-                    ? '<a title="'.e(__('interface.common.delete')).'" class="btn btn-xs btn-danger deleteRow" id="'.$row->id.'" data-delete-url="'.route('cp.admin.destroy', ['id' => $row->id]).'"><span class="fa fa-remove"></span></a>'
+                    ? '<a title="'.e(__('interface.common.delete')).'" class="btn btn-sm btn-outline-danger deleteRow" id="'.$row->id.'" data-delete-url="'.route('cp.admin.destroy', ['id' => $row->id]).'"><span class="bi bi-trash"></span></a>'
                     : '';
 
-                return '<div class="nobr"> '.$editBtn.$deleteBtn.'</div>';
+                return '<div class="btn-group btn-group-sm" role="group">'.$editBtn.$deleteBtn.'</div>';
             })
             ->editColumn('created_at', fn ($row) => $this->formatDate($row->created_at))
             ->editColumn('updated_at', fn ($row) => $this->formatDate($row->updated_at))
@@ -68,8 +69,15 @@ class DataTableService
     public function feedback(): mixed
     {
         return DataTables::of($this->feedback->query())
+            ->addColumn('action', function ($row) {
+                $showBtn = '<a title="'.e(__('interface.common.view')).'" class="btn btn-sm btn-outline-info" href="'.route('cp.feedback.show', ['id' => $row->id]).'"><span class="bi bi-eye"></span></a>';
+
+                return '<div class="btn-group btn-group-sm" role="group">'.$showBtn.'</div>';
+            })
+            ->editColumn('message', fn ($row) => Str::limit((string) $row->message, 500, ''))
             ->editColumn('created_at', fn ($row) => $this->formatDate($row->created_at))
             ->editColumn('updated_at', fn ($row) => $this->formatDate($row->updated_at))
+            ->rawColumns(['action'])
             ->make(true);
     }
 
@@ -80,10 +88,10 @@ class DataTableService
     {
         return DataTables::of($this->settings->query())
             ->addColumn('action', function ($row) {
-                $editBtn = '<a title="'.e(__('interface.common.edit')).'" class="btn btn-xs btn-primary" href="'.route('cp.settings.edit', ['id' => $row->id]).'"><span class="fa fa-edit"></span></a> &nbsp;';
-                $deleteBtn = '<a title="'.e(__('interface.common.delete')).'" class="btn btn-xs btn-danger deleteRow" id="'.$row->id.'" data-delete-url="'.route('cp.settings.destroy', ['id' => $row->id]).'"><span class="fa fa-remove"></span></a>';
+                $editBtn = '<a title="'.e(__('interface.common.edit')).'" class="btn btn-sm btn-outline-primary" href="'.route('cp.settings.edit', ['id' => $row->id]).'"><span class="bi bi-pencil-square"></span></a>';
+                $deleteBtn = '<a title="'.e(__('interface.common.delete')).'" class="btn btn-sm btn-outline-danger deleteRow" id="'.$row->id.'" data-delete-url="'.route('cp.settings.destroy', ['id' => $row->id]).'"><span class="bi bi-trash"></span></a>';
 
-                return '<div class="nobr"> '.$editBtn.$deleteBtn.'</div>';
+                return '<div class="btn-group btn-group-sm" role="group">'.$editBtn.$deleteBtn.'</div>';
             })
             ->rawColumns(['action'])
             ->make(true);

@@ -140,6 +140,13 @@ return [
             'import_heading' => 'Импорт ссылок',
             'import_file' => 'Файл импорта',
             'import_submit' => 'Импортировать',
+            'import_processing' => 'Импорт выполняется...',
+            'import_archive_heading' => 'Импорт из архива',
+            'import_archive_file' => 'ZIP-архив для импорта',
+            'import_archive_hint' => 'Архив может содержать CSV, TXT, XLS или XLSX файлы.',
+            'import_archive_submit' => 'Импортировать архив',
+            'import_archive_processing' => 'Архив импортируется...',
+            'archive_format' => 'Формат архива',
             'file_parameters' => 'Параметры файла',
             'export_title' => 'Экспорт',
             'export_heading' => 'Экспорт ссылок',
@@ -175,12 +182,20 @@ return [
 
         'admin_users' => [
             'title' => 'Администраторы',
+            'subtitle' => 'Управление пользователями панели управления',
             'create_title' => 'Добавление администратора',
             'edit_title' => 'Редактирование администратора',
         ],
 
+        'feedback_messages' => [
+            'subtitle' => 'Сообщения, отправленные через форму обратной связи',
+            'show_title' => 'Просмотр сообщения',
+            'message_text' => 'Текст сообщения',
+        ],
+
         'settings' => [
             'title' => 'Настройки',
+            'subtitle' => 'Управление параметрами проекта',
             'create_title' => 'Добавление настроек',
             'edit_title' => 'Редактирование настроек',
         ],
@@ -300,6 +315,9 @@ HTML,
         'data_deleted' => 'Данные удалены',
         'information_successfully_added' => 'Информация успешно добавлена',
         'import_completed' => 'Импорт завершен. Импортировано :count ссылок',
+        'import_failed' => 'Не удалось импортировать ссылки. Проверьте файл и попробуйте еще раз.',
+        'import_success_title' => 'Импорт завершен',
+        'import_error_title' => 'Ошибка импорта',
     ],
 
     'datatable' => [
@@ -346,7 +364,9 @@ HTML,
 
     'validation' => [
         'required' => 'Это поле обязательно для заполнения!',
+        'import_required' => 'Выберите файл импорта или ZIP-архив.',
         'import_mimes' => 'Разрешено загружать файлы: csv,xlsx,xls,txt!',
+        'import_archive_mimes' => 'Разрешено загружать только ZIP-архивы!',
         'url' => 'URL адрес введен неверно',
         'url_unique' => 'Сайт с таким URL уже есть в каталоге!',
         'name_required' => 'Не указано название!',

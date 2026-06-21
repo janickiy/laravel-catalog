@@ -4,7 +4,7 @@
 
 ## Автор
 
-Автор проекта: [Alexander Yanitsky](https://janickiy.com).
+[Alexander Yanitsky](https://janickiy.com).
 
 ## Стек
 

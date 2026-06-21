@@ -16,9 +16,11 @@ use App\Services\Admin\LinkImportExportService;
 use App\Services\Admin\LinkService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 class LinksController extends Controller
 {
@@ -139,7 +141,25 @@ class LinksController extends Controller
      */
     public function importLink(ImportLinksRequest $request): RedirectResponse
     {
-        $count = $this->importExport->import($request->file('file'));
+        try {
+            $count = 0;
+
+            if ($request->hasFile('file')) {
+                $count += $this->importExport->import($request->file('file'));
+            }
+
+            if ($request->hasFile('archive')) {
+                $count += $this->importExport->importArchive($request->file('archive'));
+            }
+        } catch (Throwable $exception) {
+            Log::error('Links import failed.', [
+                'message' => $exception->getMessage(),
+                'file' => $request->file('file')?->getClientOriginalName(),
+                'archive' => $request->file('archive')?->getClientOriginalName(),
+            ]);
+
+            return redirect(URL::route('cp.links.import'))->with('error', __('interface.messages.import_failed'));
+        }
 
         return redirect(URL::route('cp.links.import'))->with('success', __('interface.messages.import_completed', ['count' => $count]));
     }

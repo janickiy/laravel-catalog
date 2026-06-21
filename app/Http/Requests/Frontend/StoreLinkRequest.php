@@ -4,6 +4,7 @@ namespace App\Http\Requests\Frontend;
 
 use App\Models\Catalog;
 use App\Models\Links;
+use App\Rules\DomainOrUrl;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -24,7 +25,7 @@ class StoreLinkRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'url' => 'required|url|unique:'.Links::getTableName(),
+            'url' => ['required', new DomainOrUrl(__('interface.validation.frontend_url')), 'unique:'.Links::getTableName()],
             'description' => 'required|min:100|max:300',
             'full_description' => 'required|min:200|max:2000',
             'email' => 'nullable|email',
@@ -49,7 +50,6 @@ class StoreLinkRequest extends FormRequest
         return [
             'name.required' => __('interface.validation.name_required'),
             'url.required' => __('interface.validation.frontend_url_required'),
-            'url.url' => __('interface.validation.frontend_url'),
             'url.unique' => __('interface.validation.frontend_url_unique'),
             'email.email' => __('interface.validation.email'),
             'description.required' => __('interface.validation.description_required'),
