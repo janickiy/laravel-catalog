@@ -5,30 +5,93 @@
 @section('css')
     <style>
         .dashboard-stat {
-            min-height: 9.5rem;
+            border: 0;
+            border-radius: .375rem;
+            box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075);
+            color: #fff !important;
+            display: flex;
+            flex-direction: column;
+            min-height: 10.5rem;
+            overflow: hidden;
+            position: relative;
+            text-decoration: none;
+            transition: transform .15s ease, box-shadow .15s ease;
         }
 
-        .dashboard-stat .card-body {
-            align-items: center !important;
-            min-height: 9.5rem;
-            padding: 1.5rem;
+        .dashboard-stat:hover,
+        .dashboard-stat:focus {
+            color: #fff !important;
+            box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15);
+            transform: translateY(-1px);
         }
 
-        .dashboard-stat .stat-icon {
-            align-items: center;
-            border-radius: .75rem;
-            display: inline-flex;
-            flex: 0 0 auto;
-            font-size: 1.625rem;
-            height: 3.75rem;
-            justify-content: center;
+        .dashboard-stat.text-bg-warning {
+            color: #1f2937 !important;
+        }
+
+        .dashboard-stat.text-bg-warning:hover,
+        .dashboard-stat.text-bg-warning:focus {
+            color: #1f2937 !important;
+        }
+
+        .dashboard-stat__body {
+            flex: 1 1 auto;
+            min-height: 8rem;
+            padding: 1.5rem 6.75rem 1.25rem 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .dashboard-stat__value {
+            font-size: 2.25rem;
+            font-weight: 700;
             line-height: 1;
-            text-align: center;
-            width: 3.75rem;
         }
 
-        .dashboard-stat .stat-icon i {
-            display: block;
+        .dashboard-stat__label {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-top: 1.5rem;
+        }
+
+        .dashboard-stat__description {
+            font-size: .875rem;
+            font-weight: 600;
+            margin-top: .5rem;
+            opacity: .92;
+        }
+
+        .dashboard-stat__icon {
+            font-size: 4.5rem;
+            line-height: 1;
+            opacity: .24;
+            position: absolute;
+            right: 1.25rem;
+            top: 1.65rem;
+            transition: transform .15s ease;
+            z-index: 0;
+        }
+
+        .dashboard-stat:hover .dashboard-stat__icon,
+        .dashboard-stat:focus .dashboard-stat__icon {
+            transform: scale(1.05);
+        }
+
+        .dashboard-stat__footer {
+            align-items: center;
+            background: rgba(0, 0, 0, .14);
+            display: flex;
+            font-weight: 700;
+            gap: .375rem;
+            justify-content: center;
+            min-height: 2.25rem;
+            padding: .35rem .75rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .dashboard-stat__footer i {
+            font-size: 1.05rem;
             line-height: 1;
         }
 
@@ -63,18 +126,19 @@
 @section('content')
     <div class="row g-3">
         @foreach ($summaryCards as $card)
-            <div class="col-12 col-sm-6 col-xl-4">
-                <a class="card dashboard-stat text-decoration-none h-100 border-0 shadow-sm"
-                   href="{{ $card['url'] }}">
-                    <div class="card-body d-flex align-items-start justify-content-between gap-3">
-                        <div>
-                            <div class="text-secondary small text-uppercase fw-semibold">{{ $card['label'] }}</div>
-                            <div class="fs-2 fw-semibold text-body mt-2">{{ number_format($card['value'], 0, '.', ' ') }}</div>
-                        </div>
-                        <span class="stat-icon {{ $card['colorClass'] ?? 'text-bg-' . $card['variant'] }}">
-                            <i class="bi {{ $card['icon'] }}"></i>
-                        </span>
+            @php($statColorClass = $card['colorClass'] ?? 'text-bg-' . ($card['variant'] ?? 'secondary'))
+            <div class="col-12 col-sm-6 col-xl-4 col-xxl-3">
+                <a class="dashboard-stat {{ $statColorClass }}" href="{{ $card['url'] }}">
+                    <div class="dashboard-stat__body">
+                        <div class="dashboard-stat__value">{{ number_format($card['value'], 0, '.', ' ') }}</div>
+                        <div class="dashboard-stat__label">{{ $card['label'] }}</div>
+                        <div class="dashboard-stat__description">{{ $card['description'] }}</div>
+                        <i class="dashboard-stat__icon bi {{ $card['icon'] }}" aria-hidden="true"></i>
                     </div>
+                    <span class="dashboard-stat__footer">
+                        {{ __('interface.admin.dashboard_sections.open_section') }}
+                        <i class="bi bi-arrow-right-circle-fill" aria-hidden="true"></i>
+                    </span>
                 </a>
             </div>
         @endforeach

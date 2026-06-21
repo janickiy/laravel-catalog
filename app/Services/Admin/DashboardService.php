@@ -45,6 +45,7 @@ class DashboardService
         return [
             [
                 'label' => __('interface.admin.dashboard_cards.total_links'),
+                'description' => __('interface.admin.dashboard_card_descriptions.total_links'),
                 'value' => $this->links->countAll(),
                 'icon' => 'bi-link-45deg',
                 'variant' => 'primary',
@@ -52,6 +53,7 @@ class DashboardService
             ],
             [
                 'label' => __('interface.admin.dashboard_cards.categories'),
+                'description' => __('interface.admin.dashboard_card_descriptions.categories'),
                 'value' => $this->catalogs->countAll(),
                 'icon' => 'bi-list-ul',
                 'variant' => 'success',
@@ -59,6 +61,7 @@ class DashboardService
             ],
             [
                 'label' => __('interface.admin.dashboard_cards.messages'),
+                'description' => __('interface.admin.dashboard_card_descriptions.messages'),
                 'value' => $this->feedback->countAll(),
                 'icon' => 'bi-envelope',
                 'variant' => 'warning',
@@ -66,6 +69,7 @@ class DashboardService
             ],
             [
                 'label' => __('interface.admin.dashboard_cards.administrators'),
+                'description' => __('interface.admin.dashboard_card_descriptions.administrators'),
                 'value' => $this->admins->countAll(),
                 'icon' => 'bi-people',
                 'variant' => 'info',
@@ -73,6 +77,7 @@ class DashboardService
             ],
             [
                 'label' => __('interface.admin.dashboard_cards.settings'),
+                'description' => __('interface.admin.dashboard_card_descriptions.settings'),
                 'value' => $this->settings->countAll(),
                 'icon' => 'bi-gear',
                 'variant' => 'secondary',
@@ -80,6 +85,7 @@ class DashboardService
             ],
             [
                 'label' => __('interface.admin.dashboard_cards.pending'),
+                'description' => __('interface.admin.dashboard_card_descriptions.pending'),
                 'value' => $linkStatuses['pending']['count'],
                 'icon' => 'bi-hourglass-split',
                 'colorClass' => LinkStatus::Pending->cssColor(),

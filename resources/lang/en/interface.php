@@ -91,6 +91,14 @@ return [
             'settings' => 'Settings',
             'pending' => 'Pending review',
         ],
+        'dashboard_card_descriptions' => [
+            'total_links' => 'Catalog records',
+            'categories' => 'Sections and topics',
+            'messages' => 'User requests',
+            'administrators' => 'Panel users',
+            'settings' => 'Project options',
+            'pending' => 'New submissions',
+        ],
         'dashboard_sections' => [
             'link_statuses' => 'Link statuses',
             'quick_actions' => 'Quick actions',
@@ -99,6 +107,7 @@ return [
             'latest_messages' => 'Latest messages',
             'administrators' => 'Administrators',
             'all_links' => 'All links',
+            'open_section' => 'Open section',
         ],
         'quick_actions' => [
             'add_link' => 'Add link',

@@ -91,6 +91,14 @@ return [
             'settings' => 'Настройки',
             'pending' => 'Ожидают проверки',
         ],
+        'dashboard_card_descriptions' => [
+            'total_links' => 'Записи каталога',
+            'categories' => 'Разделы и рубрики',
+            'messages' => 'Обращения пользователей',
+            'administrators' => 'Пользователи панели',
+            'settings' => 'Параметры проекта',
+            'pending' => 'Новые заявки',
+        ],
         'dashboard_sections' => [
             'link_statuses' => 'Статусы ссылок',
             'quick_actions' => 'Быстрые действия',
@@ -99,6 +107,7 @@ return [
             'latest_messages' => 'Последние сообщения',
             'administrators' => 'Администраторы',
             'all_links' => 'Все ссылки',
+            'open_section' => 'Открыть раздел',
         ],
         'quick_actions' => [
             'add_link' => 'Добавить ссылку',
