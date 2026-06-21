@@ -248,6 +248,10 @@ textarea:focus {
     padding: 1rem;
 }
 
+.category-card--without-children {
+    align-items: center;
+}
+
 .category-card:hover {
     border-color: rgba(13, 110, 253, .34);
     box-shadow: 0 14px 34px rgba(13, 110, 253, .10);
@@ -269,6 +273,10 @@ textarea:focus {
     height: 44px;
     object-fit: contain;
     width: 44px;
+}
+
+.category-card__body {
+    min-width: 0;
 }
 
 .category-card__title {

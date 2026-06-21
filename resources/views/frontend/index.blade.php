@@ -25,20 +25,22 @@
                                 $categoryImage = $arr[$i][$j][2] ?? null;
                                 $categoryImageExists = $categoryImage && file_exists(public_path('uploads/catalog/' . $categoryImage));
                                 $categoryImageUrl = $categoryImageExists ? url('uploads/catalog/' . $categoryImage) : url('/img/catalog-placeholder.svg');
+                                $childrenHtml = $arr[$i][$j][4] ?? '';
+                                $hasChildren = $arr[$i][$j][1] > 0 && trim(strip_tags($childrenHtml)) !== '';
                             @endphp
-                            <article class="category-card">
+                            <article class="category-card {{ $hasChildren ? 'category-card--with-children' : 'category-card--without-children' }}">
                                 <a class="category-card__icon" href="{{ URL::route('catalog', ['id' => $arr[$i][$j][1] > 0 ? $arr[$i][$j][1] : '']) }}">
                                     <img src="{{ $categoryImageUrl }}" alt="{{ $arr[$i][$j][0] }}" decoding="async">
                                 </a>
 
-                                <div>
+                                <div class="category-card__body">
                                     <a class="category-card__title" href="{{ URL::route('catalog', ['id' => $arr[$i][$j][1] > 0 ? $arr[$i][$j][1] : '']) }}">
                                         {{ $arr[$i][$j][0] }}
                                     </a>
 
-                                    @if($arr[$i][$j][1] > 0)
+                                    @if($hasChildren)
                                         <div class="category-card__children">
-                                            {!! $arr[$i][$j][4] ?? '' !!}
+                                            {!! $childrenHtml !!}
                                         </div>
                                     @endif
                                 </div>
