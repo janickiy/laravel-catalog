@@ -8,11 +8,13 @@ class CreateFeedbackTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
+        if (Schema::hasTable('feedback')) {
+            return;
+        }
+
         Schema::create('feedback', function (Blueprint $table) {
             $table->id();
             $table->string('name');
@@ -25,10 +27,8 @@ class CreateFeedbackTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('feedback');
     }
