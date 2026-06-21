@@ -4,19 +4,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Password Reset Language Lines
+    | Sprachdateien für das Zurücksetzen von Passwörtern
     |--------------------------------------------------------------------------
     |
-    | The following language lines are the default lines which match reasons
-    | that are given by the password broker for a password update attempt
-    | has failed, such as for an invalid token or invalid new password.
+    | Die folgenden Sprachzeilen sind die Standardmeldungen für Fehler oder
+    | Statusmeldungen beim Zurücksetzen eines Passworts, z. B. bei einem
+    | ungültigen Token oder einem ungültigen neuen Passwort.
     |
     */
 
-    'password' => 'Passwords must be at least eight characters and match the confirmation.',
-    'reset' => 'Your password has been reset!',
-    'sent' => 'We have e-mailed your password reset link!',
-    'token' => 'This password reset token is invalid.',
-    'user' => "We can't find a user with that e-mail address.",
+    'password' => 'Passwörter müssen mindestens acht Zeichen lang sein und mit der Bestätigung übereinstimmen.',
+    'reset' => 'Ihr Passwort wurde zurückgesetzt!',
+    'sent' => 'Wir haben Ihnen einen Link zum Zurücksetzen Ihres Passworts per E-Mail gesendet!',
+    'token' => 'Dieses Passwort-Zurücksetzungs-Token ist ungültig.',
+    'user' => 'Wir konnten keinen Benutzer mit dieser E-Mail-Adresse finden.',
 
 ];

@@ -4,16 +4,16 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Pagination Language Lines
+    | Sprachdateien für die Seitennavigation
     |--------------------------------------------------------------------------
     |
-    | The following language lines are used by the paginator library to build
-    | the simple pagination links. You are free to change them to anything
-    | you want to customize your views to better match your application.
+    | Die folgenden Sprachzeilen werden von der Paginierungsbibliothek
+    | verwendet, um einfache Navigationslinks zu erstellen. Sie können diese
+    | Texte beliebig anpassen, damit sie besser zu Ihrer Anwendung passen.
     |
     */
 
-    'previous' => '&laquo; Previous',
-    'next' => 'Next &raquo;',
+    'previous' => '&laquo; Zurück',
+    'next' => 'Weiter &raquo;',
 
 ];
