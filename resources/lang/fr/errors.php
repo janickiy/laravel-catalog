@@ -2,7 +2,7 @@
 
 return [
     'video' => [
-        'not_original' => 'video must be original',
-        'not_compressed' => 'video must be compressed',
+        'not_original' => 'La vidéo doit être originale.',
+        'not_compressed' => 'La vidéo doit être compressée.',
     ],
 ];

@@ -4,16 +4,17 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Authentication Language Lines
+    | Lignes de langue pour l’authentification
     |--------------------------------------------------------------------------
     |
-    | The following language lines are used during authentication for various
-    | messages that we need to display to the user. You are free to modify
-    | these language lines according to your application's requirements.
+    | Les lignes suivantes sont utilisées lors de l’authentification pour
+    | différents messages affichés à l’utilisateur. Vous pouvez les modifier
+    | librement selon les besoins de votre application.
     |
     */
 
-    'failed' => 'These credentials do not match our records.',
-    'no_authorized' => 'You are not authorized',
-    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'failed' => 'Ces identifiants ne correspondent pas à nos enregistrements.',
+    'no_authorized' => 'Vous n’êtes pas autorisé.',
+    'throttle' => 'Trop de tentatives de connexion. Veuillez réessayer dans :seconds secondes.',
+
 ];

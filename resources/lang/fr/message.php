@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'data_updated' => 'Data updated',
-    'information_successfully_added' => 'Information added successfully',
+    'data_updated' => 'Données mises à jour',
+    'information_successfully_added' => 'Information ajoutée avec succès',
 ];
