@@ -1,112 +1,62 @@
 <?php
 
 return [
-    'agreement' => "Software Product License Agreement
+    'agreement' => "Acuerdo de licencia del producto de software
 
-CONDITIONS FOR MAKING COPIES, DISTRIBUTION AND MODIFICATIONS
+CONDICIONES PARA REALIZAR COPIAS, DISTRIBUCIÓN Y MODIFICACIONES
 
-This License Agreement applies to all software or other developed by JANICKIY.COM, in which it is
-indicated that the program may be distributed only under this license agreement.
-The term \"software product\" , as used below, is applied to a program (development) and the term
-\"development based on the Software product\" refers to either the software product, or any
-development made on its basis, protected by copyright law.
-This license agreement is addressed to you and enters into agreement with you.
-This license agreement applies only to manufacturing copies, distribution and modification of the
-software product. Other actions on Software product are beyond the scope of this license agreement.
+Este Acuerdo de licencia se aplica a todo software u otro desarrollo creado por JANICKIY.COM, en el que se indique que el programa solo puede distribuirse bajo este acuerdo de licencia.
 
-1. It is permitted to copy and distribute replicas of the source code of Software product in the form in
-which you received them, in any medium provided that each copy you supply with references to
-copyright law and disclaimer of warranty; keep intact everything relating to this license agreement and
-the absence of any warranty, and give the Software product to any third-party beneficiaries together
-with a copy of the Software Product License agreement along with the Program.
+El término \"producto de software\", utilizado a continuación, se aplica a un programa o desarrollo, y el término \"desarrollo basado en el producto de software\" se refiere al producto de software o a cualquier desarrollo realizado sobre su base y protegido por la ley de derechos de autor.
 
-2. You can make changes to your copy of the Software Product in any part of it, thus creating a
-development on the basis of Software product, and copy and distribute such modifications or
-developments under the conditions listed above in section 1, in case they also meet the following
-conditions:
+Este acuerdo de licencia está dirigido a usted y entra en vigor con usted.
+Este acuerdo de licencia se aplica únicamente a la realización de copias, distribución y modificación del producto de software. Otras acciones con el producto de software quedan fuera del alcance de este acuerdo de licencia.
 
-2.1 you must specify exactly which files have been changed, what was changed, and date of changes.
+1. Se permite copiar y distribuir copias del código fuente del producto de software en la forma en que lo recibió, en cualquier medio, siempre que cada copia incluya referencias a la ley de derechos de autor y al descargo de garantía; mantenga intacto todo lo relacionado con este acuerdo de licencia y la ausencia de cualquier garantía; y entregue el producto de software a terceros junto con una copia del Acuerdo de licencia del producto de software.
 
-2.2 Any distributed or published developments that include the Software product entirely or any part of
-it, made on the basis of the software product, or any part of it, must be mandatory licensed by you
-according to the conditions of the present license agreement.
+2. Puede realizar cambios en su copia del producto de software en cualquier parte de este, creando así un desarrollo basado en el producto de software, y copiar y distribuir dichas modificaciones o desarrollos bajo las condiciones indicadas anteriormente en la sección 1, siempre que también cumplan las siguientes condiciones:
 
-3. If a modified program is designed for interactive use, then at the beginning of the work with such
-interactive use, the information has to be shown in a normal procedure about the presence and the
-ability to view copyright notices and the absence (or presence provided by you) of guarantees that users
-can according to this agreement transfer software product to other users, as well as instructions for the
-user for how to view a copy of this license agreement.
-These requirements apply to the modified development in general.
-If logically isolated components of your design are not based on this Software product and can rightfully
-be regarded as independent development, then this License and its conditions do not apply to the
-components mentioned in those cases when you distribute them as separate development.
-If these components are distributed as part of an integrated development based on the Software
-product, then this license agreement is effective, permitting the licensing of this integral development,
-and therefore, applicable to all and any of its parts, regardless of who is its author.
+2.1 Debe especificar exactamente qué archivos se han cambiado, qué se ha cambiado y la fecha de los cambios.
 
-4. It is possible to make copies, modify, sublicense or distribute the Software product only subject to
-the conditions expressly stated in this license agreement. Any attempt otherwise to copy, modify,
-sublicense or distribute the Software product are considered a violation of the license agreement and
-will automatically terminate your rights provided by this agreement.
-However, a license of third parties who received from you any copies or rights under this license
-agreement will remain valid as long as such parties remain fully comply with the conditions of the
-agreement.
+2.2 Cualquier desarrollo distribuido o publicado que incluya el producto de software total o parcialmente, o que se haya realizado sobre la base del producto de software o de cualquier parte de este, debe ser licenciado obligatoriamente por usted según las condiciones del presente acuerdo de licencia.
 
-5. You are not required to accept this License Agreement, since you have not signed it. However,
-nothing else grants you a permission to modify or distribute the Software product or create any
-developments on its basis. In this case, such actions are prohibited by law if you do not accept this
-License agreement.
-Therefore, by modifying or distributing a copy of the Software product (or any work created based on
-it), you thus show the acceptance of this License with all its terms and conditions for copying,
-distributing or modifying the Software product or developments created on its basis.
+3. Si un programa modificado está diseñado para uso interactivo, al inicio de dicho uso interactivo debe mostrarse, de forma habitual, información sobre la existencia y la posibilidad de ver los avisos de derechos de autor y la ausencia de garantías o la presencia de garantías proporcionadas por usted. También debe indicarse que los usuarios pueden transferir el producto de software a otros usuarios de acuerdo con este acuerdo, así como instrucciones sobre cómo ver una copia de este acuerdo de licencia.
 
-6. Whenever you redistribute the Software Product (or development created based on the Product), the
-new recipient automatically receives from the original licensor a right to copy, distribute or modify the
-Software Product in accordance with the terms and conditions of this license agreement. You can not
-impose any further restrictions on the rights of the new owner given to him by this license agreement.
-You are not responsible for enforcing compliance by third parties to this agreement.
+Estos requisitos se aplican al desarrollo modificado en general.
+Si los componentes lógicamente independientes de su desarrollo no se basan en este producto de software y pueden considerarse legítimamente desarrollos independientes, esta licencia y sus condiciones no se aplican a dichos componentes cuando se distribuyen como desarrollos separados.
 
-7. In case of a court judgment or a copy infringement or for any other reason (not necessarily of patent
-character), you (whether by court order, agreement or otherwise) are put in conditions that contradict
-the conditions of this license agreements, this does not excuse you from the conditions of this license
-agreement.
-If you can not simultaneously perform your obligations under this License and any other pertinent
-obligations, then as consequence you can not distribute the Software Product.
-For example, if a patent license would not allow gratuitous further distribution of software products by
-those who received a copy of it from you, directly or indirectly, then the only way not to violate any of
-its conditions or conditions of this license agreement is to fully refrain entirely from distribution of the
-Software Product.
-If any part of this section is held to have no legal force or inapplicable in the circumstances, the rest part
-of the section is intended to apply and the section as a whole is applicable to other circumstances.
+Si estos componentes se distribuyen como parte de un desarrollo integrado basado en el producto de software, este acuerdo de licencia será aplicable a dicho desarrollo integral y, por tanto, a todas y cada una de sus partes, independientemente de quién sea su autor.
 
-8. If the distribution and/or use the Software Product in a specific country is limited by patent
-agreements or relationships in the field of copyright, the original copyright holder who places his
-software product under this License Agreement, can add a clearly defined geographical limitations for a
-distribution, excluding these countries from those that allowed distribution. In such case, this License
-agreement incorporates the limitation as if written in the actual text agreement.
+4. Solo es posible copiar, modificar, sublicenciar o distribuir el producto de software bajo las condiciones expresamente indicadas en este acuerdo de licencia. Cualquier otro intento de copiar, modificar, sublicenciar o distribuir el producto de software se considerará una infracción del acuerdo de licencia y terminará automáticamente los derechos que este acuerdo le concede.
 
-9. If you wish to incorporate parts of the Software product into other freely distributed software
-products, but under other conditions, you have to ask a permission in writing from the authors.
-DISCLAIMER OF WARRANTY
+Sin embargo, la licencia de terceros que hayan recibido de usted copias o derechos bajo este acuerdo de licencia seguirá siendo válida mientras dichas partes cumplan plenamente las condiciones del acuerdo.
 
-10 . BECAUSE THE SOFTWARE IS LICENSED FREE OF CHARGE, NO WARRANTIES ARE GIVEN TO THE
-EXTENT ALLOWED BY LAW. EXCEPT WHEN THERE IS WRITTEN STATEMENT OF HOLDERS OR
-DISTRIBUTORS OF SOFTWARE, THE PRODUCT IS PROVIDED TO YOU \"AS IT IS\", THAT DOES NOT PROVIDE
-ANY WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF FITNESS FOR SALES, AND USE FOR A
-PARTICULAR PURPOSE. YOU ASSUME THE ENTIRE RISK AS TO THE ELIGIBILITY REQUIREMENTS FOR
-QUALITY AND PERFORMANCE OF THE SOFTWARE. IF THE SOFTWARE WORKS INCORRECTLY, YOU
-SOLELY BARE ALL NECESSARY COSTS FOR SERVICE, TROUBLESHOOTING AND CORRECTION.
+5. No está obligado a aceptar este Acuerdo de licencia, ya que no lo ha firmado. Sin embargo, nada más le concede permiso para modificar o distribuir el producto de software ni para crear desarrollos basados en él. En este caso, dichas acciones están prohibidas por la ley si no acepta este acuerdo de licencia.
 
-11. UNDER NO CIRCUMSTANCES, EXCEPT WHEN REQUIRED BY APPLICABLE LAW OR AGREED TO IN
-WRITING, NO COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO AMEND AND/OR REDISTRIBUTE THE
-SOFTWARE PRODUCT AS PERMITTED ABOVE, IS LIABLE TO YOU FOR DAMAGES, INCLUDING GENERAL,
-SPECIAL , INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF USE OR INABILITY TO USE THE
-SOFTWARE (INCLUDING LOSS OF DATA, INCONVINIENT FOR YOU METHOD OF DATA RECEPTION OR ANY
-ADDITIONAL EXPENSES SUSTAINED BY YOU OR THIRD PARTIES OR A FAILURE TO OPERATE WITH ANY
-OTHER SOFTWARE, EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGES.
-Distributing this program, we hope that it will be useful, but DO NOT GIVE ANY WARRANTY, without
-even the implied warranty of MERCHANTIBILITY OR USAGE FOR A PARTICULAR PURPOSE. Together with
-this program you need to get our license for the software
+Por lo tanto, al modificar o distribuir una copia del producto de software o cualquier obra creada sobre su base, usted manifiesta la aceptación de esta licencia con todos sus términos y condiciones para copiar, distribuir o modificar el producto de software o los desarrollos creados sobre su base.
+
+6. Cada vez que redistribuya el producto de software o un desarrollo creado sobre la base del producto, el nuevo destinatario recibirá automáticamente del licenciante original el derecho a copiar, distribuir o modificar el producto de software de acuerdo con los términos y condiciones de este acuerdo de licencia. No puede imponer restricciones adicionales a los derechos que este acuerdo de licencia concede al nuevo propietario.
+
+Usted no es responsable de hacer cumplir este acuerdo por parte de terceros.
+
+7. En caso de una sentencia judicial, una infracción de derechos de autor o por cualquier otro motivo, no necesariamente de carácter patentes, si usted se encuentra sujeto a condiciones que contradicen las condiciones de este acuerdo de licencia, ello no le exime de cumplir las condiciones de este acuerdo de licencia.
+
+Si no puede cumplir simultáneamente sus obligaciones bajo esta licencia y cualquier otra obligación pertinente, como consecuencia no podrá distribuir el producto de software.
+
+Por ejemplo, si una licencia de patente no permitiera la redistribución gratuita de productos de software por parte de quienes recibieron una copia de usted, directa o indirectamente, la única forma de no infringir ninguna de sus condiciones ni las condiciones de este acuerdo de licencia sería abstenerse por completo de distribuir el producto de software.
+
+Si alguna parte de esta sección se considera sin validez legal o inaplicable en determinadas circunstancias, el resto de la sección seguirá siendo aplicable, y la sección en su conjunto será aplicable en otras circunstancias.
+
+8. Si la distribución y/o el uso del producto de software en un país específico está limitado por acuerdos de patente o relaciones en el ámbito de los derechos de autor, el titular original de los derechos de autor que somete su producto de software a este Acuerdo de licencia puede añadir una limitación geográfica claramente definida para la distribución, excluyendo esos países de aquellos en los que se permite la distribución. En tal caso, este Acuerdo de licencia incorpora dicha limitación como si estuviera escrita en el texto del acuerdo.
+
+9. Si desea incorporar partes del producto de software en otros productos de software distribuidos libremente, pero bajo otras condiciones, debe solicitar permiso por escrito a los autores.
+
+DESCARGO DE GARANTÍA
+
+10. DADO QUE EL SOFTWARE SE LICENCIA DE FORMA GRATUITA, NO SE OTORGAN GARANTÍAS EN LA MEDIDA PERMITIDA POR LA LEY. SALVO QUE EXISTA UNA DECLARACIÓN ESCRITA DE LOS TITULARES O DISTRIBUIDORES DEL SOFTWARE, EL PRODUCTO SE LE PROPORCIONA \"TAL CUAL\", SIN NINGUNA GARANTÍA, INCLUIDA CUALQUIER GARANTÍA IMPLÍCITA DE COMERCIABILIDAD O IDONEIDAD PARA UN FIN DETERMINADO. USTED ASUME TODO EL RIESGO RELATIVO AL CUMPLIMIENTO DE LOS REQUISITOS DE CALIDAD Y RENDIMIENTO DEL SOFTWARE. SI EL SOFTWARE FUNCIONA INCORRECTAMENTE, USTED ASUME TODOS LOS COSTES NECESARIOS DE SERVICIO, SOLUCIÓN DE PROBLEMAS Y CORRECCIÓN.
+
+11. BAJO NINGUNA CIRCUNSTANCIA, EXCEPTO CUANDO LO EXIJA LA LEY APLICABLE O SE ACUERDE POR ESCRITO, NINGÚN TITULAR DE DERECHOS DE AUTOR NI NINGUNA OTRA PARTE QUE MODIFIQUE Y/O REDISTRIBUYA EL PRODUCTO DE SOFTWARE SEGÚN LO PERMITIDO ANTERIORMENTE SERÁ RESPONSABLE ANTE USTED POR DAÑOS, INCLUIDOS DAÑOS GENERALES, ESPECIALES, INCIDENTALES O CONSECUENTES DERIVADOS DEL USO O DE LA IMPOSIBILIDAD DE USAR EL SOFTWARE, INCLUIDA LA PÉRDIDA DE DATOS, UN MÉTODO DE RECEPCIÓN DE DATOS INCONVENIENTE PARA USTED, CUALQUIER GASTO ADICIONAL SOPORTADO POR USTED O POR TERCEROS, O LA IMPOSIBILIDAD DE FUNCIONAR CON OTRO SOFTWARE, INCLUSO SI DICHO TITULAR U OTRA PARTE HA SIDO ADVERTIDO DE LA POSIBILIDAD DE TALES DAÑOS.
+
+Al distribuir este programa, esperamos que sea útil, pero NO OFRECEMOS NINGUNA GARANTÍA, ni siquiera la garantía implícita de COMERCIABILIDAD O IDONEIDAD PARA UN FIN DETERMINADO. Junto con este programa debe recibir nuestra licencia para el software.
 "
 ];
