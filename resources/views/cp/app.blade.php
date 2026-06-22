@@ -308,7 +308,7 @@
 
     <footer class="app-footer">
         <strong>
-            © {{ date('Y') }} My Links Manager.
+            © {{ date('Y') }} My Links Manager. v{{ config('app.version') }}.
             <a href="https://janickiy.com" target="_blank" rel="noopener noreferrer">Alexander Yanitsky</a>
         </strong>
     </footer>

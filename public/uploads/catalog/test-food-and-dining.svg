@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="150" height="150" viewBox="0 0 120 120" role="img" aria-labelledby="title">
+  <title>Food &amp; Dining</title>
+  <defs>
+    <linearGradient id="g" x1="14" x2="106" y1="14" y2="106" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fd7e14"/>
+      <stop offset="1" stop-color="#20c997"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="9" flood-color="#102a43" flood-opacity=".16"/>
+    </filter>
+  </defs>
+  <rect width="120" height="120" rx="28" fill="#eef9fb"/>
+  <rect x="14" y="14" width="92" height="92" rx="24" fill="url(#g)" filter="url(#shadow)"/>
+  <path d="M38 26v34M28 26v34M48 26v34M28 60h20v34" stroke="white" stroke-width="7" stroke-linecap="round"/><path d="M75 26c14 12 14 33 0 44v24" stroke="white" stroke-width="7" stroke-linecap="round"/>
+  <circle cx="91" cy="91" r="6" fill="white" opacity=".95"/>
+  <circle cx="77" cy="94" r="4" fill="white" opacity=".75"/>
+</svg>

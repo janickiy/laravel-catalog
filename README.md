@@ -1,14 +1,14 @@
 # My Links Manager
 
-Каталог сайтов на Laravel 13 с публичным фронтендом и административной панелью на AdminLTE 4.
+My Links Manager is a Laravel 13 website catalog with a public frontend, an AdminLTE 4 control panel, installer, multilingual interface, import/export tools, and Docker-based local infrastructure.
 
-## Автор
+## Author
 
-[Alexander Yanitsky](https://janickiy.com).
+[Alexander Yanitsky](https://janickiy.com)
 
-## Стек
+## Stack
 
-- PHP 8.4
+- PHP 8.4 in Docker, PHP 8.3+ in Composer constraints
 - Laravel 13
 - MySQL 8.4
 - Apache 2
@@ -16,83 +16,88 @@
 - Bootstrap 5
 - DataTables
 - Laravel Excel / PhpSpreadsheet
+- League CSV
 - Docker Compose
 
-## Возможности
+## Features
 
-- Публичный каталог сайтов с разделами, карточками сайтов и формой добавления сайта.
-- Административная панель `/cp` с dashboard.
-- Управление ссылками, категориями, администраторами, настройками и сообщениями обратной связи.
-- Импорт больших `csv`, `txt`, `xls`, `xlsx` файлов ссылок.
-- Экспорт ссылок в `txt`, `xlsx` и `zip`.
-- Цветовая индикация статусов ссылок через `App\Enums\LinkStatus`.
-- DTO, Request-классы, сервисы и репозитории для разделения ответственности.
+- Public website catalog with categories, site cards, rules page, feedback form, and site submission form.
+- Admin panel at `/cp` with a dashboard and management sections.
+- Link, catalog category, administrator, settings, and feedback management.
+- Multilingual interface: Russian, English, French, German, and Spanish.
+- Installer wizard at `/install` when the root `.env` file is missing.
+- Update section at `/cp/update` that checks the license server and applies available update packages.
+- Large link import from `csv`, `txt`, `xls`, `xlsx`, and ZIP archives containing supported files.
+- Link export to `txt`, `xlsx`, and `zip`.
+- Status color indication through `App\Enums\LinkStatus`.
+- Thin controllers, Form Request validation, DTOs, repositories, and services.
 
-## Быстрый запуск в Docker
+## Quick Start With Docker
 
 ```bash
 docker compose -f docker/docker-compose.yml up -d --build
 ```
 
-После запуска приложение доступно по адресу:
+After the containers start, the application is available at:
 
-- Фронтенд: http://localhost:8080
-- Админка: http://localhost:8080/cp
-- Логин: http://localhost:8080/login
+- Frontend: `http://localhost:8080`
+- Admin panel: `http://localhost:8080/cp`
+- Login page: `http://localhost:8080/login`
+- Installer: `http://localhost:8080/install`
 
-Данные администратора по умолчанию:
+Default admin credentials:
 
-- Логин: `admin`
-- Пароль: `1234567`
+- Login: `admin`
+- Password: `1234567`
 
-При первом запуске MySQL-контейнер импортирует дамп `catalog.sql` в базу `laravel_catalog`.
+On the first MySQL container initialization, `catalog.sql` is imported into the `laravel_catalog` database.
 
-## Docker-сервисы
+## Docker Services
 
-Docker-файлы находятся в папке `docker/`.
+Docker files are stored in the `docker/` directory.
 
-- `docker/docker-compose.yml` - сервисы приложения и MySQL.
-- `docker/Dockerfile` - PHP 8.4 + Apache + необходимые PHP extensions.
-- `docker/apache/000-default.conf` - Apache VirtualHost для `public/`.
-- `docker/php/php.ini` - лимиты загрузки, память и timezone.
-- `docker/entrypoint.sh` - подготовка `.env`, директорий, Composer-зависимостей и storage link.
-- `docker/.env.docker` - переменные окружения для контейнеров.
+- `docker/docker-compose.yml` - application and MySQL services.
+- `docker/Dockerfile` - PHP 8.4, Apache 2, Composer, and required PHP extensions.
+- `docker/apache/000-default.conf` - Apache virtual host pointing to `public/`.
+- `docker/php/php.ini` - upload, memory, and timezone settings.
+- `docker/entrypoint.sh` - prepares `.env`, writable directories, Composer dependencies, and storage link.
+- `docker/.env.docker` - container environment variables.
 
-Порты:
+Ports:
 
-- `8080:80` - приложение.
-- `3307:3306` - MySQL с хоста.
+- `8080:80` - application HTTP port.
+- `3307:3306` - MySQL from the host machine.
 
-## Полезные Docker-команды
+Useful Docker commands:
 
 ```bash
-# Запустить контейнеры
+# Start containers
 docker compose -f docker/docker-compose.yml up -d
 
-# Остановить контейнеры
+# Stop containers
 docker compose -f docker/docker-compose.yml down
 
-# Пересобрать контейнер приложения
+# Rebuild the application container
 docker compose -f docker/docker-compose.yml up -d --build
 
-# Зайти в контейнер приложения
+# Open a shell in the application container
 docker exec -it laravel_catalog_app bash
 
-# Выполнить artisan-команду
+# Run an Artisan command
 docker exec -w /var/www/html laravel_catalog_app php artisan route:list
 
-# Посмотреть логи приложения
+# Follow application logs
 docker compose -f docker/docker-compose.yml logs -f app
 ```
 
-Если нужно пересоздать базу с повторным импортом `catalog.sql`, удалите volume MySQL:
+To recreate the database and import `catalog.sql` again, remove the MySQL volume:
 
 ```bash
 docker compose -f docker/docker-compose.yml down -v
 docker compose -f docker/docker-compose.yml up -d --build
 ```
 
-## Локальная установка без Docker
+## Local Installation Without Docker
 
 ```bash
 composer install
@@ -103,85 +108,165 @@ php artisan storage:link
 php artisan serve
 ```
 
-Для фронтенд-зависимостей:
+Frontend dependencies:
 
 ```bash
 npm install
 npm run dev
 ```
 
-## Основные маршруты
+## Installer
 
-Публичная часть:
+The installer is available at `/install` only while the root `.env` file is missing.
 
-- `/` - главная страница каталога.
-- `/catalog/{id?}` - раздел каталога.
-- `/info/{id}` - карточка сайта.
-- `/add-url` - форма добавления сайта.
-- `/rules` - правила каталога.
-- `/contact` - обратная связь.
+Installer flow:
+
+- License agreement
+- System requirements
+- Directory permissions
+- Database connection
+- First administrator
+- Installation completion
+
+After successful installation, `.env` is created, migrations and seeders are executed, the first administrator is created, and repeated installer access is redirected to the homepage.
+
+Default Docker database credentials:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=mysql
+DB_PORT=3306
+DB_DATABASE=laravel_catalog
+DB_USERNAME=laravel
+DB_PASSWORD=secret
+```
+
+## Main Routes
+
+Public routes:
+
+- `/` - catalog homepage.
+- `/catalog/{id?}` - catalog section.
+- `/info/{id}` - site details.
+- `/add-url` - site submission form.
+- `/rules` - catalog rules.
+- `/contact` - feedback form.
 - `/sitemap.xml` - sitemap index.
 
-Административная панель:
+Admin routes:
 
 - `/cp` - dashboard.
-- `/cp/links` - ссылки.
-- `/cp/links/import` - импорт ссылок.
-- `/cp/links/export` - экспорт ссылок.
-- `/cp/catalog` - категории.
-- `/cp/feedback` - сообщения с сайта.
-- `/cp/admins` - администраторы.
-- `/cp/settings` - настройки.
+- `/cp/links` - links.
+- `/cp/links/import` - link import.
+- `/cp/links/export` - link export.
+- `/cp/catalog` - categories.
+- `/cp/feedback` - website messages.
+- `/cp/admins` - administrators.
+- `/cp/settings` - settings.
+- `/cp/update` - project update.
 
-## Архитектура приложения
+## Updates
 
-Основной код находится в `app/`.
+The current project version is stored in the `VERSION` environment variable:
 
-- `app/Http/Controllers` - тонкие контроллеры, которые принимают запрос и передают работу сервисам.
-- `app/Http/Requests/Admin` и `app/Http/Requests/Frontend` - валидация входящих данных.
-- `app/DTO` - DTO для передачи данных между слоями приложения.
-- `app/Repositories` - работа с базой данных и Eloquent-запросами.
-- `app/Services` - бизнес-логика, не связанная напрямую с HTTP.
-- `app/Enums` - перечисления, включая `LinkStatus`.
-- `app/Imports` - потоковый импорт ссылок из файлов.
-- `app/Helpers` - вспомогательные функции для строк, файлов и настроек.
+```env
+VERSION=4.0.0
+```
 
-## Работа со статусами ссылок
+Update configuration is stored in `config/update.php`.
 
-Статусы ссылок описаны в `App\Enums\LinkStatus`:
+The admin update page is available at `/cp/update`. It requests version information from:
 
-- `Pending` - ожидает проверку.
-- `Published` - опубликован.
-- `Blocked` - в черном списке.
+```text
+https://license.janickiy.com/?id=7&version=4.0.0&lang=ru
+```
 
-CSS-класс для отображения статуса в AdminLTE возвращает метод:
+When a newer `upgrade_version` is available, the update button starts an AJAX step-by-step process:
+
+- Download `update.zip`
+- Download `public.zip`
+- Download `vendor.zip`
+- Extract downloaded archives into the project root
+- Run migrations
+- Clear Laravel caches
+- Write the new `VERSION` value to `.env`
+
+## Multilingual Interface
+
+Supported interface locales:
+
+- `ru` - Russian
+- `en` - English
+- `fr` - French
+- `de` - German
+- `es` - Spanish
+
+Language files are stored in `resources/lang/{locale}`.
+
+The language switcher is available:
+
+- In the frontend header.
+- In the admin panel top bar.
+- In the installer.
+
+The selected language is saved and reused after page reloads and login.
+
+## Application Architecture
+
+Main application code is stored in `app/`.
+
+- `app/Http/Controllers` - thin controllers that receive HTTP requests and delegate work.
+- `app/Http/Requests/Admin` and `app/Http/Requests/Frontend` - request validation.
+- `app/DTO` - data transfer objects between layers.
+- `app/Repositories` - database and Eloquent operations.
+- `app/Services` - business logic that does not belong in controllers or repositories.
+- `app/Enums` - enums, including `LinkStatus`.
+- `app/Imports` - streaming link import.
+- `app/Helpers` - focused helper classes for files, strings, and related utilities.
+
+## Link Statuses
+
+Link statuses are described by `App\Enums\LinkStatus`:
+
+- `Pending` - pending review.
+- `Published` - published.
+- `Blocked` - blocked.
+
+The AdminLTE status color class is returned by:
 
 ```php
 LinkStatus::cssColorFor($status);
 ```
 
-## Импорт и экспорт ссылок
+## Link Import And Export
 
-Импорт реализован через:
+Import is implemented through:
 
 - `App\Services\Admin\LinkImportExportService`
 - `App\Services\Admin\LinkImportProcessor`
 - `App\Imports\LinksImport`
 - `App\Imports\LinksImportFromCsv`
 
-Для больших `xls` и `xlsx` файлов используется chunk-reading. CSV/TXT читаются построчно через `league/csv`.
+Large `xls` and `xlsx` files are processed with chunk reading. `csv` and `txt` files are processed line by line through `league/csv`.
 
-Экспорт поддерживает:
+ZIP archives can contain supported import files:
+
+- `csv`
+- `txt`
+- `xls`
+- `xlsx`
+
+Export supports:
 
 - `txt`
 - `xlsx`
 - `zip`
 
-## Работа с базой данных
+## Database
 
-Миграции находятся в `database/migrations`.
+Migrations are stored in `database/migrations`.
 
-Основные таблицы:
+Main tables:
 
 - `admin`
 - `catalog`
@@ -189,91 +274,100 @@ LinkStatus::cssColorFor($status);
 - `feedback`
 - `settings`
 
-Внешние ключи для `catalog` и `links` добавлены отдельной миграцией:
+Each current table has its own migration file. Foreign keys are handled in the table migrations.
 
-```text
-database/migrations/2026_06_18_000000_add_foreign_keys_to_catalog_and_links_tables.php
-```
-
-Команды:
+Useful commands:
 
 ```bash
 docker exec -w /var/www/html laravel_catalog_app php artisan migrate
 docker exec -w /var/www/html laravel_catalog_app php artisan db:seed
 ```
 
-## Проверки качества
+The default catalog is seeded by `database/seeders/CatalogSeeder.php` according to the selected installer locale.
+
+## Quality Checks
 
 ```bash
-# Тесты
+# Tests
 docker exec -w /var/www/html laravel_catalog_app php artisan test
 
 # Laravel Pint
 docker exec -w /var/www/html laravel_catalog_app ./vendor/bin/pint app
 
-# Проверка синтаксиса PHP-файлов
+# PHP syntax check
 find app -name '*.php' -print0 | xargs -0 -n1 php -l
 ```
 
-## Полезные artisan-команды
+## Useful Artisan Commands
 
 ```bash
-# Очистить кэши
+# Clear all caches
 docker exec -w /var/www/html laravel_catalog_app php artisan optimize:clear
 
-# Очистить кэш view
+# Clear compiled views
 docker exec -w /var/www/html laravel_catalog_app php artisan view:clear
 
-# Список маршрутов
+# List routes
 docker exec -w /var/www/html laravel_catalog_app php artisan route:list
 
-# Создать storage link
+# Create storage symlink
 docker exec -w /var/www/html laravel_catalog_app php artisan storage:link
 
-# Создать скриншоты для сайтов без изображения
+# Create screenshots for links without images
 docker exec -w /var/www/html laravel_catalog_app php artisan screenshot:make
 ```
 
-### Команда `screenshot:make`
+### `screenshot:make`
 
-Команда `screenshot:make` обновляет изображения сайтов, у которых поле `image` еще не заполнено.
-За один запуск команда выбирает до 10 случайных записей из таблицы `links`, проверяет доступность URL и сохраняет скриншот в `public/uploads/url`.
+The `screenshot:make` command updates site images for records whose `image` field is empty.
 
-Запуск в Docker:
+Each run selects up to 10 random records from the `links` table, checks URL availability, and saves screenshots to:
+
+```text
+public/uploads/url
+```
+
+Run it in Docker:
 
 ```bash
 docker exec -w /var/www/html laravel_catalog_app php artisan screenshot:make
 ```
 
-Для полноразмерных скриншотов используется PageSpeed API, поэтому для стабильной работы укажите `GOOGLE_API_KEY` в `.env` или `docker/.env.docker`.
-Если ключ не указан или внешний сервис недоступен, скриншот может не создаться.
+Full-page screenshots use the PageSpeed API. For stable screenshot generation, set `GOOGLE_API_KEY` in `.env` or `docker/.env.docker`.
 
-## Публичные ассеты
+If the key is missing or the external service is unavailable, screenshots may not be created.
 
-Основные ассеты находятся в `public/`:
+## Public Assets
 
-- `public/css/frontend.css` - стили публичной части.
-- `public/img/my-links-manager-logo.svg` - логотип фронтенда.
-- `public/img/my-links-manager-admin-logo.svg` - логотип админки.
-- `public/img/site-placeholder.svg` - заглушка сайта.
-- `public/img/catalog-placeholder.svg` - заглушка раздела каталога.
+Main public assets:
+
+- `public/css/frontend.css` - frontend styles.
+- `public/img/my-links-manager-logo.svg` - frontend logo.
+- `public/img/my-links-manager-admin-logo.svg` - admin logo.
+- `public/img/site-placeholder.svg` - site placeholder image.
+- `public/img/catalog-placeholder.svg` - catalog placeholder image.
 - `public/favicon.ico` - favicon.
 
-## Переменные окружения
+## Environment Variables
 
-Базовые переменные для Docker лежат в `docker/.env.docker`.
+Docker defaults are stored in `docker/.env.docker`.
 
-Важные параметры:
+Important variables:
 
 - `APP_URL=http://localhost:8080`
+- `APP_LOCALE=ru`
+- `APP_FALLBACK_LOCALE=ru`
+- `VERSION=4.0.0`
 - `DB_HOST=mysql`
 - `DB_DATABASE=laravel_catalog`
 - `DB_USERNAME=laravel`
 - `DB_PASSWORD=secret`
-- `GOOGLE_API_KEY=` - ключ PageSpeed API для полноразмерных скриншотов.
+- `GOOGLE_API_KEY=` - PageSpeed API key for full-page screenshots.
+- `UPDATE_ENDPOINT=https://license.janickiy.com/` - optional update server override.
 
-## Примечания
+## Notes
 
-- При работе в Docker команды Laravel лучше выполнять через контейнер `laravel_catalog_app`.
-- Если импорт `catalog.sql` не срабатывает, проверьте, что volume MySQL был создан заново.
-- Для скриншотов сайтов используются внешние сервисы, поэтому результат зависит от доступности сети и настроек `GOOGLE_API_KEY`.
+- When working in Docker, run Laravel commands through the `laravel_catalog_app` container.
+- If `catalog.sql` is not imported, recreate the MySQL volume and start the containers again.
+- Site screenshots use external services, so the result depends on network availability and `GOOGLE_API_KEY`.
+- Copyright and author information is shown in the frontend and admin footers.
