@@ -268,6 +268,12 @@
                             <p>{{ __('interface.admin.settings.title') }}</p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{ URL::route('cp.update.index') }}" class="nav-link {{ request()->is('cp/update*') ? 'active' : '' }}">
+                            <i class="nav-icon bi bi-cloud-arrow-down"></i>
+                            <p>{{ __('interface.admin.updates.title') }}</p>
+                        </a>
+                    </li>
                 </ul>
             </nav>
         </div>

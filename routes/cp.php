@@ -9,7 +9,8 @@ use App\Http\Controllers\Admin\{
     CatalogController,
     LinksController,
     FeedbackController,
-    SettingsController
+    SettingsController,
+    UpdateController
 };
 
 /*
@@ -73,6 +74,11 @@ Route::group(['prefix' => 'cp'], function () {
         Route::delete('destroy/{id}', [SettingsController::class, 'destroy'])->name('cp.settings.destroy')->where('id', '[0-9]+');
     });
 
+    Route::group(['prefix' => 'update'], function () {
+        Route::get('', [UpdateController::class, 'index'])->name('cp.update.index');
+        Route::post('run', [UpdateController::class, 'run'])->name('cp.update.run');
+    });
+
     Route::group(['prefix' => 'datatable'], function () {
         Route::any('links', [DataTableController::class, 'getLinks'])->name('cp.datatable.links');
         Route::any('admin', [DataTableController::class, 'getAdmin'])->name('cp.datatable.admin');
@@ -81,7 +87,6 @@ Route::group(['prefix' => 'cp'], function () {
     });
 
 });
-
 
 
 

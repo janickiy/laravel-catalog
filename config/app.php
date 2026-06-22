@@ -15,6 +15,8 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
+    'version' => env('VERSION', '4.0.0'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment
@@ -100,21 +102,26 @@ return [
     | Supported Interface Locales
     |--------------------------------------------------------------------------
     |
-    | The application interface is available in Russian and English. The values
-    | below are used by the locale middleware and language switchers.
+    | The values below are used by the locale middleware and language switchers.
     |
     */
 
-    'locales' => ['ru', 'en'],
+    'locales' => ['ru', 'en', 'fr', 'de', 'es'],
 
     'languages' => [
         'ru' => 'Русский',
         'en' => 'English',
+        'fr' => 'Français',
+        'de' => 'Deutsch',
+        'es' => 'Español',
     ],
 
     'flags' => [
         'ru' => 'ru',
         'en' => 'us',
+        'fr' => 'fr',
+        'de' => 'de',
+        'es' => 'es',
     ],
 
     /*
