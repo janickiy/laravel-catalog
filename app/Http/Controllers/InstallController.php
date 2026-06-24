@@ -162,6 +162,10 @@ class InstallController extends Controller
                 '--class' => 'Database\\Seeders\\CatalogSeeder',
                 '--force' => true,
             ]);
+            Artisan::call('db:seed', [
+                '--class' => 'Database\\Seeders\\SettingsSeeder',
+                '--force' => true,
+            ]);
 
             Admin::updateOrCreate(
                 ['login' => (string) $request->input('login')],
@@ -351,12 +355,12 @@ class InstallController extends Controller
     }
 
     /**
-     * Load the environment template from .env.example or the current .env.
+     * Load the environment template from .env or the current .env.
      */
     private function environmentTemplate(): string
     {
-        if (file_exists(base_path('.env.example'))) {
-            return (string) file_get_contents(base_path('.env.example'));
+        if (file_exists(base_path('.env'))) {
+            return (string) file_get_contents(base_path('.env'));
         }
 
         return file_exists(base_path('.env'))

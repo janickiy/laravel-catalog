@@ -101,7 +101,7 @@ docker compose -f docker/docker-compose.yml up -d --build
 
 ```bash
 composer install
-cp .env.example .env
+cp .env .env
 php artisan key:generate
 php artisan migrate --seed
 php artisan storage:link

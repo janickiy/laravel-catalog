@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             CatalogSeeder::class,
+            SettingsSeeder::class,
             AdminSeeder::class,
         ]);
     }

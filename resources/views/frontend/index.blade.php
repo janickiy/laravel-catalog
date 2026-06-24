@@ -18,8 +18,11 @@
             </div>
 
             <div class="category-grid">
+                @php
+                    $catalogColumns = max(1, (int) \App\Helpers\SettingsHelpers::getSetting('COLUMNS_NUMBER'));
+                @endphp
                 @for ($i = 0; $i < $number; $i++)
-                    @for ($j = 0; $j < \App\Helpers\SettingsHelpers::getSetting('COLUMNS_NUMBER'); $j++)
+                    @for ($j = 0; $j < $catalogColumns; $j++)
                         @if(isset($arr[$i][$j][1], $arr[$i][$j][0], $arr[$i][$j][3]))
                             @php
                                 $categoryImage = $arr[$i][$j][2] ?? null;
