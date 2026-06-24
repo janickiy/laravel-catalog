@@ -94,8 +94,8 @@ return [
     |
     */
 
-    'locale' => env('APP_LOCALE', 'ru'),
-    'installed_locale' => env('APP_LOCALE', 'ru'),
+    'locale' => env('APP_LOCALE', 'en'),
+    'installed_locale' => env('APP_LOCALE', 'en'),
 
     /*
     |--------------------------------------------------------------------------
@@ -106,19 +106,19 @@ return [
     |
     */
 
-    'locales' => ['ru', 'en', 'fr', 'de', 'es'],
+    'locales' => ['en', 'ru', 'fr', 'de', 'es'],
 
     'languages' => [
-        'ru' => 'Русский',
         'en' => 'English',
+        'ru' => 'Русский',
         'fr' => 'Français',
         'de' => 'Deutsch',
         'es' => 'Español',
     ],
 
     'flags' => [
-        'ru' => 'ru',
         'en' => 'us',
+        'ru' => 'ru',
         'fr' => 'fr',
         'de' => 'de',
         'es' => 'es',
@@ -135,7 +135,7 @@ return [
     |
     */
 
-    'fallback_locale' => env('APP_FALLBACK_LOCALE', 'ru'),
+    'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),
 
     /*
     |--------------------------------------------------------------------------

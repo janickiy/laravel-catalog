@@ -65,15 +65,11 @@
     <div class="row g-3">
         <div class="col-12 col-xl-8">
             <div class="card shadow-sm">
-                <div class="card-header d-flex flex-wrap align-items-start justify-content-between gap-3">
-                    <div>
-                        <h3 class="card-title mb-1">{{ __('interface.admin.updates.title') }}</h3>
-                        <p class="text-secondary mb-0">{{ __('interface.admin.updates.subtitle') }}</p>
-                    </div>
-                    <span class="badge {{ $statusClass }}">{{ $statusText }}</span>
-                </div>
-
                 <div class="card-body">
+                    <div class="d-flex justify-content-center mb-3">
+                        <span class="badge {{ $statusClass }}">{{ $statusText }}</span>
+                    </div>
+
                     @if (! $update['success'])
                         <div class="alert alert-danger">
                             {{ __('interface.admin.updates.cannot_connect') }}

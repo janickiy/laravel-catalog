@@ -5,9 +5,7 @@
 @section('css')
     <style>
         .catalog-form-section + .catalog-form-section {
-            border-top: 1px solid var(--bs-border-color);
             margin-top: 1.5rem;
-            padding-top: 1.5rem;
         }
 
         .catalog-state-icon {
@@ -16,7 +14,6 @@
         }
 
         .catalog-upload {
-            border: 1px dashed var(--bs-border-color);
             border-radius: .5rem;
             padding: 1rem;
         }
@@ -46,14 +43,8 @@
         <div class="row g-3">
             <div class="col-12 col-xl-8">
                 <div class="card shadow-sm">
-                    <div class="card-header">
-                        <h3 class="card-title mb-0">{{ isset($row) ? __('interface.admin.catalog.form_edit_title') : __('interface.admin.catalog.form_create_title') }}</h3>
-                    </div>
-
                     <div class="card-body">
                         <div class="catalog-form-section">
-                            <h4 class="fs-6 fw-semibold mb-3">{{ __('interface.admin.catalog.main_data') }}</h4>
-
                             <div class="row g-3">
                                 <div class="col-12">
                                     {!! Form::label('name', __('interface.common.name') . '*', ['class' => 'form-label fw-semibold']) !!}
@@ -89,8 +80,6 @@
                         </div>
 
                         <div class="catalog-form-section">
-                            <h4 class="fs-6 fw-semibold mb-3">{{ __('interface.admin.catalog.description_section') }}</h4>
-
                             <div class="row g-3">
                                 <div class="col-12">
                                     {!! Form::label('description', __('interface.common.description'), ['class' => 'form-label fw-semibold']) !!}

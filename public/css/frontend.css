@@ -84,6 +84,14 @@ textarea:focus {
     padding-top: .8rem;
 }
 
+.site-header__inner::before,
+.site-header__inner::after,
+.site-footer__inner::before,
+.site-footer__inner::after {
+    content: none;
+    display: none;
+}
+
 .site-logo {
     display: inline-flex;
     flex: 0 0 auto;
@@ -100,6 +108,7 @@ textarea:focus {
     flex-wrap: wrap;
     gap: .4rem;
     justify-content: flex-end;
+    margin-left: auto;
 }
 
 .site-nav__link,
@@ -132,6 +141,10 @@ textarea:focus {
     border: 0;
     color: #fff;
     box-shadow: 0 10px 24px rgba(13, 110, 253, .22);
+}
+
+.site-nav__cta {
+    margin-left: 16px;
 }
 
 .site-nav__cta:hover,
@@ -305,13 +318,27 @@ textarea:focus {
 }
 
 .breadcrumb-panel {
+    align-items: center;
     color: var(--mlm-muted);
-    font-size: .92rem;
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 14px;
+    font-weight: 400;
+    gap: .25rem;
     margin-bottom: 1rem;
 }
 
 .breadcrumb-panel a {
-    font-weight: 650;
+    font-weight: 400;
+}
+
+.breadcrumb-panel__separator {
+    align-items: center;
+    color: var(--mlm-cyan);
+    display: inline-flex;
+    font-size: 12px;
+    line-height: 1;
+    margin: 0 .1rem;
 }
 
 .content-layout {
@@ -590,7 +617,12 @@ textarea.form-control {
 
     .site-nav {
         justify-content: flex-start;
+        margin-left: 0;
         width: 100%;
+    }
+
+    .site-nav__cta {
+        margin-left: 0;
     }
 
     .content-layout {

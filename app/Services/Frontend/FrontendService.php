@@ -87,7 +87,9 @@ class FrontendService
             $description = $catalog->description ?? $description;
             $keywords = $catalog->keywords ?? $keywords;
         } else {
-            $pathway = '<a href="'.route('index').'">'.e(__('interface.frontend.home')).'</a>» '.e(__('interface.common.misc'));
+            $pathway = '<a href="'.route('index').'">'.e(__('interface.frontend.home')).'</a>'
+                .$this->breadcrumbSeparator()
+                .e(__('interface.common.misc'));
             $links = $this->links->paginatePublishedByCatalog(null, 10);
             $rank = $links->firstItem();
             $paginator = $links->links();
@@ -278,13 +280,23 @@ class FrontendService
 
         foreach ($this->catalogs->pathToRoot($id) as [$catalogId, $catalogName]) {
             if ((int) $catalogId === $id) {
-                $pathway .= '» '.e($catalogName);
+                $pathway .= $this->breadcrumbSeparator().e($catalogName);
             } else {
-                $pathway .= '» <a href="'.route('catalog', ['id' => $catalogId]).'">'.e($catalogName).'</a>';
+                $pathway .= $this->breadcrumbSeparator().'<a href="'.route('catalog', ['id' => $catalogId]).'">'.e($catalogName).'</a>';
             }
         }
 
         return $pathway;
+    }
+
+    /**
+     * Формирует визуальный разделитель хлебных крошек.
+     *
+     * @return string
+     */
+    private function breadcrumbSeparator(): string
+    {
+        return '<span class="breadcrumb-panel__separator" aria-hidden="true"><i class="bi bi-chevron-right"></i></span>';
     }
 
     /**

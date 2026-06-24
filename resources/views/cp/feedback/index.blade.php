@@ -26,11 +26,6 @@
 
 @section('content')
     <div class="card feedback-table-card shadow-sm">
-        <div class="card-header">
-            <h3 class="card-title mb-0">{{ __('interface.admin.feedback') }}</h3>
-            <div class="text-secondary small">{{ __('interface.admin.feedback_messages.subtitle') }}</div>
-        </div>
-
         <div class="card-body">
             <div class="table-responsive">
                 <table id="itemList" class="table table-striped table-hover align-middle w-100">
