@@ -20,6 +20,8 @@ use Illuminate\View\View;
 
 class InstallController extends Controller
 {
+    private const APPLICATION_VERSION = '4.0.1';
+
     /**
      * Show the first installer step.
      */
@@ -134,6 +136,7 @@ class InstallController extends Controller
             $env = $this->setEnvValue($env, 'APP_URL', url('/'));
             $env = $this->setEnvValue($env, 'APP_LOCALE', $installLocale);
             $env = $this->setEnvValue($env, 'APP_FALLBACK_LOCALE', Config::get('app.fallback_locale', 'en'));
+            $env = $this->setEnvValue($env, 'VERSION', self::APPLICATION_VERSION);
             $env = $this->setEnvValue($env, 'DB_CONNECTION', 'mysql');
             $env = $this->setEnvValue($env, 'DB_HOST', $db['host']);
             $env = $this->setEnvValue($env, 'DB_PORT', (string) $db['port']);

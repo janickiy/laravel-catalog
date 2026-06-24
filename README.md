@@ -170,7 +170,7 @@ Admin routes:
 The current project version is stored in the `VERSION` environment variable:
 
 ```env
-VERSION=4.0.0
+VERSION=4.0.1
 ```
 
 Update configuration is stored in `config/update.php`.
@@ -178,7 +178,7 @@ Update configuration is stored in `config/update.php`.
 The admin update page is available at `/cp/update`. It requests version information from:
 
 ```text
-https://license.janickiy.com/?id=7&version=4.0.0&lang=ru
+https://license.janickiy.com/?id=7&version=4.0.1&lang=ru
 ```
 
 When a newer `upgrade_version` is available, the update button starts an AJAX step-by-step process:
@@ -357,7 +357,7 @@ Important variables:
 - `APP_URL=http://localhost:8080`
 - `APP_LOCALE=ru`
 - `APP_FALLBACK_LOCALE=ru`
-- `VERSION=4.0.0`
+- `VERSION=4.0.1`
 - `DB_HOST=mysql`
 - `DB_DATABASE=laravel_catalog`
 - `DB_USERNAME=laravel`

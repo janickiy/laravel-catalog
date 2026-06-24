@@ -11,7 +11,7 @@ use ZipArchive;
 
 class UpdateService
 {
-    private const DEFAULT_VERSION = '4.0.0';
+    private const DEFAULT_VERSION = '4.0.1';
 
     /**
      * Returns the update step list for the step-by-step AJAX process.
