@@ -27,7 +27,7 @@ class FrontendService
     ) {}
 
     /**
-     * Собирает данные главной страницы каталога.
+     * Build data for the catalog home page.
      */
     public function homePage(): array
     {
@@ -45,7 +45,7 @@ class FrontendService
     }
 
     /**
-     * Собирает данные страницы раздела каталога.
+     * Build data for a catalog section page.
      *
      * @param int $id
      * @return array
@@ -110,7 +110,7 @@ class FrontendService
     }
 
     /**
-     * Собирает данные детальной страницы сайта и увеличивает просмотры.
+     * Build data for a website detail page and increment views.
      *
      * @param int $id
      * @return array
@@ -134,7 +134,7 @@ class FrontendService
     }
 
     /**
-     * Возвращает разделы каталога для формы добавления сайта.
+     * Return catalog sections for the website submission form.
      */
     public function catalogOptions(): array
     {
@@ -142,7 +142,7 @@ class FrontendService
     }
 
     /**
-     * Сохраняет заявку на добавление сайта и отправляет уведомление.
+     * Store a website submission and dispatch a notification.
      *
      * @param LinkSubmissionData $data
      * @return string
@@ -165,7 +165,7 @@ class FrontendService
     }
 
     /**
-     * Возвращает внешний URL ссылки для редиректа.
+     * Return an external URL for link redirects.
      *
      * @param int $id
      * @return string
@@ -182,7 +182,7 @@ class FrontendService
     }
 
     /**
-     * Сохраняет сообщение обратной связи и отправляет email-событие.
+     * Store a feedback message and dispatch an email event.
      *
      * @param FeedbackMessageData $data
      * @return void
@@ -195,7 +195,7 @@ class FrontendService
     }
 
     /**
-     * Возвращает количество страниц sitemap для ссылок и разделов.
+     * Return sitemap page counts for links and catalog sections.
      */
     public function sitemapData(): array
     {
@@ -206,7 +206,7 @@ class FrontendService
     }
 
     /**
-     * Возвращает страницу ссылок для XML sitemap.
+     * Return one links page for the XML sitemap.
      */
     public function linksMap(int $page): Collection
     {
@@ -214,7 +214,7 @@ class FrontendService
     }
 
     /**
-     * Возвращает страницу разделов для XML sitemap.
+     * Return one catalog sections page for the XML sitemap.
      *
      * @param int $page
      * @return Collection
@@ -225,7 +225,7 @@ class FrontendService
     }
 
     /**
-     * Раскладывает разделы каталога по колонкам для фронтенда.
+     * Distribute catalog sections into frontend columns.
      *
      * @param Collection $catalogs
      * @param bool $includeMisc
@@ -269,7 +269,7 @@ class FrontendService
     }
 
     /**
-     * Формирует хлебные крошки для выбранного раздела.
+     * Build breadcrumbs for the selected catalog section.
      *
      * @param int $id
      * @return string
@@ -290,7 +290,7 @@ class FrontendService
     }
 
     /**
-     * Формирует визуальный разделитель хлебных крошек.
+     * Build the visual breadcrumb separator.
      *
      * @return string
      */
@@ -300,7 +300,7 @@ class FrontendService
     }
 
     /**
-     * Формирует HTML-список дочерних разделов с количеством ссылок.
+     * Build an HTML list of child sections with link counts.
      *
      * @param int $id
      * @return string

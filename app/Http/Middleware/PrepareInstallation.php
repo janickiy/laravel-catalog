@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 class PrepareInstallation
 {
     /**
-     * Готовит свежий проект к запуску установщика до работы cookie и session middleware.
+     * Prepares a fresh project for the installer before cookie and session middleware run.
      */
     public function handle(Request $request, Closure $next): Response
     {
@@ -31,7 +31,7 @@ class PrepareInstallation
     }
 
     /**
-     * Готовит стабильный ключ приложения для работы cookies и CSRF во время установки.
+     * Prepares a stable application key for cookies and CSRF during installation.
      */
     private function ensureApplicationKey(): void
     {
@@ -52,7 +52,7 @@ class PrepareInstallation
     }
 
     /**
-     * Проверяет наличие файла окружения в корне проекта.
+     * Checks whether the environment file exists in the project root.
      */
     private function environmentExists(): bool
     {

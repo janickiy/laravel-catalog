@@ -16,7 +16,7 @@ class FrontendController extends Controller
     public function __construct(private readonly FrontendService $frontend) {}
 
     /**
-     * Показывает главную страницу каталога.
+     * Shows the catalog home page.
      */
     public function index(): View
     {
@@ -24,7 +24,7 @@ class FrontendController extends Controller
     }
 
     /**
-     * Показывает раздел каталога с вложенными разделами и ссылками.
+     * Shows a catalog category with nested categories and links.
      */
     public function catalog(int $id = 0): View
     {
@@ -32,7 +32,7 @@ class FrontendController extends Controller
     }
 
     /**
-     * Показывает детальную страницу сайта.
+     * Shows the website detail page.
      */
     public function info(int $id): View
     {
@@ -40,7 +40,7 @@ class FrontendController extends Controller
     }
 
     /**
-     * Показывает форму добавления сайта в каталог.
+     * Shows the website submission form.
      */
     public function addurl(): View
     {
@@ -51,7 +51,7 @@ class FrontendController extends Controller
     }
 
     /**
-     * Принимает заявку на добавление сайта.
+     * Accepts a website submission.
      */
     public function add(StoreLinkRequest $request): RedirectResponse
     {
@@ -61,7 +61,7 @@ class FrontendController extends Controller
     }
 
     /**
-     * Учитывает переход и перенаправляет пользователя на внешний сайт.
+     * Records the click-through and redirects the user to the external website.
      */
     public function redirect(int $id): RedirectResponse
     {
@@ -69,7 +69,7 @@ class FrontendController extends Controller
     }
 
     /**
-     * Показывает страницу правил каталога.
+     * Shows the catalog rules page.
      */
     public function rules(): View
     {
@@ -77,7 +77,7 @@ class FrontendController extends Controller
     }
 
     /**
-     * Показывает страницу обратной связи.
+     * Shows the feedback page.
      */
     public function contact(): View
     {
@@ -85,7 +85,7 @@ class FrontendController extends Controller
     }
 
     /**
-     * Отправляет сообщение из формы обратной связи администрации.
+     * Sends the feedback form message to the administration.
      */
     public function sendMsg(StoreFeedbackRequest $request): RedirectResponse
     {
@@ -97,7 +97,7 @@ class FrontendController extends Controller
     }
 
     /**
-     * Формирует основной XML sitemap.
+     * Builds the main XML sitemap.
      */
     public function sitemap(): Response
     {
@@ -107,7 +107,7 @@ class FrontendController extends Controller
     }
 
     /**
-     * Формирует страницу XML sitemap со ссылками.
+     * Builds the XML sitemap page with links.
      */
     public function maplinks(int $page = 1): Response
     {
@@ -117,7 +117,7 @@ class FrontendController extends Controller
     }
 
     /**
-     * Формирует страницу XML sitemap с разделами каталога.
+     * Builds the XML sitemap page with catalog categories.
      */
     public function mapcatalogs(int $page = 1): Response
     {

@@ -12,7 +12,7 @@ class NewlinkNotifyEvent
     public Links $links;
 
     /**
-     * Создает событие уведомления о новой ссылке.
+     * Creates the new link notification event.
      */
     public function __construct(Links $links)
     {
@@ -20,7 +20,7 @@ class NewlinkNotifyEvent
     }
 
     /**
-     * Возвращает каналы трансляции события.
+     * Returns the event broadcast channels.
      */
     public function broadcastOn(): array
     {

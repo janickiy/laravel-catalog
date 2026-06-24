@@ -7,7 +7,7 @@ use Illuminate\Http\Middleware\TrustHosts as Middleware;
 class TrustHosts extends Middleware
 {
     /**
-     * Возвращает доверенные host-паттерны приложения.
+     * Returns the application's trusted host patterns.
      */
     public function hosts(): array
     {

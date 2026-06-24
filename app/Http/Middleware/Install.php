@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 class Install
 {
     /**
-     * Перенаправляет неустановленное приложение в мастер установки и закрывает установщик после установки.
+     * Redirects an uninstalled application to the installer and closes the installer after installation.
      */
     public function handle(Request $request, Closure $next): Response
     {
@@ -25,7 +25,7 @@ class Install
     }
 
     /**
-     * Проверяет наличие файла окружения в корне проекта.
+     * Checks whether the environment file exists in the project root.
      */
     private function environmentExists(): bool
     {

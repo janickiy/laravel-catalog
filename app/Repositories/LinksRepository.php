@@ -18,7 +18,7 @@ class LinksRepository extends BaseRepository
     }
 
     /**
-     * Создает ссылку из DTO.
+     * Creates a link from a DTO.
      *
      * @param LinkData $data
      * @return Builder|Model
@@ -29,7 +29,7 @@ class LinksRepository extends BaseRepository
     }
 
     /**
-     * Обновляет ссылку из DTO.
+     * Updates a link from a DTO.
      *
      * @param LinkData $data
      * @return bool
@@ -41,7 +41,7 @@ class LinksRepository extends BaseRepository
 
 
     /**
-     * Проверяет, существует ли ссылка с указанным URL.
+     * Checks whether a link with the given URL exists.
      *
      * @param string $url
      * @return bool
@@ -54,7 +54,7 @@ class LinksRepository extends BaseRepository
     }
 
     /**
-     * Возвращает query builder для серверной таблицы ссылок.
+     * Returns the query builder for the server-side links table.
      */
     public function dataTableQuery(): Builder
     {
@@ -75,7 +75,7 @@ class LinksRepository extends BaseRepository
     }
 
     /**
-     * Считает количество ссылок с указанным статусом
+     * Counts links with the given status.
      *
      * @param LinkStatus|int $status
      * @return int
@@ -86,7 +86,7 @@ class LinksRepository extends BaseRepository
     }
 
     /**
-     * Считает общее количество ссылок.
+     * Counts the total number of links.
      */
     public function countAll(): int
     {
@@ -94,7 +94,7 @@ class LinksRepository extends BaseRepository
     }
 
     /**
-     * Возвращает последние ссылки для dashboard.
+     * Returns the latest links for the dashboard.
      *
      * @param int $limit
      * @return Collection
@@ -109,7 +109,7 @@ class LinksRepository extends BaseRepository
     }
 
     /**
-     * Возвращает самые просматриваемые ссылки.
+     * Returns the most viewed links.
      *
      * @param int $limit
      * @return Collection
@@ -125,7 +125,7 @@ class LinksRepository extends BaseRepository
     }
 
     /**
-     * Возвращает опубликованные ссылки для экспорта.
+     * Returns published links for export.
      *
      * @param int|null $catalogId
      * @return Collection
@@ -147,7 +147,7 @@ class LinksRepository extends BaseRepository
     }
 
     /**
-     * Массово обновляет статус выбранных ссылок.
+     * Bulk-updates the status of the selected links.
      *
      * @param array $ids
      * @param int $status
@@ -161,7 +161,7 @@ class LinksRepository extends BaseRepository
     }
 
     /**
-     * Возвращает последние опубликованные ссылки.
+     * Returns the latest published links.
      *
      * @param int $limit
      * @return Collection
@@ -176,7 +176,7 @@ class LinksRepository extends BaseRepository
     }
 
     /**
-     * Возвращает последние опубликованные ссылки из выбранных разделов.
+     * Returns the latest published links from the selected categories.
      */
 
     /**
@@ -199,7 +199,7 @@ class LinksRepository extends BaseRepository
     }
 
     /**
-     * Возвращает постраничный список опубликованных ссылок раздела.
+     * Returns a paginated list of published links for the category.
      *
      * @param int|null $catalogId
      * @param int $perPage
@@ -218,7 +218,7 @@ class LinksRepository extends BaseRepository
     }
 
     /**
-     * Находит ссылку для просмотра в админке вместе с разделом
+     * Finds a link for admin viewing together with its category.
      *
      * @param int $id
      * @return Links|null
@@ -234,7 +234,7 @@ class LinksRepository extends BaseRepository
     }
 
     /**
-     * Находит опубликованную ссылку для фронтенда
+     * Finds a published link for the frontend.
      *
      * @param int $id
      * @return Links|null
@@ -250,7 +250,7 @@ class LinksRepository extends BaseRepository
     }
 
     /**
-     * Находит ссылку без фильтра по статусу.
+     * Finds a link without filtering by status.
      */
     public function findAny(int $id): ?Links
     {
@@ -260,7 +260,7 @@ class LinksRepository extends BaseRepository
     }
 
     /**
-     * Возвращает случайные опубликованные ссылки из раздела.
+     * Returns random published links from the category.
      *
      * @param int|null $catalogId
      * @param int $limit
@@ -281,7 +281,7 @@ class LinksRepository extends BaseRepository
     }
 
     /**
-     * Увеличивает счетчик просмотров ссылки.
+     * Increments the link view counter.
      *
      * @param Links $link
      * @return bool
@@ -294,7 +294,7 @@ class LinksRepository extends BaseRepository
     }
 
     /**
-     * Считает количество опубликованных ссылок.
+     * Counts published links.
      */
     public function countPublished(): int
     {
@@ -302,7 +302,7 @@ class LinksRepository extends BaseRepository
     }
 
     /**
-     * Возвращает страницу опубликованных ссылок для XML sitemap.
+     * Returns a page of published links for the XML sitemap.
      *
      * @param int $page
      * @return Collection
@@ -319,7 +319,7 @@ class LinksRepository extends BaseRepository
     }
 
     /**
-     * Нормализует enum или int-статус к числовому значению.
+     * Normalizes an enum or integer status to a numeric value.
      *
      * @param LinkStatus|int $status
      * @return int

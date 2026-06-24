@@ -8,7 +8,7 @@ use Illuminate\Foundation\Http\FormRequest;
 class UpdateSettingsRequest extends FormRequest
 {
     /**
-     * Разрешает обновление настройки авторизованному администратору.
+     * Authorizes setting updates for an authenticated administrator.
      */
     public function authorize(): bool
     {
@@ -16,7 +16,7 @@ class UpdateSettingsRequest extends FormRequest
     }
 
     /**
-     * Возвращает правила валидации обновления настройки.
+     * Returns the validation rules for setting updates.
      */
     public function rules(): array
     {

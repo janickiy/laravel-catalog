@@ -16,7 +16,7 @@ class LoginController extends Controller
     }
 
     /**
-     * Показывает форму авторизации или отправляет авторизованного администратора в панель.
+     * Shows the login form or sends an authenticated administrator to the panel.
      */
     public function showLoginForm(): View|RedirectResponse
     {
@@ -30,7 +30,7 @@ class LoginController extends Controller
     }
 
     /**
-     * Проверяет учетные данные администратора и выполняет вход.
+     * Checks administrator credentials and logs the user in.
      */
     public function login(Request $request): RedirectResponse
     {
@@ -50,7 +50,7 @@ class LoginController extends Controller
     }
 
     /**
-     * Возвращает пользователя на главную страницу после успешной авторизации.
+     * Returns the user to the home page after successful authentication.
      */
     protected function authenticated(Request $request, mixed $user): RedirectResponse
     {
@@ -58,7 +58,7 @@ class LoginController extends Controller
     }
 
     /**
-     * Завершает админскую сессию и возвращает пользователя на главную страницу.
+     * Ends the admin session and returns the user to the home page.
      */
     public function logout(): RedirectResponse
     {

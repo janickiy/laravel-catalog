@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Cookie;
 class LanguageController extends Controller
 {
     /**
-     * Сохраняет выбранный язык интерфейса в cookie и возвращает пользователя назад.
+     * Store the selected interface language in a cookie and return the user back.
      */
     public function change(Request $request): JsonResponse|RedirectResponse
     {

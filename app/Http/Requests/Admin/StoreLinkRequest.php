@@ -11,7 +11,7 @@ use Illuminate\Validation\Rule;
 class StoreLinkRequest extends FormRequest
 {
     /**
-     * Разрешает создание ссылки авторизованному администратору.
+     * Authorizes link creation for an authenticated administrator.
      */
     public function authorize(): bool
     {
@@ -19,7 +19,7 @@ class StoreLinkRequest extends FormRequest
     }
 
     /**
-     * Возвращает правила валидации создания ссылки.
+     * Returns the validation rules for link creation.
      */
     public function rules(): array
     {
@@ -41,7 +41,7 @@ class StoreLinkRequest extends FormRequest
     }
 
     /**
-     * Возвращает пользовательские сообщения ошибок создания ссылки.
+     * Returns custom error messages for link creation.
      */
     public function messages(): array
     {

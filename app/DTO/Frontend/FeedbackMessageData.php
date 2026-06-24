@@ -15,7 +15,7 @@ final readonly class FeedbackMessageData implements DataTransferObject
     ) {}
 
     /**
-     * Создает DTO сообщения обратной связи из валидированного массива формы.
+     * Creates a feedback message DTO from the validated form array.
      */
     public static function fromArray(array $data, string $ip): self
     {
@@ -28,7 +28,7 @@ final readonly class FeedbackMessageData implements DataTransferObject
     }
 
     /**
-     * Преобразует сообщение в объект payload для события отправки письма.
+     * Converts the message to a payload object for the mail sending event.
      */
     public function toEventPayload(): stdClass
     {
@@ -41,7 +41,7 @@ final readonly class FeedbackMessageData implements DataTransferObject
     }
 
     /**
-     * Преобразует DTO в массив атрибутов сообщения обратной связи.
+     * Converts the DTO to a feedback message attribute array.
      */
     public function toArray(): array
     {

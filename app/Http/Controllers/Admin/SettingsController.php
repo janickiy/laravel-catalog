@@ -22,7 +22,7 @@ class SettingsController extends Controller
     }
 
     /**
-     * Показывает список настроек проекта
+     * Shows the project settings list.
      * @return View
      */
     public function index(): View
@@ -31,7 +31,7 @@ class SettingsController extends Controller
     }
 
     /**
-     * Показывает форму создания настройки.
+     * Shows the setting creation form.
      *
      * @return View
      */
@@ -42,7 +42,7 @@ class SettingsController extends Controller
 
 
     /**
-     * Создает настройку из валидированных данных формы
+     * Creates a setting from validated form data.
      *
      * @param StoreSettingsRequest $request
      * @return RedirectResponse
@@ -55,7 +55,7 @@ class SettingsController extends Controller
     }
 
     /**
-     * Показывает форму редактирования настройки.
+     * Shows the setting edit form.
      *
      * @param int $id
      * @return View
@@ -69,7 +69,7 @@ class SettingsController extends Controller
     }
 
     /**
-     * Обновляет настройку из валидированных данных формы
+     * Updates a setting from validated form data.
      *
      * @param UpdateSettingsRequest $request
      * @return RedirectResponse
@@ -82,7 +82,7 @@ class SettingsController extends Controller
     }
 
     /**
-     * Удаляет настройку по идентификатору из валидированного запроса.
+     * Deletes a setting by ID from the validated request.
      *
      * @param DestroySettingsRequest $request
      * @return void

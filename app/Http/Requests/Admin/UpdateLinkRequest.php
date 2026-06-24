@@ -10,7 +10,7 @@ use Illuminate\Validation\Rule;
 class UpdateLinkRequest extends StoreLinkRequest
 {
     /**
-     * Возвращает правила валидации обновления ссылки.
+     * Returns the validation rules for link updates.
      */
     public function rules(): array
     {

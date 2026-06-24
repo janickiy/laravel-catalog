@@ -8,7 +8,7 @@ use Illuminate\Foundation\Http\FormRequest;
 class DestroyAdminRequest extends FormRequest
 {
     /**
-     * Переносит id из маршрута в данные запроса перед валидацией.
+     * Moves the ID from the route into request data before validation.
      */
     protected function prepareForValidation(): void
     {
@@ -18,7 +18,7 @@ class DestroyAdminRequest extends FormRequest
     }
 
     /**
-     * Разрешает выполнение запроса авторизованному администратору.
+     * Authorizes the request for an authenticated administrator.
      */
     public function authorize(): bool
     {
@@ -26,7 +26,7 @@ class DestroyAdminRequest extends FormRequest
     }
 
     /**
-     * Возвращает правила валидации удаления администратора.
+     * Returns the validation rules for administrator deletion.
      */
     public function rules(): array
     {

@@ -9,7 +9,7 @@ use Illuminate\Validation\Rule;
 class StoreCatalogRequest extends FormRequest
 {
     /**
-     * Разрешает создание раздела каталога авторизованному администратору.
+     * Authorizes catalog category creation for an authenticated administrator.
      */
     public function authorize(): bool
     {
@@ -17,7 +17,7 @@ class StoreCatalogRequest extends FormRequest
     }
 
     /**
-     * Возвращает правила валидации создания раздела каталога.
+     * Returns the validation rules for catalog category creation.
      */
     public function rules(): array
     {

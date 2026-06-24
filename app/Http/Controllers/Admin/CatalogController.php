@@ -23,7 +23,7 @@ class CatalogController extends Controller
     }
 
     /**
-     * Показывает дерево разделов каталога в панели управления.
+     * Shows the catalog category tree in the control panel.
      */
     public function index(): View
     {
@@ -33,7 +33,7 @@ class CatalogController extends Controller
     }
 
     /**
-     * Показывает форму создания раздела каталога.
+     * Shows the catalog category creation form.
      *
      * @param int $parent_id
      * @return View
@@ -47,7 +47,7 @@ class CatalogController extends Controller
     }
 
     /**
-     * Создает раздел каталога и сохраняет его изображение.
+     * Creates a catalog category and saves its image.
      *
      * @param StoreCatalogRequest $request
      * @return RedirectResponse
@@ -64,7 +64,7 @@ class CatalogController extends Controller
     }
 
     /**
-     * Показывает форму редактирования раздела каталога.
+     * Shows the catalog category edit form.
      *
      * @param int $id
      * @return View
@@ -83,7 +83,7 @@ class CatalogController extends Controller
     }
 
     /**
-     * Обновляет раздел каталога и при необходимости заменяет изображение.
+     * Updates a catalog category and replaces the image when needed.
      *
      * @param UpdateCatalogRequest $request
      * @return RedirectResponse
@@ -101,7 +101,7 @@ class CatalogController extends Controller
     }
 
     /**
-     * Удаляет раздел каталога вместе с дочерними разделами.
+     * Deletes a catalog category together with its child categories.
      *
      * @param DeleteCatalogRequest $request
      * @return RedirectResponse

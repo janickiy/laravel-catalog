@@ -13,7 +13,7 @@ class DashboardController extends Controller
     }
 
     /**
-     * Показывает главный dashboard административной панели.
+     * Shows the main admin dashboard.
      */
     public function index(): View
     {

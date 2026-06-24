@@ -10,47 +10,47 @@ use Illuminate\Support\Collection;
 interface RepositoryInterface
 {
     /**
-     * Возвращает все записи модели; нужен для простых сценариев чтения без фильтров.
+     * Returns all model records for simple unfiltered read scenarios.
      */
     public function all(): Collection;
 
     /**
-     * Ищет запись по первичному ключу; используется как базовый безопасный доступ к модели.
+     * Finds a record by primary key as the base safe model access method.
      */
     public function find(int|string $id): ?Model;
 
     /**
-     * Создает запись из массива атрибутов; общий низкоуровневый метод для наследников.
+     * Creates a record from an attribute array as the shared low-level method for descendants.
      */
     public function create(array $data): Builder|Model;
 
     /**
-     * Создает запись из DTO; нужен, чтобы запись данных шла через типизированный контракт.
+     * Creates a record from a DTO so data writes go through a typed contract.
      */
     public function createFromDto(DataTransferObject $dto): Builder|Model;
 
     /**
-     * Обновляет запись по первичному ключу массивом атрибутов; возвращает результат сохранения.
+     * Updates a record by primary key with an attribute array and returns the save result.
      */
     public function update(int|string $id, array $data): bool;
 
     /**
-     * Обновляет запись по первичному ключу данными из DTO; используется для typed update-операций.
+     * Updates a record by primary key using DTO data for typed update operations.
      */
     public function updateFromDto(int|string $id, DataTransferObject $dto): bool;
 
     /**
-     * Удаляет запись по первичному ключу; возвращает false, если запись не найдена.
+     * Deletes a record by primary key and returns false when it is not found.
      */
     public function delete(int|string $id): bool;
 
     /**
-     * Удаляет все записи модели без сброса sequence; нужен для очистки таблицы через query builder.
+     * Deletes all model records without resetting the sequence for query builder cleanup.
      */
     public function deleteAll(): void;
 
     /**
-     * Полностью очищает таблицу модели со сбросом счетчиков там, где это поддерживает драйвер.
+     * Completely clears the model table and resets counters where the driver supports it.
      */
     public function truncate(): void;
 }

@@ -21,7 +21,7 @@ use Illuminate\View\View;
 class InstallController extends Controller
 {
     /**
-     * Показывает первый экран мастера установки.
+     * Show the first installer step.
      */
     public function index(): View
     {
@@ -29,7 +29,7 @@ class InstallController extends Controller
     }
 
     /**
-     * Показывает системные требования PHP и расширений.
+     * Show PHP and extension requirements.
      */
     public function requirements(): View
     {
@@ -40,7 +40,7 @@ class InstallController extends Controller
     }
 
     /**
-     * Показывает проверку прав записи после успешной проверки требований.
+     * Show writable path checks after requirements pass.
      */
     public function permissions(): View|RedirectResponse
     {
@@ -55,7 +55,7 @@ class InstallController extends Controller
     }
 
     /**
-     * Показывает форму настройки подключения к базе данных.
+     * Show the database connection form.
      */
     public function database(): View|RedirectResponse
     {
@@ -71,7 +71,7 @@ class InstallController extends Controller
     }
 
     /**
-     * Проверяет подключение к базе данных и сохраняет реквизиты в сессии.
+     * Validate the database connection and store credentials in the session.
      */
     public function installation(InstallRequest $request): RedirectResponse
     {
@@ -104,7 +104,7 @@ class InstallController extends Controller
     }
 
     /**
-     * Показывает шаг создания первого администратора.
+     * Show the first administrator creation step.
      */
     public function admin(): View|RedirectResponse
     {
@@ -116,7 +116,7 @@ class InstallController extends Controller
     }
 
     /**
-     * Записывает настройки, выполняет миграции и создает первого администратора.
+     * Write configuration, run migrations, and create the first administrator.
      */
     public function install(InstallAdminRequest $request): RedirectResponse
     {
@@ -133,7 +133,7 @@ class InstallController extends Controller
             $env = $this->environmentTemplate();
             $env = $this->setEnvValue($env, 'APP_URL', url('/'));
             $env = $this->setEnvValue($env, 'APP_LOCALE', $installLocale);
-            $env = $this->setEnvValue($env, 'APP_FALLBACK_LOCALE', Config::get('app.fallback_locale', 'ru'));
+            $env = $this->setEnvValue($env, 'APP_FALLBACK_LOCALE', Config::get('app.fallback_locale', 'en'));
             $env = $this->setEnvValue($env, 'DB_CONNECTION', 'mysql');
             $env = $this->setEnvValue($env, 'DB_HOST', $db['host']);
             $env = $this->setEnvValue($env, 'DB_PORT', (string) $db['port']);
@@ -181,7 +181,7 @@ class InstallController extends Controller
     }
 
     /**
-     * Показывает страницу успешного завершения установки.
+     * Show the successful installation page.
      */
     public function complete(): View
     {
@@ -194,7 +194,7 @@ class InstallController extends Controller
     }
 
     /**
-     * Показывает страницу ошибки установки.
+     * Show the installation error page.
      */
     public function error(): View
     {
@@ -202,7 +202,7 @@ class InstallController extends Controller
     }
 
     /**
-     * Обрабатывает AJAX-действия установщика, включая смену языка.
+     * Handle installer AJAX actions, including language changes.
      */
     public function ajax(Request $request): JsonResponse
     {
@@ -222,7 +222,7 @@ class InstallController extends Controller
     }
 
     /**
-     * Возвращает список требований PHP и расширений для проекта.
+     * Return the PHP and extension requirements for the project.
      */
     private function getRequirements(): array
     {
@@ -243,7 +243,7 @@ class InstallController extends Controller
     }
 
     /**
-     * Проверяет, что все системные требования выполнены.
+     * Determine whether all system requirements are loaded.
      */
     private function allRequirementsLoaded(): bool
     {
@@ -257,7 +257,7 @@ class InstallController extends Controller
     }
 
     /**
-     * Возвращает список директорий, которым нужны права записи.
+     * Return the directories that require write permissions.
      */
     private function getPermissions(): array
     {
@@ -273,7 +273,7 @@ class InstallController extends Controller
     }
 
     /**
-     * Проверяет, что все необходимые директории доступны для записи.
+     * Determine whether all required directories are writable.
      */
     private function allPermissionsGranted(): bool
     {
@@ -287,7 +287,7 @@ class InstallController extends Controller
     }
 
     /**
-     * Проверяет подключение к базе данных с введенными реквизитами.
+     * Validate the database connection with the submitted credentials.
      */
     private function dbCredentialsAreValid(array $credentials): bool
     {
@@ -305,7 +305,7 @@ class InstallController extends Controller
     }
 
     /**
-     * Применяет реквизиты базы данных к runtime-конфигурации.
+     * Apply database credentials to the runtime configuration.
      */
     private function setDatabaseCredentials(array $credentials): void
     {
@@ -324,7 +324,7 @@ class InstallController extends Controller
     }
 
     /**
-     * Возвращает выбранную во время установки поддерживаемую локаль.
+     * Return the supported locale selected during installation.
      */
     private function getInstallLocale(): string
     {
@@ -332,23 +332,23 @@ class InstallController extends Controller
 
         return in_array($locale, Config::get('app.locales', []), true)
             ? $locale
-            : Config::get('app.fallback_locale', 'ru');
+            : Config::get('app.fallback_locale', 'en');
     }
 
     /**
-     * Возвращает локаль установленного приложения из конфигурации.
+     * Return the installed application locale from configuration.
      */
     private function getConfiguredLocale(): string
     {
-        $locale = Config::get('app.installed_locale', Config::get('app.fallback_locale', 'ru'));
+        $locale = Config::get('app.installed_locale', Config::get('app.fallback_locale', 'en'));
 
         return in_array($locale, Config::get('app.locales', []), true)
             ? $locale
-            : Config::get('app.fallback_locale', 'ru');
+            : Config::get('app.fallback_locale', 'en');
     }
 
     /**
-     * Загружает шаблон окружения из .env.example или текущего .env.
+     * Load the environment template from .env.example or the current .env.
      */
     private function environmentTemplate(): string
     {
@@ -362,7 +362,7 @@ class InstallController extends Controller
     }
 
     /**
-     * Устанавливает или добавляет одно значение в содержимое .env.
+     * Set or append one value in .env contents.
      */
     private function setEnvValue(string $contents, string $key, string $value): string
     {
@@ -378,7 +378,7 @@ class InstallController extends Controller
     }
 
     /**
-     * Форматирует значение для безопасной записи в .env.
+     * Format a value for safe .env writing.
      */
     private function formatEnvValue(string $value): string
     {
@@ -394,7 +394,7 @@ class InstallController extends Controller
     }
 
     /**
-     * Перечитывает переменные окружения после записи .env.
+     * Reload environment variables after writing .env.
      */
     private function reloadEnv(): void
     {
@@ -402,7 +402,7 @@ class InstallController extends Controller
     }
 
     /**
-     * Восстанавливает прежний .env при неудачной установке.
+     * Restore the previous .env after a failed installation.
      */
     private function restoreEnvironment(?string $previousEnv): void
     {

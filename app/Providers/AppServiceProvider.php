@@ -9,7 +9,7 @@ use Illuminate\Support\ServiceProvider;
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * Регистрирует сервисы приложения в контейнере.
+     * Registers application services in the container.
      */
     public function register(): void
     {
@@ -17,7 +17,7 @@ class AppServiceProvider extends ServiceProvider
     }
 
     /**
-     * Выполняет начальную настройку пагинации и Blade-директив.
+     * Bootstraps pagination and Blade directives.
      */
     public function boot(): void
     {

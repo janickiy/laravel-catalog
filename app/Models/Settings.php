@@ -20,7 +20,7 @@ class Settings extends Model
     ];
 
     /**
-     * Нормализует имя настройки перед сохранением.
+     * Normalizes the setting name before saving.
      */
     public function setNameAttribute(mixed $value): void
     {

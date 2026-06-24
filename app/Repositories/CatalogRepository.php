@@ -17,7 +17,7 @@ class CatalogRepository extends BaseRepository
     }
 
     /**
-     * Создает раздел каталога из DTO.
+     * Creates a catalog category from a DTO.
      */
     public function createFromData(CatalogData $data): Builder|Model
     {
@@ -25,7 +25,7 @@ class CatalogRepository extends BaseRepository
     }
 
     /**
-     * Обновляет раздел каталога из DTO.
+     * Updates a catalog category from a DTO.
      */
     public function updateFromData(CatalogData $data): bool
     {
@@ -33,7 +33,7 @@ class CatalogRepository extends BaseRepository
     }
 
     /**
-     * Возвращает все разделы каталога, отсортированные по названию.
+     * Returns all catalog categories sorted by name.
      */
     public function allOrdered(): Collection
     {
@@ -41,7 +41,7 @@ class CatalogRepository extends BaseRepository
     }
 
     /**
-     * Возвращает дочерние разделы указанного родителя.
+     * Returns the child categories for the given parent.
      */
     public function childrenOf(?int $parentId): EloquentCollection
     {
@@ -55,7 +55,7 @@ class CatalogRepository extends BaseRepository
     }
 
     /**
-     * Находит или создает раздел по названию и родителю.
+     * Finds or creates a category by name and parent.
      *
      * @param string $name
      * @param int|null $parentId
@@ -70,7 +70,7 @@ class CatalogRepository extends BaseRepository
     }
 
     /**
-     * Возвращает дочерние разделы вместе с количеством связанных ссылок.
+     * Returns child categories with their related link counts.
      *
      * @param int|null $parentId
      * @return Collection
@@ -93,7 +93,7 @@ class CatalogRepository extends BaseRepository
     }
 
     /**
-     * Строит плоский список разделов для select-поля.
+     * Builds a flat category list for a select field.
      *
      * @param array $options
      * @param int|null $parentId
@@ -113,7 +113,7 @@ class CatalogRepository extends BaseRepository
     }
 
     /**
-     * Собирает идентификаторы всех вложенных разделов без зацикливания.
+     * Collects all nested category IDs without cycles.
      *
      * @param Catalog $catalog
      * @param array $visited
@@ -141,7 +141,7 @@ class CatalogRepository extends BaseRepository
     }
 
     /**
-     * Возвращает набор разделов по списку идентификаторов.
+     * Returns a category collection by a list of IDs.
      *
      * @param array $ids
      * @return Collection
@@ -152,7 +152,7 @@ class CatalogRepository extends BaseRepository
     }
 
     /**
-     * Удаляет несколько разделов по списку идентификаторов.
+     * Deletes multiple categories by a list of IDs.
      *
      * @param array $ids
      * @return int
@@ -163,7 +163,7 @@ class CatalogRepository extends BaseRepository
     }
 
     /**
-     * Считает общее количество разделов каталога.
+     * Counts the total number of catalog categories.
      */
     public function countAll(): int
     {
@@ -171,7 +171,7 @@ class CatalogRepository extends BaseRepository
     }
 
     /**
-     * Возвращает страницу разделов для XML sitemap.
+     * Returns a page of categories for the XML sitemap.
      *
      * @param int $page
      * @return Collection
@@ -187,7 +187,7 @@ class CatalogRepository extends BaseRepository
     }
 
     /**
-     * Возвращает путь от корня каталога до указанного раздела.
+     * Returns the path from the catalog root to the given category.
      *
      * @param int $id
      * @return array

@@ -21,7 +21,7 @@ final readonly class LinkSubmissionData implements DataTransferObject
     ) {}
 
     /**
-     * Создает DTO заявки на добавление сайта из валидированного массива формы
+     * Creates a website submission DTO from the validated form array.
      *
      * @param array $data
      * @return self
@@ -42,7 +42,7 @@ final readonly class LinkSubmissionData implements DataTransferObject
     }
 
     /**
-     * Возвращает URL сайта из заявки.
+     * Returns the website URL from the submission.
      */
     public function url(): string
     {
@@ -50,7 +50,7 @@ final readonly class LinkSubmissionData implements DataTransferObject
     }
 
     /**
-     * Преобразует фронтенд-заявку в DTO ссылки для сохранения.
+     * Converts the frontend submission to a link DTO for saving.
      *
      * @param int $status
      * @param string|null $image
@@ -72,7 +72,7 @@ final readonly class LinkSubmissionData implements DataTransferObject
     }
 
     /**
-     * Преобразует DTO в массив атрибутов заявки.
+     * Converts the DTO to a submission attribute array.
      */
     public function toArray(): array
     {
@@ -90,7 +90,7 @@ final readonly class LinkSubmissionData implements DataTransferObject
     }
 
     /**
-     * Нормализует идентификатор раздела каталога.
+     * Normalizes the catalog category ID.
      *
      * @param mixed $catalogId
      * @return int|null

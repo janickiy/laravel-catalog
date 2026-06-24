@@ -27,7 +27,7 @@ class EventServiceProvider extends ServiceProvider
     ];
 
     /**
-     * Регистрирует события приложения и их слушателей.
+     * Registers application events and their listeners.
      */
     public function boot(): void
     {

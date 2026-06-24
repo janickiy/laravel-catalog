@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 class Controller extends \App\Http\Controllers\Controller
 {
     /**
-     * Подключает проверку авторизации администратора для всех cp-контроллеров.
+     * Attaches administrator authorization checks to all control panel controllers.
      */
     public function __construct()
     {

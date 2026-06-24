@@ -18,7 +18,7 @@ final class LinksImport implements OnEachRow, SkipsEmptyRows, WithChunkReading, 
     public function __construct(private readonly LinkImportProcessor $processor) {}
 
     /**
-     * Передает очередную строку таблицы в процессор импорта.
+     * Passes the next spreadsheet row to the import processor.
      */
     public function onRow(Row $row): void
     {
@@ -26,7 +26,7 @@ final class LinksImport implements OnEachRow, SkipsEmptyRows, WithChunkReading, 
     }
 
     /**
-     * Возвращает размер чанка для чтения больших файлов.
+     * Returns the chunk size for reading large files.
      */
     public function chunkSize(): int
     {
@@ -34,7 +34,7 @@ final class LinksImport implements OnEachRow, SkipsEmptyRows, WithChunkReading, 
     }
 
     /**
-     * Ограничивает чтение таблицы последней нужной колонкой.
+     * Limits spreadsheet reading to the last required column.
      */
     public function endColumn(): string
     {
@@ -42,7 +42,7 @@ final class LinksImport implements OnEachRow, SkipsEmptyRows, WithChunkReading, 
     }
 
     /**
-     * Возвращает количество успешно импортированных строк.
+     * Returns the number of successfully imported rows.
      */
     public function importedCount(): int
     {

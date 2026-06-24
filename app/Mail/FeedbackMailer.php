@@ -15,7 +15,7 @@ class FeedbackMailer extends Mailable implements ShouldQueue
     private stdClass $data;
 
     /**
-     * Создает письмо обратной связи с данными формы.
+     * Creates the feedback email with form data.
      */
     public function __construct(stdClass $data)
     {
@@ -23,7 +23,7 @@ class FeedbackMailer extends Mailable implements ShouldQueue
     }
 
     /**
-     * Возвращает каналы доставки письма.
+     * Returns the mail delivery channels.
      */
     public function via(mixed $notifiable): array
     {
@@ -31,7 +31,7 @@ class FeedbackMailer extends Mailable implements ShouldQueue
     }
 
     /**
-     * Собирает email-сообщение обратной связи.
+     * Builds the feedback email message.
      */
     public function build(): static
     {

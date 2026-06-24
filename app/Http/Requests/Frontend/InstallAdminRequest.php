@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 class InstallAdminRequest extends FormRequest
 {
     /**
-     * Разрешает создание первого администратора во время установки.
+     * Authorizes first administrator creation during installation.
      */
     public function authorize(): bool
     {
@@ -15,7 +15,7 @@ class InstallAdminRequest extends FormRequest
     }
 
     /**
-     * Возвращает правила валидации учетной записи администратора.
+     * Returns the validation rules for the administrator account.
      */
     public function rules(): array
     {

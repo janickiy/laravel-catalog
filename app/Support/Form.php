@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 class Form
 {
     /**
-     * Открывает HTML-форму с CSRF и spoofed HTTP-методом.
+     * Opens an HTML form with CSRF and a spoofed HTTP method.
      *
      * @param array $options
      * @return HtmlString
@@ -45,7 +45,7 @@ class Form
     }
 
     /**
-     * Закрывает HTML-форму.
+     * Closes an HTML form.
      */
     public static function close(): HtmlString
     {
@@ -53,7 +53,7 @@ class Form
     }
 
     /**
-     * Формирует HTML label для поля формы.
+     * Builds an HTML label for a form field.
      *
      * @param string $for
      * @param string $value
@@ -66,7 +66,7 @@ class Form
     }
 
     /**
-     * Формирует текстовое поле формы.
+     * Builds a text form field.
      *
      * @param string $name
      * @param mixed|null $value
@@ -79,7 +79,7 @@ class Form
     }
 
     /**
-     * Формирует поле пароля.
+     * Builds a password field.
      *
      * @param string $name
      * @param array $attributes
@@ -91,7 +91,7 @@ class Form
     }
 
     /**
-     * Формирует скрытое поле формы.
+     * Builds a hidden form field.
      *
      * @param string $name
      * @param mixed|null $value
@@ -104,7 +104,7 @@ class Form
     }
 
     /**
-     * Формирует поле загрузки файла.
+     * Builds a file upload field.
      *
      * @param string $name
      * @param array $attributes
@@ -116,7 +116,7 @@ class Form
     }
 
     /**
-     * Формирует checkbox-поле.
+     * Builds a checkbox field.
      *
      * @param string $name
      * @param mixed $value
@@ -130,7 +130,7 @@ class Form
     }
 
     /**
-     * Формирует radio-поле
+     * Builds a radio field.
      *
      * @param string $name
      * @param mixed|null $value
@@ -144,7 +144,7 @@ class Form
     }
 
     /**
-     * Формирует textarea-поле.
+     * Builds a textarea field.
      *
      * @param string $name
      * @param mixed|null $value
@@ -159,7 +159,7 @@ class Form
     }
 
     /**
-     * Формирует select-поле со списком option.
+     * Builds a select field with option entries.
      *
      * @param string $name
      * @param iterable $list
@@ -193,7 +193,7 @@ class Form
 
 
     /**
-     * Формирует кнопку отправки формы.
+     * Builds a form submit button.
      *
      * @param string $value
      * @param array $attributes
@@ -206,7 +206,7 @@ class Form
 
 
     /**
-     * Формирует базовый input заданного типа.
+     * Builds a base input of the given type.
      *
      * @param string $type
      * @param string $name
@@ -231,7 +231,7 @@ class Form
     }
 
     /**
-     * Формирует checkbox или radio input
+     * Builds a checkbox or radio input.
      *
      * @param string $type
      * @param string $name

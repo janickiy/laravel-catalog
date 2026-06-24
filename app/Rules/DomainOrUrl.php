@@ -10,7 +10,7 @@ class DomainOrUrl implements ValidationRule
     public function __construct(private readonly string $message) {}
 
     /**
-     * Проверяет, что значение является URL или доменом без схемы.
+     * Checks that the value is a URL or a domain without a scheme.
      *
      * @param string $attribute
      * @param mixed $value

@@ -14,7 +14,7 @@ class UpdateService
     private const DEFAULT_VERSION = '4.0.0';
 
     /**
-     * Возвращает список шагов обновления для пошагового AJAX-процесса.
+     * Returns the update step list for the step-by-step AJAX process.
      *
      * @return array<string, array{label: string, progress: int}>
      */
@@ -57,7 +57,7 @@ class UpdateService
     }
 
     /**
-     * Загружает информацию о доступной версии с сервера лицензий.
+     * Loads available version information from the license server.
      *
      * @return array<string, mixed>
      */
@@ -103,7 +103,7 @@ class UpdateService
     }
 
     /**
-     * Выполняет один шаг обновления и возвращает статус для интерфейса.
+     * Runs one update step and returns the interface status.
      *
      * @return array{result: bool, status: string, progress: int}
      */
@@ -153,7 +153,7 @@ class UpdateService
     }
 
     /**
-     * Собирает URL запроса информации об обновлении.
+     * Builds the update information request URL.
      */
     public function infoUrl(?string $locale = null, ?string $version = null): string
     {
@@ -165,7 +165,7 @@ class UpdateService
     }
 
     /**
-     * Возвращает текущую версию приложения.
+     * Returns the current application version.
      */
     private function currentVersion(): string
     {
@@ -175,7 +175,7 @@ class UpdateService
     }
 
     /**
-     * Скачивает архив обновления в storage/app/update.
+     * Downloads the update archive to storage/app/update.
      *
      * @param array<string, mixed> $info
      */
@@ -202,7 +202,7 @@ class UpdateService
     }
 
     /**
-     * Распаковывает скачанный архив в корень проекта.
+     * Extracts the downloaded archive into the project root.
      */
     private function extractArchive(string $fileName): string
     {
@@ -237,7 +237,7 @@ class UpdateService
     }
 
     /**
-     * Запускает миграции после обновления файлов.
+     * Runs migrations after updating files.
      */
     private function updateDatabase(): string
     {
@@ -251,7 +251,7 @@ class UpdateService
     }
 
     /**
-     * Обновляет VERSION в .env и очищает кеши Laravel.
+     * Updates VERSION in .env and clears Laravel caches.
      */
     private function clearCache(string $version): string
     {
@@ -262,7 +262,7 @@ class UpdateService
     }
 
     /**
-     * Проверяет, что в архиве нет абсолютных путей и переходов наверх.
+     * Checks that the archive has no absolute paths or upward traversal.
      */
     private function archiveHasUnsafeEntries(ZipArchive $zip): bool
     {
@@ -285,7 +285,7 @@ class UpdateService
     }
 
     /**
-     * Записывает значение переменной окружения в .env.
+     * Writes an environment variable value to .env.
      */
     private function setEnvironmentValue(string $key, string $value): void
     {
@@ -308,7 +308,7 @@ class UpdateService
     }
 
     /**
-     * Подготавливает значение для безопасной записи в .env.
+     * Prepares a value for safe writing to .env.
      */
     private function escapeEnvironmentValue(string $value): string
     {
@@ -320,7 +320,7 @@ class UpdateService
     }
 
     /**
-     * Возвращает путь к каталогу временных архивов обновления.
+     * Returns the path to the temporary update archive directory.
      */
     private function updateDirectory(): string
     {
@@ -328,7 +328,7 @@ class UpdateService
     }
 
     /**
-     * Возвращает полный путь к скачанному архиву.
+     * Returns the full path to the downloaded archive.
      */
     private function archivePath(string $fileName): string
     {
@@ -336,7 +336,7 @@ class UpdateService
     }
 
     /**
-     * Нормализует ссылку на директорию архивов обновления.
+     * Normalizes the update archive directory link.
      */
     private function normalizeUpdateUrl(string $url): string
     {
@@ -354,7 +354,7 @@ class UpdateService
     }
 
     /**
-     * Проверяет, что версия выглядит как semver x.y.z.
+     * Checks that the version looks like semver x.y.z.
      */
     private function isVersion(string $version): bool
     {
@@ -362,7 +362,7 @@ class UpdateService
     }
 
     /**
-     * Определяет, доступна ли версия обновления.
+     * Determines whether an update version is available.
      */
     private function hasNewVersion(string $upgradeVersion, string $currentVersion): bool
     {
@@ -372,7 +372,7 @@ class UpdateService
     }
 
     /**
-     * Возвращает пустой результат проверки при ошибке сервера обновлений.
+     * Returns an empty update check result when the update server fails.
      *
      * @return array<string, mixed>
      */
@@ -394,7 +394,7 @@ class UpdateService
     }
 
     /**
-     * Формирует единый JSON-ответ шага обновления.
+     * Builds a unified JSON response for an update step.
      *
      * @return array{result: bool, status: string, progress: int}
      */

@@ -17,7 +17,7 @@ class Kernel extends ConsoleKernel
     ];
 
     /**
-     * Регистрирует расписание консольных команд приложения.
+     * Registers the application's console command schedule.
      */
     protected function schedule(Schedule $schedule): void
     {
@@ -25,7 +25,7 @@ class Kernel extends ConsoleKernel
     }
 
     /**
-     * Подключает консольные команды приложения и route-файл консоли.
+     * Loads the application's console commands and console route file.
      */
     protected function commands(): void
     {

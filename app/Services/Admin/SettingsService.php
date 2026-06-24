@@ -10,7 +10,7 @@ class SettingsService
     public function __construct(private readonly SettingsRepository $settings) {}
 
     /**
-     * Создает настройку из DTO.
+     * Creates a setting from a DTO.
      */
     public function create(SettingsData $data): void
     {
@@ -19,7 +19,7 @@ class SettingsService
 
 
     /**
-     * Обновляет настройку из DTO.
+     * Updates a setting from a DTO.
      *
      * @param SettingsData $data
      * @return bool
@@ -30,7 +30,7 @@ class SettingsService
     }
 
     /**
-     * Удаляет настройку по идентификатору.
+     * Deletes a setting by ID.
      *
      * @param int $id
      * @return bool

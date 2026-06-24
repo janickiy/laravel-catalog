@@ -8,7 +8,7 @@ use Illuminate\Foundation\Http\FormRequest;
 class StoreAdminRequest extends FormRequest
 {
     /**
-     * Разрешает создание администратора авторизованному администратору.
+     * Authorizes administrator creation for an authenticated administrator.
      */
     public function authorize(): bool
     {
@@ -16,7 +16,7 @@ class StoreAdminRequest extends FormRequest
     }
 
     /**
-     * Возвращает правила валидации создания администратора.
+     * Returns the validation rules for administrator creation.
      */
     public function rules(): array
     {

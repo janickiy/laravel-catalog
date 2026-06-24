@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Mail;
 class NewlinkNotifyEventListener
 {
     /**
-     * Создает обработчик события новой ссылки.
+     * Creates the new link event listener.
      */
     public function __construct()
     {
@@ -18,7 +18,7 @@ class NewlinkNotifyEventListener
     }
 
     /**
-     * Отправляет письмо администрации о новой ссылке.
+     * Sends the administration an email about a new link.
      */
     public function handle(NewlinkNotifyEvent $event): void
     {

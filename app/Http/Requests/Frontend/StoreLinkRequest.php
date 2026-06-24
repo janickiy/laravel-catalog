@@ -11,7 +11,7 @@ use Illuminate\Validation\Rule;
 class StoreLinkRequest extends FormRequest
 {
     /**
-     * Разрешает отправку заявки на добавление сайта посетителю.
+     * Authorizes website submissions from visitors.
      */
     public function authorize(): bool
     {
@@ -19,7 +19,7 @@ class StoreLinkRequest extends FormRequest
     }
 
     /**
-     * Возвращает правила валидации заявки на добавление сайта.
+     * Returns the validation rules for the website submission form.
      */
     public function rules(): array
     {
@@ -43,7 +43,7 @@ class StoreLinkRequest extends FormRequest
     }
 
     /**
-     * Возвращает пользовательские сообщения ошибок заявки на добавление сайта.
+     * Returns custom error messages for the website submission form.
      */
     public function messages(): array
     {

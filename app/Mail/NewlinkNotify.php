@@ -16,7 +16,7 @@ class NewlinkNotify extends Mailable implements ShouldQueue
     public Links $links;
 
     /**
-     * Создает письмо уведомления о новой ссылке.
+     * Creates the new link notification email.
      */
     public function __construct(Links $links)
     {
@@ -24,7 +24,7 @@ class NewlinkNotify extends Mailable implements ShouldQueue
     }
 
     /**
-     * Возвращает каналы доставки письма.
+     * Returns the mail delivery channels.
      */
     public function via(mixed $notifiable): array
     {
@@ -32,7 +32,7 @@ class NewlinkNotify extends Mailable implements ShouldQueue
     }
 
     /**
-     * Собирает email-сообщение о новой ссылке.
+     * Builds the new link email message.
      */
     public function build(): static
     {

@@ -16,7 +16,7 @@ final readonly class CatalogData implements DataTransferObject
     ) {}
 
     /**
-     * Создает DTO раздела каталога из валидированного массива формы.
+     * Creates a catalog category DTO from the validated form array.
      *
      * @param array $data
      * @param string|null $image
@@ -35,7 +35,7 @@ final readonly class CatalogData implements DataTransferObject
     }
 
     /**
-     * Возвращает идентификатор раздела для операций обновления.
+     * Returns the category ID for update operations.
      */
     public function id(): ?int
     {
@@ -43,7 +43,7 @@ final readonly class CatalogData implements DataTransferObject
     }
 
     /**
-     * Возвращает копию DTO с новым именем изображения.
+     * Returns a copy of the DTO with a new image name.
      */
     public function withImage(?string $image): self
     {
@@ -51,7 +51,7 @@ final readonly class CatalogData implements DataTransferObject
     }
 
     /**
-     * Преобразует DTO в массив атрибутов раздела каталога.
+     * Converts the DTO to a catalog category attribute array.
      */
     public function toArray(): array
     {
@@ -70,7 +70,7 @@ final readonly class CatalogData implements DataTransferObject
     }
 
     /**
-     * Нормализует идентификатор родительского раздела.
+     * Normalizes the parent category ID.
      */
     private static function normalizeParentId(mixed $parentId): ?int
     {

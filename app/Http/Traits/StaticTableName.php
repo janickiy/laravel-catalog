@@ -5,7 +5,7 @@ namespace App\Http\Traits;
 trait StaticTableName
 {
     /**
-     * Возвращает имя таблицы Eloquent-модели.
+     * Returns the Eloquent model table name.
      */
     public static function getTableName(): string
     {

@@ -9,7 +9,7 @@ enum LinkStatus: int
     case Blocked = 2;
 
     /**
-     * Возвращает строковый код статуса для legacy-представления.
+     * Returns the status string code for the legacy representation.
      */
     public function code(): string
     {
@@ -21,7 +21,7 @@ enum LinkStatus: int
     }
 
     /**
-     * Возвращает человекочитаемую подпись статуса.
+     * Returns the human-readable status label.
      */
     public function label(): string
     {
@@ -33,7 +33,7 @@ enum LinkStatus: int
     }
 
     /**
-     * Возвращает AdminLTE CSS-класс цвета для статуса.
+     * Returns the AdminLTE color CSS class for the status.
      */
     public function cssColor(): string
     {
@@ -45,7 +45,7 @@ enum LinkStatus: int
     }
 
     /**
-     * Создает enum-статус из строкового кода.
+     * Creates an enum status from a string code.
      */
     public static function fromCode(string $code): ?self
     {
@@ -58,7 +58,7 @@ enum LinkStatus: int
     }
 
     /**
-     * Нормализует смешанное значение статуса в enum.
+     * Normalizes a mixed status value into an enum.
      */
     public static function fromValue(self|int|string|null $status): ?self
     {
@@ -78,7 +78,7 @@ enum LinkStatus: int
     }
 
     /**
-     * Возвращает строковый код для любого поддерживаемого значения статуса.
+     * Returns the string code for any supported status value.
      */
     public static function codeFor(self|int|string|null $status): string
     {
@@ -86,7 +86,7 @@ enum LinkStatus: int
     }
 
     /**
-     * Возвращает подпись для любого поддерживаемого значения статуса.
+     * Returns the label for any supported status value.
      */
     public static function labelFor(self|int|string|null $status): string
     {
@@ -94,7 +94,7 @@ enum LinkStatus: int
     }
 
     /**
-     * Возвращает CSS-класс цвета для любого поддерживаемого значения статуса.
+     * Returns the color CSS class for any supported status value.
      */
     public static function cssColorFor(self|int|string|null $status): string
     {
@@ -102,7 +102,7 @@ enum LinkStatus: int
     }
 
     /**
-     * Возвращает список статусов для select-полей.
+     * Returns the status list for select fields.
      */
     public static function options(): array
     {
@@ -116,7 +116,7 @@ enum LinkStatus: int
     }
 
     /**
-     * Возвращает числовые значения всех статусов.
+     * Returns the numeric values for all statuses.
      */
     public static function values(): array
     {

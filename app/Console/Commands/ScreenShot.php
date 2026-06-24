@@ -33,7 +33,7 @@ class ScreenShot extends Command
     }
 
     /**
-     * Обновляет скриншоты сайтов, у которых еще нет изображения.
+     * Updates screenshots for websites that do not have an image yet.
      */
     public function handle(): int
     {

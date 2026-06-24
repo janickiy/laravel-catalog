@@ -23,7 +23,7 @@ class AdminController extends Controller
     }
 
     /**
-     * Показывает список администраторов в панели управления.
+     * Shows the administrator list in the control panel.
      */
     public function index(): View
     {
@@ -31,7 +31,7 @@ class AdminController extends Controller
     }
 
     /**
-     * Показывает форму создания администратора.
+     * Shows the administrator creation form.
      */
     public function create(): View
     {
@@ -39,7 +39,7 @@ class AdminController extends Controller
     }
 
     /**
-     * Создает администратора из валидированных данных формы.
+     * Creates an administrator from validated form data.
      *
      * @param StoreAdminRequest $request
      * @return RedirectResponse
@@ -52,7 +52,7 @@ class AdminController extends Controller
     }
 
     /**
-     * Показывает форму редактирования администратора.
+     * Shows the administrator edit form.
      *
      * @param int $id
      * @return View
@@ -67,7 +67,7 @@ class AdminController extends Controller
 
 
     /**
-     * Обновляет администратора из валидированных данных формы.
+     * Updates an administrator from validated form data.
      *
      * @param UpdateAdminRequest $request
      * @return RedirectResponse
@@ -80,7 +80,7 @@ class AdminController extends Controller
     }
 
     /**
-     * Удаляет администратора, не позволяя удалить текущего пользователя.
+     * Deletes an administrator while preventing deletion of the current user.
      *
      * @param DestroyAdminRequest $request
      * @return void

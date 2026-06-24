@@ -16,7 +16,7 @@ class AuthServiceProvider extends ServiceProvider
     ];
 
     /**
-     * Регистрирует политики авторизации приложения.
+     * Registers the application's authorization policies.
      */
     public function boot(): void
     {

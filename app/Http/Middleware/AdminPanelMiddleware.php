@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class AdminPanelMiddleware extends Middleware
 {
     /**
-     * Возвращает маршрут редиректа для неавторизованного администратора.
+     * Returns the redirect route for an unauthenticated administrator.
      */
     protected function redirectTo(Request $request): ?string
     {

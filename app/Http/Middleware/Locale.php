@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 class Locale
 {
     /**
-     * Устанавливает язык интерфейса из cookie, браузера или конфигурации приложения.
+     * Set the interface language from cookie, browser preferences, or application configuration.
      */
     public function handle(Request $request, Closure $next): Response
     {
@@ -22,7 +22,7 @@ class Locale
         } elseif (in_array(config('app.locale'), config('app.locales', []), true)) {
             $locale = config('app.locale');
         } else {
-            $locale = config('app.fallback_locale', 'ru');
+            $locale = config('app.fallback_locale', 'en');
         }
 
         App::setLocale($locale);
@@ -31,7 +31,7 @@ class Locale
     }
 
     /**
-     * Определяет наиболее подходящий поддерживаемый язык из заголовка Accept-Language.
+     * Detect the best supported language from the Accept-Language header.
      */
     private function detectLocaleFromBrowser(string $acceptLanguage): ?string
     {
@@ -67,7 +67,7 @@ class Locale
     }
 
     /**
-     * Сопоставляет язык браузера со списком поддерживаемых языков приложения.
+     * Match a browser locale against the list of supported application locales.
      */
     private function matchSupportedLocale(string $locale, array $locales): ?string
     {

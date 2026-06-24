@@ -5,7 +5,7 @@ namespace App\Services;
 class DomainAvailabilityService
 {
     /**
-     * Проверяет доступность домена через короткий HTTP-запрос.
+     * Checks domain availability with a short HTTP request.
      *
      * @param string $domain
      * @param int $timeout

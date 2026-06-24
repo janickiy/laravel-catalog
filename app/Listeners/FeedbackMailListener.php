@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Mail;
 class FeedbackMailListener
 {
     /**
-     * Создает обработчик события обратной связи.
+     * Creates the feedback event listener.
      */
     public function __construct()
     {
@@ -18,7 +18,7 @@ class FeedbackMailListener
     }
 
     /**
-     * Отправляет письмо администрации по событию обратной связи.
+     * Sends the administration an email for the feedback event.
      */
     public function handle(FeedbackMailEvent $event): void
     {

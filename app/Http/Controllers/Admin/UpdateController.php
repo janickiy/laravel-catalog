@@ -15,7 +15,7 @@ class UpdateController extends Controller
     }
 
     /**
-     * Показывает страницу проверки и запуска обновления проекта.
+     * Shows the project update check and launch page.
      */
     public function index(): View
     {
@@ -27,7 +27,7 @@ class UpdateController extends Controller
     }
 
     /**
-     * Выполняет один AJAX-шаг обновления проекта.
+     * Runs one AJAX step of the project update.
      */
     public function run(Request $request): JsonResponse
     {

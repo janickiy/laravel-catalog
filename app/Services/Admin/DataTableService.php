@@ -23,7 +23,7 @@ class DataTableService
     ) {}
 
     /**
-     * Формирует ответ DataTables для списка администраторов.
+     * Builds the DataTables response for the administrator list.
      */
     public function admins(): mixed
     {
@@ -43,7 +43,7 @@ class DataTableService
     }
 
     /**
-     * Формирует ответ DataTables для списка ссылок.
+     * Builds the DataTables response for the link list.
      */
     public function links(): mixed
     {
@@ -64,7 +64,7 @@ class DataTableService
     }
 
     /**
-     * Формирует ответ DataTables для сообщений обратной связи.
+     * Builds the DataTables response for feedback messages.
      */
     public function feedback(): mixed
     {
@@ -82,7 +82,7 @@ class DataTableService
     }
 
     /**
-     * Формирует ответ DataTables для списка настроек.
+     * Builds the DataTables response for the settings list.
      */
     public function settings(): mixed
     {
@@ -98,7 +98,7 @@ class DataTableService
     }
 
     /**
-     * Приводит дату к единому формату отображения в админке.
+     * Formats a date using the unified admin display format.
      */
     private function formatDate(mixed $date): string
     {

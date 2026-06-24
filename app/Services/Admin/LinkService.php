@@ -16,7 +16,7 @@ class LinkService
     ) {}
 
     /**
-     * Возвращает список статусов ссылок для формы массового изменения.
+     * Returns the link status list for the bulk change form.
      */
     public function statusList(): array
     {
@@ -24,7 +24,7 @@ class LinkService
     }
 
     /**
-     * Возвращает список разделов каталога для формы ссылки.
+     * Returns the catalog category list for the link form.
      */
     public function catalogOptions(): array
     {
@@ -33,7 +33,7 @@ class LinkService
 
 
     /**
-     * Создает ссылку и пытается сохранить скриншот сайта.
+     * Creates a link and tries to save the website screenshot.
      *
      * @param LinkData $data
      * @return void
@@ -44,7 +44,7 @@ class LinkService
     }
 
     /**
-     * Обновляет ссылку и пересоздает скриншот по URL.
+     * Updates a link and regenerates the screenshot from the URL.
      *
      * @param LinkData $data
      * @return bool
@@ -55,7 +55,7 @@ class LinkService
     }
 
     /**
-     * Удаляет ссылку по идентификатору.
+     * Deletes a link by ID.
      *
      * @param int $id
      * @return bool
@@ -66,7 +66,7 @@ class LinkService
     }
 
     /**
-     * Массово обновляет статусы выбранных ссылок.
+     * Bulk-updates the statuses of the selected links.
      *
      * @param array|null $ids
      * @param int $status
@@ -86,7 +86,7 @@ class LinkService
     }
 
     /**
-     * Получает имя файла скриншота для URL или пустую строку.
+     * Gets the screenshot file name for a URL or an empty string.
      *
      * @param string $url
      * @return string

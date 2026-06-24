@@ -8,7 +8,7 @@ use Illuminate\Validation\Validator;
 class ImportLinksRequest extends FormRequest
 {
     /**
-     * Разрешает выполнение импорта авторизованному администратору.
+     * Authorizes import execution for an authenticated administrator.
      */
     public function authorize(): bool
     {
@@ -16,7 +16,7 @@ class ImportLinksRequest extends FormRequest
     }
 
     /**
-     * Возвращает правила валидации файла импорта ссылок.
+     * Returns the validation rules for the link import file.
      */
     public function rules(): array
     {
@@ -27,7 +27,7 @@ class ImportLinksRequest extends FormRequest
     }
 
     /**
-     * Проверяет, что выбран хотя бы один источник импорта.
+     * Checks that at least one import source was selected.
      */
     public function withValidator(Validator $validator): void
     {
@@ -39,7 +39,7 @@ class ImportLinksRequest extends FormRequest
     }
 
     /**
-     * Возвращает пользовательские сообщения ошибок импорта.
+     * Returns custom import error messages.
      */
     public function messages(): array
     {

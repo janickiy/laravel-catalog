@@ -12,7 +12,7 @@ class DataTableController extends Controller
     }
 
     /**
-     * Возвращает JSON-данные для таблицы администраторов.
+     * Returns JSON data for the administrators table.
      */
     public function getAdmin(): mixed
     {
@@ -20,7 +20,7 @@ class DataTableController extends Controller
     }
 
     /**
-     * Возвращает JSON-данные для таблицы ссылок.
+     * Returns JSON data for the links table.
      */
     public function getLinks(): mixed
     {
@@ -28,7 +28,7 @@ class DataTableController extends Controller
     }
 
     /**
-     * Возвращает JSON-данные для таблицы сообщений обратной связи.
+     * Returns JSON data for the feedback messages table.
      */
     public function getFeedback(): mixed
     {
@@ -36,7 +36,7 @@ class DataTableController extends Controller
     }
 
     /**
-     * Возвращает JSON-данные для таблицы настроек.
+     * Returns JSON data for the settings table.
      */
     public function getSettings(): mixed
     {

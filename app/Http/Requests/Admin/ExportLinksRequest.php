@@ -9,7 +9,7 @@ use Illuminate\Validation\Rule;
 class ExportLinksRequest extends FormRequest
 {
     /**
-     * Разрешает выполнение экспорта авторизованному администратору.
+     * Authorizes export execution for an authenticated administrator.
      */
     public function authorize(): bool
     {
@@ -17,7 +17,7 @@ class ExportLinksRequest extends FormRequest
     }
 
     /**
-     * Возвращает правила валидации параметров экспорта ссылок.
+     * Returns the validation rules for link export parameters.
      */
     public function rules(): array
     {

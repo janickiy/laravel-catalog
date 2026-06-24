@@ -15,7 +15,7 @@ class CatalogService
     ) {}
 
     /**
-     * Строит массив разделов, сгруппированный по родительскому разделу.
+     * Builds an array of categories grouped by parent category.
      */
     public function tree(): array
     {
@@ -29,7 +29,7 @@ class CatalogService
     }
 
     /**
-     * Возвращает HTML-дерево разделов для админки.
+     * Returns the category HTML tree for the admin panel.
      */
     public function treeHtml(): string
     {
@@ -37,7 +37,7 @@ class CatalogService
     }
 
     /**
-     * Возвращает список разделов для select-полей.
+     * Returns a category list for select fields.
      */
     public function options(?array $base = null): array
     {
@@ -45,7 +45,7 @@ class CatalogService
     }
 
     /**
-     * Создает раздел каталога и сохраняет изображение при наличии файла.
+     * Creates a catalog category and saves the image when a file is present.
      *
      * @param CatalogData $data
      * @param UploadedFile|null $image
@@ -63,7 +63,7 @@ class CatalogService
 
 
     /**
-     * Обновляет раздел каталога и заменяет изображение при загрузке нового файла.
+     * Updates a catalog category and replaces the image when a new file is uploaded.
      *
      * @param CatalogData $data
      * @param UploadedFile|null $image
@@ -81,7 +81,7 @@ class CatalogService
         return $this->catalogs->updateFromData($data);
     }
 
-    /**Удаляет раздел каталога, его потомков и связанные изображения
+    /**Deletes a catalog category, its descendants, and related images.
      *
      * @param int $id
      * @return void
@@ -103,7 +103,7 @@ class CatalogService
     }
 
     /**
-     * Рекурсивно собирает HTML для ветки дерева разделов.
+     * Recursively builds HTML for a category tree branch.
      *
      * @param array $catalogs
      * @param int $parentId
@@ -127,7 +127,7 @@ class CatalogService
     }
 
     /**
-     * Формирует HTML-кнопки действий для строки раздела.
+     * Builds HTML action buttons for a category row.
      *
      * @param int $catalogId
      * @return string

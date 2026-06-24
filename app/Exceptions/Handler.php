@@ -28,7 +28,7 @@ class Handler extends ExceptionHandler
     ];
 
     /**
-     * Регистрирует обработчики исключений приложения.
+     * Registers the application's exception handlers.
      */
     public function register(): void
     {

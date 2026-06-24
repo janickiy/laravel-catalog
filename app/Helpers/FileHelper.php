@@ -21,7 +21,7 @@ class FileHelper
     private const LINKS_STORAGE_DIRECTORY = 'url';
 
     /**
-     * Получает полноразмерный скриншот сайта через PageSpeed API и сохраняет его.
+     * Fetches a full-size website screenshot through the PageSpeed API and saves it.
      *
      * @param string $url
      * @return array|false[]
@@ -44,7 +44,7 @@ class FileHelper
     }
 
     /**
-     * Получает миниатюру скриншота через внешний сервис и сохраняет ее.
+     * Fetches a screenshot thumbnail through an external service and saves it.
      *
      * @param string $url
      * @param string $screen
@@ -64,7 +64,7 @@ class FileHelper
     }
 
     /**
-     * Возвращает содержимое URL с указанным таймаутом.
+     * Returns URL contents using the given timeout.
      *
      * @param string $url
      * @param int $timeout
@@ -76,7 +76,7 @@ class FileHelper
     }
 
     /**
-     * Проверяет, является ли строка корректным URL после добавления схемы.
+     * Checks whether the string is a valid URL after adding a scheme.
      *
      * @param string $url
      * @return bool
@@ -94,7 +94,7 @@ class FileHelper
     }
 
     /**
-     * Формирует URL запроса к PageSpeed API для получения скриншота
+     * Builds the PageSpeed API request URL for fetching a screenshot.
      *
      * @param string $url
      * @return string
@@ -110,7 +110,7 @@ class FileHelper
     }
 
     /**
-     * Формирует URL запроса к сервису миниатюр скриншотов.
+     * Builds the request URL for the screenshot thumbnail service.
      *
      * @param string $url
      * @param string $screen
@@ -129,7 +129,7 @@ class FileHelper
     }
 
     /**
-     * Добавляет URL стандартную схему, если она отсутствует.
+     * Adds the default scheme to a URL when it is missing.
      *
      * @param string $url
      * @return string
@@ -146,7 +146,7 @@ class FileHelper
     }
 
     /**
-     * Выполняет curl-запрос и возвращает тело ответа.
+     * Executes a cURL request and returns the response body.
      *
      * @param string $url
      * @param int $timeout
@@ -179,7 +179,7 @@ class FileHelper
     }
 
     /**
-     * Извлекает base64-данные скриншота из ответа PageSpeed API.
+     * Extracts base64 screenshot data from the PageSpeed API response.
      *
      * @param string $response
      * @return string|null
@@ -203,7 +203,7 @@ class FileHelper
 
 
     /**
-     * Декодирует и сохраняет скриншот PageSpeed в локальную директорию.
+     * Decodes and saves a PageSpeed screenshot to the local directory.
      *
      * @param string $base64Image
      * @return array|false[]
@@ -234,7 +234,7 @@ class FileHelper
     }
 
     /**
-     * Сохраняет миниатюру скриншота в storage-диск ссылок.
+     * Saves the screenshot thumbnail to the links storage disk.
      *
      * @param string $imageContent
      * @param string $format
@@ -259,7 +259,7 @@ class FileHelper
     }
 
     /**
-     * Создает директорию, если она еще не существует.
+     * Creates the directory if it does not exist yet.
      */
     private static function ensureDirectory(string $path): void
     {
@@ -269,7 +269,7 @@ class FileHelper
     }
 
     /**
-     * Генерирует безопасное случайное имя файла с расширением.
+     * Generates a safe random file name with an extension.
      */
     private static function filename(string $extension): string
     {
@@ -280,7 +280,7 @@ class FileHelper
     }
 
     /**
-     * Возвращает успешный результат сохранения файла.
+     * Returns the result of a successful file save.
      */
     private static function successfulResult(string $filename): array
     {
@@ -291,7 +291,7 @@ class FileHelper
     }
 
     /**
-     * Возвращает результат неуспешной операции с файлом.
+     * Returns the result of a failed file operation.
      */
     private static function failedResult(): array
     {

@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 class HttpsMiddleware
 {
     /**
-     * Перенаправляет HTTP-запросы на HTTPS.
+     * Redirects HTTP requests to HTTPS.
      */
     public function handle(Request $request, Closure $next): Response
     {

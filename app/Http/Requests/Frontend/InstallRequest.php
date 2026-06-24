@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 class InstallRequest extends FormRequest
 {
     /**
-     * Разрешает проверку настроек базы данных в мастере установки.
+     * Authorizes database setting checks in the installer.
      */
     public function authorize(): bool
     {
@@ -15,7 +15,7 @@ class InstallRequest extends FormRequest
     }
 
     /**
-     * Возвращает правила валидации реквизитов базы данных.
+     * Returns the validation rules for database credentials.
      */
     public function rules(): array
     {

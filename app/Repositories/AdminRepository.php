@@ -16,7 +16,7 @@ class AdminRepository extends BaseRepository
     }
 
     /**
-     * Возвращает новый query builder для модели администратора.
+     * Returns a new query builder for the administrator model.
      */
     public function query(): Builder
     {
@@ -24,7 +24,7 @@ class AdminRepository extends BaseRepository
     }
 
     /**
-     * Считает общее количество администраторов.
+     * Counts the total number of administrators.
      */
     public function countAll(): int
     {
@@ -32,7 +32,7 @@ class AdminRepository extends BaseRepository
     }
 
     /**
-     * Возвращает последних добавленных администраторов.
+     * Returns the latest added administrators.
      *
      * @param int $limit
      * @return Collection
@@ -46,7 +46,7 @@ class AdminRepository extends BaseRepository
     }
 
     /**
-     * Создает администратора из DTO.
+     * Creates an administrator from a DTO.
      *
      * @param AdminData $data
      * @return Builder|Model
@@ -57,7 +57,7 @@ class AdminRepository extends BaseRepository
     }
 
     /**
-     * Обновляет администратора из DTO.
+     * Updates an administrator from a DTO.
      *
      * @param AdminData $data
      * @return bool

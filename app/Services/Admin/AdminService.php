@@ -12,7 +12,7 @@ class AdminService
     public function __construct(private readonly AdminRepository $admins) {}
 
     /**
-     * Создает администратора и хеширует его пароль.
+     * Creates an administrator and hashes the password.
      *
      * @param AdminData $data
      * @return Model
@@ -25,7 +25,7 @@ class AdminService
     }
 
     /**
-     * Обновляет администратора и меняет пароль только при передаче нового значения.
+     * Updates the administrator and changes the password only when a new value is provided.
      *
      * @param AdminData $data
      * @return bool
@@ -42,7 +42,7 @@ class AdminService
     }
 
     /**
-     * Удаляет администратора, если это не текущий авторизованный пользователь.
+     * Deletes an administrator unless it is the current authenticated user.
      *
      * @param int $id
      * @param int $currentUserId

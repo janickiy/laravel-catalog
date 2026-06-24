@@ -16,7 +16,7 @@ class DashboardService
     ) {}
 
     /**
-     * Собирает все данные для dashboard административной панели.
+     * Collects all data for the admin dashboard.
      */
     public function data(): array
     {
@@ -33,7 +33,7 @@ class DashboardService
     }
 
     /**
-     * Формирует карточки со сводными показателями dashboard.
+     * Builds summary metric cards for the dashboard.
      */
     private function summaryCards(array $linkStatuses): array
     {
@@ -74,7 +74,7 @@ class DashboardService
     }
 
     /**
-     * Собирает статистику ссылок по статусам.
+     * Collects link statistics by status.
      */
     private function linkStatuses(): array
     {
@@ -88,7 +88,7 @@ class DashboardService
     }
 
     /**
-     * Рассчитывает количество и процент ссылок для одного статуса.
+     * Calculates the link count and percentage for one status.
      */
     private function statusStat(LinkStatus $status, int $total): array
     {
@@ -103,7 +103,7 @@ class DashboardService
     }
 
     /**
-     * Возвращает список быстрых действий dashboard.
+     * Returns the dashboard quick action list.
      */
     private function quickActions(): array
     {

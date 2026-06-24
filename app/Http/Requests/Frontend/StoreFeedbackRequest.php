@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 class StoreFeedbackRequest extends FormRequest
 {
     /**
-     * Разрешает отправку сообщения обратной связи посетителю сайта.
+     * Authorizes feedback message submission by a site visitor.
      */
     public function authorize(): bool
     {
@@ -15,7 +15,7 @@ class StoreFeedbackRequest extends FormRequest
     }
 
     /**
-     * Возвращает правила валидации формы обратной связи.
+     * Returns the validation rules for the feedback form.
      */
     public function rules(): array
     {
@@ -28,7 +28,7 @@ class StoreFeedbackRequest extends FormRequest
     }
 
     /**
-     * Возвращает пользовательские сообщения ошибок формы обратной связи.
+     * Returns custom error messages for the feedback form.
      */
     public function messages(): array
     {

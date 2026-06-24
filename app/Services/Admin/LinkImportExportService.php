@@ -34,7 +34,7 @@ class LinkImportExportService
 
 
     /**
-     * Импортирует ссылки из CSV, XLS или XLSX файла.
+     * Imports links from a CSV, XLS, or XLSX file.
      *
      * @param UploadedFile $file
      * @return int
@@ -49,7 +49,7 @@ class LinkImportExportService
     }
 
     /**
-     * Импортирует ссылки из ZIP-архива с CSV, TXT, XLS или XLSX файлами.
+     * Imports links from a ZIP archive containing CSV, TXT, XLS, or XLSX files.
      *
      * @param UploadedFile $file
      * @return int
@@ -100,7 +100,7 @@ class LinkImportExportService
     }
 
     /**
-     * Импортирует файл по абсолютному пути без сброса состояния процессора.
+     * Imports a file by absolute path without resetting the processor state.
      *
      * @param string|false $path
      * @param string $extension
@@ -125,7 +125,7 @@ class LinkImportExportService
     }
 
     /**
-     * Формирует HTTP-ответ с экспортом ссылок в текстовом или XLSX формате
+     * Builds an HTTP response with the link export in text or XLSX format.
      *
      * @param int|null $catalogId
      * @param string $type
@@ -152,7 +152,7 @@ class LinkImportExportService
     }
 
     /**
-     * Преобразует коллекцию ссылок в текстовый экспорт.
+     * Converts a link collection to a text export.
      *
      * @param iterable $links
      * @return string
@@ -176,7 +176,7 @@ class LinkImportExportService
     }
 
     /**
-     * Преобразует коллекцию ссылок в XLSX-файл в памяти.
+     * Converts a link collection to an in-memory XLSX file.
      *
      * @param iterable $links
      * @return string
@@ -229,7 +229,7 @@ class LinkImportExportService
     }
 
     /**
-     * Упаковывает экспорт в ZIP и возвращает ответ для скачивания
+     * Packs the export into a ZIP file and returns the download response.
      *
      * @param string $filename
      * @param string $contents
@@ -247,7 +247,7 @@ class LinkImportExportService
     }
 
     /**
-     * Создает временную директорию для безопасной обработки архива.
+     * Creates a temporary directory for safe archive processing.
      *
      * @return string
      */
@@ -260,7 +260,7 @@ class LinkImportExportService
     }
 
     /**
-     * Копирует один файл из ZIP-архива во временную директорию.
+     * Copies one file from the ZIP archive to the temporary directory.
      *
      * @param ZipArchive $zip
      * @param string $name
@@ -296,7 +296,7 @@ class LinkImportExportService
     }
 
     /**
-     * Удаляет временную директорию с файлами импорта.
+     * Deletes the temporary directory with import files.
      *
      * @param string $directory
      * @return void
@@ -315,7 +315,7 @@ class LinkImportExportService
     }
 
     /**
-     * Возвращает тип reader для импорта таблицы по расширению файла.
+     * Returns the spreadsheet reader type for import by file extension.
      *
      * @param string $extension
      * @return string

@@ -11,7 +11,7 @@ class CatalogImageService
     private const DIRECTORY = '/uploads/catalog/';
 
     /**
-     * Сохраняет изображение раздела каталога в нужном размере.
+     * Saves the catalog category image in the required size.
      *
      * @param UploadedFile $file
      * @return string
@@ -31,7 +31,7 @@ class CatalogImageService
     }
 
     /**
-     * Удаляет изображение раздела каталога, если файл существует.
+     * Deletes the catalog category image if the file exists.
      *
      * @param string|null $filename
      * @return void

@@ -13,7 +13,7 @@ class FeedbackController extends Controller
     }
 
     /**
-     * Показывает список сообщений, отправленных через форму обратной связи.
+     * Shows the list of messages sent through the feedback form.
      */
     public function index(): View
     {
@@ -21,7 +21,7 @@ class FeedbackController extends Controller
     }
 
     /**
-     * Показывает детальную страницу сообщения обратной связи.
+     * Shows the feedback message detail page.
      */
     public function show(int $id): View
     {

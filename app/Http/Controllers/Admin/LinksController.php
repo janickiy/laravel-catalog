@@ -33,7 +33,7 @@ class LinksController extends Controller
     }
 
     /**
-     * Показывает список ссылок в панели управления.
+     * Shows the link list in the control panel.
      */
     public function index(): View
     {
@@ -43,7 +43,7 @@ class LinksController extends Controller
     }
 
     /**
-     * Показывает форму создания ссылки.
+     * Shows the link creation form.
      *
      * @return View
      */
@@ -55,7 +55,7 @@ class LinksController extends Controller
     }
 
     /**
-     * Создает опубликованную ссылку из валидированных данных формы.
+     * Creates a published link from validated form data.
      *
      * @param StoreLinkRequest $request
      * @return RedirectResponse
@@ -68,7 +68,7 @@ class LinksController extends Controller
     }
 
     /**
-     * Показывает детальную страницу ссылки в админке.
+     * Shows the link detail page in the admin panel.
      *
      * @param int $id
      * @return View
@@ -82,7 +82,7 @@ class LinksController extends Controller
     }
 
     /**
-     * Показывает форму редактирования ссылки.
+     * Shows the link edit form.
      *
      * @param int $id
      * @return View
@@ -98,7 +98,7 @@ class LinksController extends Controller
     }
 
     /**
-     * Обновляет ссылку из валидированных данных формы.
+     * Updates a link from validated form data.
      *
      * @param UpdateLinkRequest $request
      * @return RedirectResponse
@@ -111,7 +111,7 @@ class LinksController extends Controller
     }
 
     /**
-     * Удаляет ссылку по идентификатору из валидированного запроса.
+     * Deletes a link by ID from the validated request.
      *
      * @param DestroyLinkRequest $request
      * @return void
@@ -122,7 +122,7 @@ class LinksController extends Controller
     }
 
     /**
-     * Показывает форму импорта ссылок.
+     * Shows the link import form.
      *
      * @return View
      */
@@ -134,7 +134,7 @@ class LinksController extends Controller
     }
 
     /**
-     * Импортирует ссылки из загруженного файла.
+     * Imports links from the uploaded file.
      *
      * @param ImportLinksRequest $request
      * @return RedirectResponse
@@ -165,7 +165,7 @@ class LinksController extends Controller
     }
 
     /**
-     * Показывает форму экспорта ссылок.
+     * Shows the link export form.
      */
     public function export(): View
     {
@@ -175,7 +175,7 @@ class LinksController extends Controller
     }
 
     /**
-     * Отдает файл экспорта ссылок в выбранном формате.
+     * Returns the link export file in the selected format.
      *
      * @param ExportLinksRequest $request
      * @return Response|BinaryFileResponse
@@ -192,7 +192,7 @@ class LinksController extends Controller
     }
 
     /**
-     * Массово обновляет статусы выбранных ссылок.
+     * Bulk-updates the statuses of the selected links.
      *
      * @param UpdateLinkStatusRequest $request
      * @return RedirectResponse

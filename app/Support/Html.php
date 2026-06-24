@@ -7,7 +7,7 @@ use Illuminate\Support\HtmlString;
 class Html
 {
     /**
-     * Формирует HTML-тег подключения stylesheet.
+     * Builds an HTML stylesheet tag.
      *
      * @param string $url
      * @param array $attributes
@@ -21,7 +21,7 @@ class Html
     }
 
     /**
-     * Формирует HTML-тег подключения script.
+     * Builds an HTML script tag.
      *
      * @param string $url
      * @param array $attributes
@@ -35,7 +35,7 @@ class Html
     }
 
     /**
-     * Преобразует массив атрибутов в безопасную HTML-строку
+     * Converts an attribute array to a safe HTML string.
      *
      * @param array $attributes
      * @return string

@@ -12,7 +12,7 @@ final class LinksImportFromCsv
     public function __construct(private readonly LinkImportProcessor $processor) {}
 
     /**
-     * Импортирует CSV/TXT файл построчно через общий процессор.
+     * Imports a CSV/TXT file line by line through the shared processor.
      */
     public function import(string $path): int
     {

@@ -15,7 +15,7 @@ class SettingsRepository extends BaseRepository
     }
 
     /**
-     * Возвращает новый query builder для настроек.
+     * Returns a new query builder for settings.
      */
     public function query(): Builder
     {
@@ -23,7 +23,7 @@ class SettingsRepository extends BaseRepository
     }
 
     /**
-     * Считает общее количество настроек.
+     * Counts the total number of settings.
      */
     public function countAll(): int
     {
@@ -31,7 +31,7 @@ class SettingsRepository extends BaseRepository
     }
 
     /**
-     * Создает настройку из DTO.
+     * Creates a setting from a DTO.
      *
      * @param SettingsData $data
      * @return Builder|Model
@@ -42,7 +42,7 @@ class SettingsRepository extends BaseRepository
     }
 
     /**
-     * Обновляет настройку из DTO.
+     * Updates a setting from a DTO.
      *
      * @param SettingsData $data
      * @return bool

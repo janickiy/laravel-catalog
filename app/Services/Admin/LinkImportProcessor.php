@@ -21,7 +21,7 @@ class LinkImportProcessor
     ) {}
 
     /**
-     * Сбрасывает счетчик и кэши перед новым импортом.
+     * Resets the counter and caches before a new import.
      */
     public function reset(): void
     {
@@ -31,7 +31,7 @@ class LinkImportProcessor
     }
 
     /**
-     * Возвращает количество успешно импортированных ссылок.
+     * Returns the number of successfully imported links.
      */
     public function importedCount(): int
     {
@@ -39,7 +39,7 @@ class LinkImportProcessor
     }
 
     /**
-     * Валидирует, нормализует и сохраняет одну строку импортируемого файла.
+     * Validates, normalizes, and saves one row from the imported file.
      *
      * @param array $row
      * @return bool
@@ -76,7 +76,7 @@ class LinkImportProcessor
     }
 
     /**
-     * Приводит строку импортируемого файла к ожидаемой структуре.
+     * Normalizes an imported file row to the expected structure.
      *
      * @param array $row
      * @return array
@@ -107,7 +107,7 @@ class LinkImportProcessor
     }
 
     /**
-     * Возвращает очищенное UTF-8 значение ячейки по индексу.
+     * Returns the sanitized UTF-8 cell value by index.
      *
      * @param array $row
      * @param int $index
@@ -119,7 +119,7 @@ class LinkImportProcessor
     }
 
     /**
-     * Очищает URL до доменного имени без схемы и пути.
+     * Cleans a URL down to the domain name without scheme or path.
      *
      * @param string $url
      * @return string
@@ -142,7 +142,7 @@ class LinkImportProcessor
     }
 
     /**
-     * Проверяет существование URL с использованием локального кэша.
+     * Checks URL existence using the local cache.
      *
      * @param string $url
      * @return bool
@@ -163,7 +163,7 @@ class LinkImportProcessor
     }
 
     /**
-     * Определяет индекс колонки с URL для текущего и legacy-формата импорта.
+     * Determines the URL column index for the current and legacy import formats.
      */
     private function urlIndex(array $row): int
     {
@@ -183,7 +183,7 @@ class LinkImportProcessor
     }
 
     /**
-     * Проверяет, похоже ли значение ячейки на домен или URL.
+     * Checks whether the cell value looks like a domain or URL.
      */
     private function looksLikeUrl(string $value): bool
     {
@@ -193,7 +193,7 @@ class LinkImportProcessor
     }
 
     /**
-     * Собирает описание ссылки из данных импортируемой строки.
+     * Builds the link description from imported row data.
      */
     private function description(array $row, string $name): string
     {
@@ -207,7 +207,7 @@ class LinkImportProcessor
     }
 
     /**
-     * Находит или создает цепочку разделов из импортируемого пути.
+     * Finds or creates a category chain from the imported path.
      *
      * @param string $path
      * @return int|null
@@ -227,7 +227,7 @@ class LinkImportProcessor
     }
 
     /**
-     * Находит или создает раздел каталога с кэшированием результата.
+     * Finds or creates a catalog category and caches the result.
      *
      * @param string $name
      * @param int|null $parentId

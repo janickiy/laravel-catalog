@@ -29,7 +29,7 @@ class RouteServiceProvider extends ServiceProvider
     // protected $namespace = 'App\\Http\\Controllers';
 
     /**
-     * Регистрирует маршруты приложения и настройки rate limiting.
+     * Registers the application's routes and rate limiting settings.
      */
     public function boot(): void
     {
@@ -52,7 +52,7 @@ class RouteServiceProvider extends ServiceProvider
     }
 
     /**
-     * Настраивает ограничения частоты запросов для API.
+     * Configures rate limits for the API.
      */
     protected function configureRateLimiting(): void
     {

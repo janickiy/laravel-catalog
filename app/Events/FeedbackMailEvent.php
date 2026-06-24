@@ -12,7 +12,7 @@ class FeedbackMailEvent
     public stdClass $data;
 
     /**
-     * Создает событие отправки письма обратной связи.
+     * Creates the feedback mail event.
      */
     public function __construct(stdClass $data)
     {
@@ -20,7 +20,7 @@ class FeedbackMailEvent
     }
 
     /**
-     * Возвращает каналы трансляции события.
+     * Returns the event broadcast channels.
      */
     public function broadcastOn(): array
     {

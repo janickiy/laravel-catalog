@@ -9,7 +9,7 @@ use Illuminate\Validation\Rule;
 class UpdateCatalogRequest extends FormRequest
 {
     /**
-     * Разрешает обновление раздела каталога авторизованному администратору.
+     * Authorizes catalog category updates for an authenticated administrator.
      */
     public function authorize(): bool
     {
@@ -17,7 +17,7 @@ class UpdateCatalogRequest extends FormRequest
     }
 
     /**
-     * Возвращает правила валидации обновления раздела каталога.
+     * Returns the validation rules for catalog category updates.
      */
     public function rules(): array
     {

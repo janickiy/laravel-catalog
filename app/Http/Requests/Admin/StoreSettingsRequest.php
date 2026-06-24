@@ -8,7 +8,7 @@ use Illuminate\Foundation\Http\FormRequest;
 class StoreSettingsRequest extends FormRequest
 {
     /**
-     * Разрешает создание настройки авторизованному администратору.
+     * Authorizes setting creation for an authenticated administrator.
      */
     public function authorize(): bool
     {
@@ -16,7 +16,7 @@ class StoreSettingsRequest extends FormRequest
     }
 
     /**
-     * Возвращает правила валидации создания настройки.
+     * Returns the validation rules for setting creation.
      */
     public function rules(): array
     {

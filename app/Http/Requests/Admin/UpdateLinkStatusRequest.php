@@ -10,7 +10,7 @@ use Illuminate\Validation\Rule;
 class UpdateLinkStatusRequest extends FormRequest
 {
     /**
-     * Разрешает массовое изменение статусов авторизованному администратору.
+     * Authorizes bulk status changes for an authenticated administrator.
      */
     public function authorize(): bool
     {
@@ -18,7 +18,7 @@ class UpdateLinkStatusRequest extends FormRequest
     }
 
     /**
-     * Возвращает правила валидации массового изменения статусов ссылок.
+     * Returns the validation rules for bulk link status changes.
      */
     public function rules(): array
     {

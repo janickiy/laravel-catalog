@@ -16,7 +16,7 @@ class FeedbackRepository extends BaseRepository
     }
 
     /**
-     * Возвращает новый query builder для сообщений обратной связи.
+     * Returns a new query builder for feedback messages.
      */
     public function query(): Builder
     {
@@ -24,7 +24,7 @@ class FeedbackRepository extends BaseRepository
     }
 
     /**
-     * Считает общее количество сообщений обратной связи.
+     * Counts the total number of feedback messages.
      */
     public function countAll(): int
     {
@@ -32,7 +32,7 @@ class FeedbackRepository extends BaseRepository
     }
 
     /**
-     * Возвращает последние сообщения обратной связи.
+     * Returns the latest feedback messages.
      *
      * @param int $limit
      * @return Collection
@@ -46,7 +46,7 @@ class FeedbackRepository extends BaseRepository
     }
 
     /**
-     * Создает сообщение обратной связи из DTO
+     * Creates a feedback message from a DTO.
      *
      * @param FeedbackMessageData $data
      * @return Builder|Model

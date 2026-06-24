@@ -466,23 +466,45 @@ class CatalogSeeder extends Seeder
     /**
      * @var array<string, string>
      */
-    private const DESCRIPTION_TEMPLATES = [
-        'en' => '%s websites and useful resources for a curated link directory.',
-        'ru' => 'Сайты и полезные ресурсы раздела «%s» для каталога ссылок.',
-        'fr' => 'Sites web et ressources utiles de la section « %s » pour un annuaire de liens.',
-        'de' => 'Websites und nützliche Ressourcen aus dem Bereich „%s“ für ein Linkverzeichnis.',
-        'es' => 'Sitios web y recursos útiles de la sección «%s» para un directorio de enlaces.',
+    private const ROOT_DESCRIPTION_TEMPLATES = [
+        'en' => '%s websites and online resources collected for a link directory demo.',
+        'ru' => 'Сайты и онлайн-ресурсы раздела «%s», собранные для демонстрационного каталога ссылок.',
+        'fr' => 'Sites web et ressources en ligne de la section « %s » réunis pour une démo d’annuaire de liens.',
+        'de' => 'Websites und Online-Ressourcen aus dem Bereich „%s“, zusammengestellt für eine Linkverzeichnis-Demo.',
+        'es' => 'Sitios web y recursos en línea de la sección «%s» reunidos para una demo de directorio de enlaces.',
     ];
 
     /**
      * @var array<string, string>
      */
-    private const KEYWORD_SUFFIXES = [
-        'en' => 'directory, links, catalog',
-        'ru' => 'каталог, ссылки, сайты',
-        'fr' => 'annuaire, liens, catalogue',
-        'de' => 'verzeichnis, links, katalog',
-        'es' => 'directorio, enlaces, catálogo',
+    private const CHILD_DESCRIPTION_TEMPLATES = [
+        'en' => '%s resources, companies and useful websites grouped under %s.',
+        'ru' => 'Ресурсы, компании и полезные сайты раздела «%s», сгруппированные в категории «%s».',
+        'fr' => 'Ressources, entreprises et sites utiles de la section « %s » regroupés dans « %s ».',
+        'de' => 'Ressourcen, Unternehmen und nützliche Websites aus dem Bereich „%s“, gruppiert unter „%s“.',
+        'es' => 'Recursos, empresas y sitios útiles de la sección «%s» agrupados en «%s».',
+    ];
+
+    /**
+     * @var array<string, string>
+     */
+    private const ROOT_KEYWORD_SUFFIXES = [
+        'en' => 'links, directory, catalog',
+        'ru' => 'ссылки, каталог сайтов, каталог',
+        'fr' => 'liens, annuaire, catalogue',
+        'de' => 'links, verzeichnis, katalog',
+        'es' => 'enlaces, directorio, catálogo',
+    ];
+
+    /**
+     * @var array<string, string>
+     */
+    private const CHILD_KEYWORD_SUFFIXES = [
+        'en' => 'links',
+        'ru' => 'ссылки',
+        'fr' => 'liens',
+        'de' => 'links',
+        'es' => 'enlaces',
     ];
 
     /**
@@ -510,15 +532,25 @@ class CatalogSeeder extends Seeder
     {
         $locale = $this->locale();
         $names = self::TRANSLATIONS[$locale] ?? self::TRANSLATIONS['en'];
+        $keysById = array_column(self::CATALOG, 'key', 'id');
 
         return array_map(
-            fn (array $category): array => $this->category(
-                (int) $category['id'],
-                $names[$category['key']] ?? self::TRANSLATIONS['en'][$category['key']],
-                $category['image'],
-                $category['parent_id'] === null ? null : (int) $category['parent_id'],
-                $locale,
-            ),
+            function (array $category) use ($keysById, $locale, $names): array {
+                $parentId = $category['parent_id'] === null ? null : (int) $category['parent_id'];
+                $parentKey = $parentId === null ? null : ($keysById[$parentId] ?? null);
+                $parentName = $parentKey === null
+                    ? null
+                    : ($names[$parentKey] ?? self::TRANSLATIONS['en'][$parentKey]);
+
+                return $this->category(
+                    (int) $category['id'],
+                    $names[$category['key']] ?? self::TRANSLATIONS['en'][$category['key']],
+                    $category['image'],
+                    $parentId,
+                    $parentName,
+                    $locale,
+                );
+            },
             self::CATALOG,
         );
     }
@@ -542,15 +574,53 @@ class CatalogSeeder extends Seeder
     /**
      * Build one catalog row from localized seed data.
      */
-    private function category(int $id, string $name, ?string $image, ?int $parentId, string $locale): array
+    private function category(int $id, string $name, ?string $image, ?int $parentId, ?string $parentName, string $locale): array
     {
         return [
             'id' => $id,
             'name' => $name,
-            'description' => sprintf(self::DESCRIPTION_TEMPLATES[$locale] ?? self::DESCRIPTION_TEMPLATES['en'], $name),
-            'keywords' => mb_strtolower($name).', '.(self::KEYWORD_SUFFIXES[$locale] ?? self::KEYWORD_SUFFIXES['en']),
+            'description' => $this->description($name, $parentName, $locale),
+            'keywords' => $this->keywords($name, $parentName, $locale),
             'image' => $image,
             'parent_id' => $parentId,
         ];
+    }
+
+    /**
+     * Build a localized catalog description.
+     */
+    private function description(string $name, ?string $parentName, string $locale): string
+    {
+        if ($parentName === null) {
+            return sprintf(self::ROOT_DESCRIPTION_TEMPLATES[$locale] ?? self::ROOT_DESCRIPTION_TEMPLATES['en'], $name);
+        }
+
+        return sprintf(self::CHILD_DESCRIPTION_TEMPLATES[$locale] ?? self::CHILD_DESCRIPTION_TEMPLATES['en'], $name, $parentName);
+    }
+
+    /**
+     * Build localized catalog keywords.
+     */
+    private function keywords(string $name, ?string $parentName, string $locale): string
+    {
+        $nameKeywords = $this->keywordName($name);
+
+        if ($parentName === null) {
+            return $nameKeywords.', '.(self::ROOT_KEYWORD_SUFFIXES[$locale] ?? self::ROOT_KEYWORD_SUFFIXES['en']);
+        }
+
+        return $nameKeywords.', '.mb_strtolower($parentName).', '.(self::CHILD_KEYWORD_SUFFIXES[$locale] ?? self::CHILD_KEYWORD_SUFFIXES['en']);
+    }
+
+    /**
+     * Build keyword fragments from a category name.
+     */
+    private function keywordName(string $name): string
+    {
+        $keywords = str_replace(' ', ', ', mb_strtolower($name));
+        $keywords = str_replace('&', '', $keywords);
+        $keywords = str_replace(', ,', ',,', $keywords);
+
+        return trim($keywords, " \t\n\r\0\x0B,");
     }
 }

@@ -22,7 +22,7 @@ final readonly class LinkData implements DataTransferObject
     ) {}
 
     /**
-     * Создает DTO ссылки из валидированного массива формы.
+     * Creates a link DTO from the validated form array.
      *
      * @param array $data
      * @param int|null $status
@@ -48,7 +48,7 @@ final readonly class LinkData implements DataTransferObject
     }
 
     /**
-     * Возвращает идентификатор ссылки для операций обновления.
+     * Returns the link ID for update operations.
      */
     public function id(): ?int
     {
@@ -56,7 +56,7 @@ final readonly class LinkData implements DataTransferObject
     }
 
     /**
-     * Возвращает URL ссылки.
+     * Returns the link URL.
      */
     public function url(): string
     {
@@ -64,7 +64,7 @@ final readonly class LinkData implements DataTransferObject
     }
 
     /**
-     * Возвращает копию DTO с новым именем изображения.
+     * Returns a copy of the DTO with a new image name.
      *
      * @param string|null $image
      * @return self
@@ -88,7 +88,7 @@ final readonly class LinkData implements DataTransferObject
     }
 
     /**
-     * Преобразует DTO в массив атрибутов ссылки.
+     * Converts the DTO to a link attribute array.
      *
      * @return array|mixed[]
      */
@@ -118,7 +118,7 @@ final readonly class LinkData implements DataTransferObject
     }
 
     /**
-     * Нормализует идентификатор раздела каталога.
+     * Normalizes the catalog category ID.
      *
      * @param mixed $catalogId
      * @return int|null

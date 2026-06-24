@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 class RedirectIfAuthenticated
 {
     /**
-     * Перенаправляет уже авторизованного пользователя на его домашний маршрут.
+     * Redirects an already authenticated user to their home route.
      */
     public function handle(Request $request, Closure $next, string ...$guards): Response
     {

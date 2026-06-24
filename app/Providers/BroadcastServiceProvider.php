@@ -8,7 +8,7 @@ use Illuminate\Support\ServiceProvider;
 class BroadcastServiceProvider extends ServiceProvider
 {
     /**
-     * Регистрирует маршруты broadcast-каналов приложения.
+     * Registers the application's broadcast channel routes.
      */
     public function boot(): void
     {

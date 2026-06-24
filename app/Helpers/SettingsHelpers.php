@@ -7,7 +7,7 @@ use App\Models\Settings;
 class SettingsHelpers
 {
     /**
-     * Возвращает значение настройки по ключу или пустую строку.
+     * Returns a setting value by key or an empty string.
      */
     public static function getSetting(string $key = ''): string
     {
