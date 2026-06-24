@@ -22,6 +22,12 @@ class FeedbackMailListener
      */
     public function handle(FeedbackMailEvent $event): void
     {
-        Mail::to(SettingsHelpers::getSetting('EMAIL'))->send(new FeedbackMailer($event->data));
+        $email = SettingsHelpers::notificationEmail();
+
+        if ($email === null) {
+            return;
+        }
+
+        Mail::to($email)->send(new FeedbackMailer($event->data));
     }
 }

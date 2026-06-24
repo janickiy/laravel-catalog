@@ -15,4 +15,15 @@ class SettingsHelpers
 
         return $setting?->value ?? '';
     }
+
+    /**
+     * Returns the notification recipient email configured for the catalog.
+     */
+    public static function notificationEmail(): ?string
+    {
+        $email = self::getSetting('EMAIL_ADMIN') ?: self::getSetting('EMAIL') ?: config('mail.from.address');
+        $email = trim((string) $email);
+
+        return filter_var($email, FILTER_VALIDATE_EMAIL) ? $email : null;
+    }
 }

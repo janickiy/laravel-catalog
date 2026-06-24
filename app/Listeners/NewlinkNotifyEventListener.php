@@ -22,6 +22,12 @@ class NewlinkNotifyEventListener
      */
     public function handle(NewlinkNotifyEvent $event): void
     {
-        Mail::to(SettingsHelpers::getSetting('EMAIL'))->send(new NewlinkNotify($event->links));
+        $email = SettingsHelpers::notificationEmail();
+
+        if ($email === null) {
+            return;
+        }
+
+        Mail::to($email)->send(new NewlinkNotify($event->links));
     }
 }
