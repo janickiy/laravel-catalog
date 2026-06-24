@@ -109,7 +109,7 @@
                             <span class="input-group-text">
                                 <i class="bi bi-person"></i>
                             </span>
-                            {!! Form::text('login', old('login', 'admin'), [
+                            {!! Form::text('login', old('login'), [
                                 'id' => 'login',
                                 'class' => 'form-control' . ($errors->has('login') ? ' is-invalid' : ''),
                                 'placeholder' => __('interface.auth.login_placeholder'),
@@ -128,11 +128,11 @@
                             <span class="input-group-text">
                                 <i class="bi bi-lock"></i>
                             </span>
-                            {!! Form::text('password', old('password', '1234567'), [
+                            {!! Form::password('password', [
                                 'id' => 'password',
                                 'class' => 'form-control' . ($errors->has('password') ? ' is-invalid' : ''),
                                 'placeholder' => __('interface.auth.password_placeholder'),
-                                'autocomplete' => 'off',
+                                'autocomplete' => 'current-password',
                             ]) !!}
                             @if ($errors->has('password'))
                                 <div class="invalid-feedback">{{ $errors->first('password') }}</div>

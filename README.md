@@ -369,5 +369,6 @@ Important variables:
 
 - When working in Docker, run Laravel commands through the `laravel_catalog_app` container.
 - If `catalog.sql` is not imported, recreate the MySQL volume and start the containers again.
+- On macOS, do not run Docker Compose from the Trash folder. Docker Desktop cannot mount files from `.Trash`, including `catalog.sql`.
 - Site screenshots use external services, so the result depends on network availability and `GOOGLE_API_KEY`.
 - Copyright and author information is shown in the frontend and admin footers.
