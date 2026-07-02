@@ -253,6 +253,8 @@ return [
         'catalog_intro' => 'Elija una sección y encuentre sitios relevantes en un catálogo estructurado.',
         'sites' => 'Sitios',
         'recent_sites' => 'Sitios añadidos recientemente',
+        'top_sites' => 'Sitios destacados',
+        'top_sites_eyebrow' => 'Popular',
         'more' => 'Más',
         'no_site_image' => 'Sin imagen del sitio',
         'footer_rules' => 'Reglas del catálogo',

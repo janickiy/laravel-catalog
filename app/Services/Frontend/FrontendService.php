@@ -40,6 +40,7 @@ class FrontendService
             'arr' => $arr,
             'number' => $number,
             'links' => $this->links->latestPublished(5),
+            'topLinks' => $this->links->topViewedPublished(5),
             'rank' => 1,
         ];
     }
@@ -100,6 +101,7 @@ class FrontendService
             'description' => $description,
             'keywords' => $keywords,
             'links' => $links,
+            'topLinks' => $this->links->topViewedPublished(5),
             'arr' => $arr,
             'number' => $number,
             'paginator' => $paginator,

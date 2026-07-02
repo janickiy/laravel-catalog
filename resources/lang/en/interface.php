@@ -253,6 +253,8 @@ return [
         'catalog_intro' => 'Choose a section and find relevant sites in a structured catalog.',
         'sites' => 'Sites',
         'recent_sites' => 'Recently added sites',
+        'top_sites' => 'Top sites',
+        'top_sites_eyebrow' => 'Popular',
         'more' => 'More',
         'no_site_image' => 'No site image',
         'footer_rules' => 'Catalog rules',

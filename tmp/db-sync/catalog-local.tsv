@@ -1,0 +1,73 @@
+id	parent_id	name	description	keywords	image
+1	NULL	Technology	Technology websites and online resources collected for a link directory demo.	technology, links, directory, catalog	test-technology.svg
+2	1	Software Development	Software Development resources, companies and useful websites grouped under Technology.	software, development, technology, links	NULL
+3	1	Web Hosting	Web Hosting resources, companies and useful websites grouped under Technology.	web, hosting, technology, links	NULL
+4	1	Cybersecurity	Cybersecurity resources, companies and useful websites grouped under Technology.	cybersecurity, technology, links	NULL
+5	1	AI & Data	AI & Data resources, companies and useful websites grouped under Technology.	ai,, data, technology, links	NULL
+6	1	Hardware & Gadgets	Hardware & Gadgets resources, companies and useful websites grouped under Technology.	hardware,, gadgets, technology, links	NULL
+7	NULL	Business & Finance	Business & Finance websites and online resources collected for a link directory demo.	business,, finance, links, directory, catalog	test-business-and-finance.svg
+8	7	Banks & Credit	Banks & Credit resources, companies and useful websites grouped under Business & Finance.	banks,, credit, business & finance, links	NULL
+9	7	Accounting	Accounting resources, companies and useful websites grouped under Business & Finance.	accounting, business & finance, links	NULL
+10	7	Insurance	Insurance resources, companies and useful websites grouped under Business & Finance.	insurance, business & finance, links	NULL
+11	7	Real Estate	Real Estate resources, companies and useful websites grouped under Business & Finance.	real, estate, business & finance, links	NULL
+12	7	Investments	Investments resources, companies and useful websites grouped under Business & Finance.	investments, business & finance, links	NULL
+13	NULL	Shopping	Shopping websites and online resources collected for a link directory demo.	shopping, links, directory, catalog	test-shopping.svg
+14	13	Fashion Stores	Fashion Stores resources, companies and useful websites grouped under Shopping.	fashion, stores, shopping, links	NULL
+15	13	Electronics Stores	Electronics Stores resources, companies and useful websites grouped under Shopping.	electronics, stores, shopping, links	NULL
+16	13	Marketplaces	Marketplaces resources, companies and useful websites grouped under Shopping.	marketplaces, shopping, links	NULL
+17	13	Office Supplies	Office Supplies resources, companies and useful websites grouped under Shopping.	office, supplies, shopping, links	NULL
+18	13	Gifts & Flowers	Gifts & Flowers resources, companies and useful websites grouped under Shopping.	gifts,, flowers, shopping, links	NULL
+19	NULL	Health & Medicine	Health & Medicine websites and online resources collected for a link directory demo.	health,, medicine, links, directory, catalog	test-health-and-medicine.svg
+20	19	Clinics	Clinics resources, companies and useful websites grouped under Health & Medicine.	clinics, health & medicine, links	NULL
+21	19	Pharmacy	Pharmacy resources, companies and useful websites grouped under Health & Medicine.	pharmacy, health & medicine, links	NULL
+22	19	Dentistry	Dentistry resources, companies and useful websites grouped under Health & Medicine.	dentistry, health & medicine, links	NULL
+23	19	Mental Health	Mental Health resources, companies and useful websites grouped under Health & Medicine.	mental, health, health & medicine, links	NULL
+24	19	Telemedicine	Telemedicine resources, companies and useful websites grouped under Health & Medicine.	telemedicine, health & medicine, links	NULL
+25	NULL	Education	Education websites and online resources collected for a link directory demo.	education, links, directory, catalog	test-education.svg
+26	25	Universities	Universities resources, companies and useful websites grouped under Education.	universities, education, links	NULL
+27	25	Online Courses	Online Courses resources, companies and useful websites grouped under Education.	online, courses, education, links	NULL
+28	25	Language Schools	Language Schools resources, companies and useful websites grouped under Education.	language, schools, education, links	NULL
+29	25	Tutoring	Tutoring resources, companies and useful websites grouped under Education.	tutoring, education, links	NULL
+30	25	Science Resources	Science Resources resources, companies and useful websites grouped under Education.	science, resources, education, links	NULL
+31	NULL	Travel & Transport	Travel & Transport websites and online resources collected for a link directory demo.	travel,, transport, links, directory, catalog	test-travel-and-transport.svg
+32	31	Hotels	Hotels resources, companies and useful websites grouped under Travel & Transport.	hotels, travel & transport, links	NULL
+33	31	Airlines	Airlines resources, companies and useful websites grouped under Travel & Transport.	airlines, travel & transport, links	NULL
+34	31	Car Rental	Car Rental resources, companies and useful websites grouped under Travel & Transport.	car, rental, travel & transport, links	NULL
+35	31	Logistics	Logistics resources, companies and useful websites grouped under Travel & Transport.	logistics, travel & transport, links	NULL
+36	31	Travel Guides	Travel Guides resources, companies and useful websites grouped under Travel & Transport.	travel, guides, travel & transport, links	NULL
+37	NULL	Food & Dining	Food & Dining websites and online resources collected for a link directory demo.	food,, dining, links, directory, catalog	test-food-and-dining.svg
+38	37	Restaurants	Restaurants resources, companies and useful websites grouped under Food & Dining.	restaurants, food & dining, links	NULL
+39	37	Coffee Shops	Coffee Shops resources, companies and useful websites grouped under Food & Dining.	coffee, shops, food & dining, links	NULL
+40	37	Grocery Delivery	Grocery Delivery resources, companies and useful websites grouped under Food & Dining.	grocery, delivery, food & dining, links	NULL
+41	37	Recipes	Recipes resources, companies and useful websites grouped under Food & Dining.	recipes, food & dining, links	NULL
+42	37	Catering	Catering resources, companies and useful websites grouped under Food & Dining.	catering, food & dining, links	NULL
+43	NULL	Home & Garden	Home & Garden websites and online resources collected for a link directory demo.	home,, garden, links, directory, catalog	test-home-and-garden.svg
+44	43	Furniture	Furniture resources, companies and useful websites grouped under Home & Garden.	furniture, home & garden, links	NULL
+45	43	Interior Design	Interior Design resources, companies and useful websites grouped under Home & Garden.	interior, design, home & garden, links	NULL
+46	43	Home Repair	Home Repair resources, companies and useful websites grouped under Home & Garden.	home, repair, home & garden, links	NULL
+47	43	Gardening	Gardening resources, companies and useful websites grouped under Home & Garden.	gardening, home & garden, links	NULL
+48	43	Smart Home	Smart Home resources, companies and useful websites grouped under Home & Garden.	smart, home, home & garden, links	NULL
+49	NULL	Entertainment & Arts	Entertainment & Arts websites and online resources collected for a link directory demo.	entertainment,, arts, links, directory, catalog	test-entertainment-and-arts.svg
+50	49	Movies	Movies resources, companies and useful websites grouped under Entertainment & Arts.	movies, entertainment & arts, links	NULL
+51	49	Music	Music resources, companies and useful websites grouped under Entertainment & Arts.	music, entertainment & arts, links	NULL
+52	49	Games	Games resources, companies and useful websites grouped under Entertainment & Arts.	games, entertainment & arts, links	NULL
+53	49	Museums	Museums resources, companies and useful websites grouped under Entertainment & Arts.	museums, entertainment & arts, links	NULL
+54	49	Events	Events resources, companies and useful websites grouped under Entertainment & Arts.	events, entertainment & arts, links	NULL
+55	NULL	News & Media	News & Media websites and online resources collected for a link directory demo.	news,, media, links, directory, catalog	test-news-and-media.svg
+56	55	Newspapers	Newspapers resources, companies and useful websites grouped under News & Media.	newspapers, news & media, links	NULL
+57	55	Magazines	Magazines resources, companies and useful websites grouped under News & Media.	magazines, news & media, links	NULL
+58	55	Podcasts	Podcasts resources, companies and useful websites grouped under News & Media.	podcasts, news & media, links	NULL
+59	55	TV & Video	TV & Video resources, companies and useful websites grouped under News & Media.	tv,, video, news & media, links	NULL
+60	55	Blogs	Blogs resources, companies and useful websites grouped under News & Media.	blogs, news & media, links	NULL
+61	NULL	Professional Services	Professional Services websites and online resources collected for a link directory demo.	professional, services, links, directory, catalog	test-professional-services.svg
+62	61	Legal Services	Legal Services resources, companies and useful websites grouped under Professional Services.	legal, services, professional services, links	NULL
+63	61	Consulting	Consulting resources, companies and useful websites grouped under Professional Services.	consulting, professional services, links	NULL
+64	61	Marketing	Marketing resources, companies and useful websites grouped under Professional Services.	marketing, professional services, links	NULL
+65	61	HR & Recruiting	HR & Recruiting resources, companies and useful websites grouped under Professional Services.	hr,, recruiting, professional services, links	NULL
+66	61	Printing	Printing resources, companies and useful websites grouped under Professional Services.	printing, professional services, links	NULL
+67	NULL	Sports & Fitness	Sports & Fitness websites and online resources collected for a link directory demo.	sports,, fitness, links, directory, catalog	test-sports-and-fitness.svg
+68	67	Gyms	Gyms resources, companies and useful websites grouped under Sports & Fitness.	gyms, sports & fitness, links	NULL
+69	67	Sports Clubs	Sports Clubs resources, companies and useful websites grouped under Sports & Fitness.	sports, clubs, sports & fitness, links	NULL
+70	67	Outdoor Gear	Outdoor Gear resources, companies and useful websites grouped under Sports & Fitness.	outdoor, gear, sports & fitness, links	NULL
+71	67	Coaching	Coaching resources, companies and useful websites grouped under Sports & Fitness.	coaching, sports & fitness, links	NULL
+72	67	Wellness	Wellness resources, companies and useful websites grouped under Sports & Fitness.	wellness, sports & fitness, links	NULL

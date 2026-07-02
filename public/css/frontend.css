@@ -203,7 +203,8 @@ textarea:focus {
 .content-card,
 .link-card,
 .category-card,
-.ad-card {
+.ad-card,
+.top-sites-card {
     background: var(--mlm-surface);
     border: 1px solid var(--mlm-border);
     border-radius: var(--mlm-radius);
@@ -452,6 +453,88 @@ textarea:focus {
     max-width: 100%;
 }
 
+.top-sites-card {
+    min-height: 460px;
+    padding: 1.15rem;
+}
+
+.top-sites-card__header {
+    border-bottom: 1px solid var(--mlm-border);
+    margin-bottom: .9rem;
+    padding-bottom: .85rem;
+}
+
+.top-sites-card__header h2 {
+    color: var(--mlm-ink);
+    font-size: 22px;
+    font-weight: 750;
+    line-height: 1.2;
+    margin: .15rem 0 0;
+}
+
+.top-sites-list {
+    counter-reset: top-sites;
+    display: grid;
+    gap: .7rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.top-sites-list__item {
+    align-items: flex-start;
+    border: 1px solid rgba(219, 228, 238, .85);
+    border-radius: calc(var(--mlm-radius) - 2px);
+    display: grid;
+    gap: .45rem;
+    padding: .75rem .85rem .75rem 2.75rem;
+    position: relative;
+}
+
+.top-sites-list__item::before {
+    align-items: center;
+    background: linear-gradient(135deg, var(--mlm-blue), var(--mlm-cyan));
+    border-radius: .75rem;
+    color: #fff;
+    content: counter(top-sites);
+    counter-increment: top-sites;
+    display: inline-flex;
+    font-size: 13px;
+    font-weight: 800;
+    height: 1.65rem;
+    justify-content: center;
+    left: .75rem;
+    position: absolute;
+    top: .75rem;
+    width: 1.65rem;
+}
+
+.top-sites-list__link {
+    color: var(--mlm-ink);
+    font-size: 15px;
+    font-weight: 750;
+    line-height: 1.25;
+}
+
+.top-sites-list__link:hover,
+.top-sites-list__link:focus {
+    color: var(--mlm-blue);
+}
+
+.top-sites-list__views {
+    align-items: center;
+    color: var(--mlm-muted);
+    display: inline-flex;
+    font-size: 13px;
+    font-weight: 700;
+    gap: .3rem;
+}
+
+.top-sites-card__empty {
+    color: var(--mlm-muted);
+    margin: 0;
+}
+
 .form-card {
     margin-left: auto;
     margin-right: auto;
@@ -633,6 +716,10 @@ textarea.form-control {
         display: grid;
         gap: 1rem;
         grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    .top-sites-card {
+        min-height: auto;
     }
 }
 

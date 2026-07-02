@@ -125,6 +125,22 @@ class LinksRepository extends BaseRepository
     }
 
     /**
+     * Returns the most viewed published links.
+     *
+     * @param int $limit
+     * @return Collection
+     */
+    public function topViewedPublished(int $limit): Collection
+    {
+        return $this->model->query()
+            ->where('status', LinkStatus::Published->value)
+            ->orderByDesc('views')
+            ->orderByDesc('id')
+            ->take($limit)
+            ->get();
+    }
+
+    /**
      * Returns published links for export.
      *
      * @param int|null $catalogId

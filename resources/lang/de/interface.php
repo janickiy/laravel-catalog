@@ -253,6 +253,8 @@ return [
         'catalog_intro' => 'Wählen Sie einen Abschnitt und finden Sie relevante Websites in einem strukturierten Katalog.',
         'sites' => 'Websites',
         'recent_sites' => 'Kürzlich hinzugefügte Websites',
+        'top_sites' => 'Top-Websites',
+        'top_sites_eyebrow' => 'Beliebt',
         'more' => 'Mehr',
         'no_site_image' => 'Kein Website-Bild',
         'footer_rules' => 'Katalogregeln',
