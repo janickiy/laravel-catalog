@@ -88,18 +88,7 @@
         </div>
 
         <aside class="content-sidebar">
-            <div class="ad-card">
-                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-2243538192217050"
-                     data-ad-slot="6522655839"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
-            </div>
+            @include('frontend.partials.top-sites-card', ['topLinks' => $topLinks ?? collect()])
         </aside>
     </div>
 @endsection

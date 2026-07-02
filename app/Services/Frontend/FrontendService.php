@@ -131,6 +131,7 @@ class FrontendService
         return [
             'link' => $link,
             'similar_links' => $similarLinks,
+            'topLinks' => $this->links->topViewedPublished(5),
             'title' => $link->name,
         ];
     }
