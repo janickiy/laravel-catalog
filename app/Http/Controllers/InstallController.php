@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Frontend\InstallAdminRequest;
 use App\Http\Requests\Frontend\InstallRequest;
 use App\Models\Admin;
+use Illuminate\Encryption\Encrypter;
 use Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -132,7 +133,11 @@ class InstallController extends Controller
             }
 
             $installLocale = $this->getInstallLocale();
+            $key = Config::get('app.key') ?: 'base64:'.base64_encode(
+                Encrypter::generateKey(Config::get('app.cipher', 'AES-256-CBC'))
+            );
             $env = $this->environmentTemplate();
+            $env = $this->setEnvValue($env, 'APP_KEY', $key);
             $env = $this->setEnvValue($env, 'APP_URL', url('/'));
             $env = $this->setEnvValue($env, 'APP_LOCALE', $installLocale);
             $env = $this->setEnvValue($env, 'APP_FALLBACK_LOCALE', Config::get('app.fallback_locale', 'en'));
@@ -149,6 +154,7 @@ class InstallController extends Controller
             $this->setDatabaseCredentials($db);
 
             config([
+                'app.key' => $key,
                 'app.installed' => true,
                 'app.locale' => $installLocale,
                 'app.installed_locale' => $installLocale,
@@ -156,7 +162,6 @@ class InstallController extends Controller
             app()->setLocale($installLocale);
 
             Artisan::call('config:clear');
-            Artisan::call('key:generate', ['--force' => true]);
             Artisan::call('migrate', ['--force' => true]);
             Artisan::call('db:seed', [
                 '--class' => 'Database\\Seeders\\CatalogSeeder',
@@ -355,7 +360,7 @@ class InstallController extends Controller
     }
 
     /**
-     * Load the environment template from .env or the current .env.
+     * Load the current environment or the example template for a fresh installation.
      */
     private function environmentTemplate(): string
     {
@@ -363,8 +368,8 @@ class InstallController extends Controller
             return (string) file_get_contents(base_path('.env'));
         }
 
-        return file_exists(base_path('.env'))
-            ? (string) file_get_contents(base_path('.env'))
+        return file_exists(base_path('.env.example'))
+            ? (string) file_get_contents(base_path('.env.example'))
             : '';
     }
 

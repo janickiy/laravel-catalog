@@ -21,9 +21,9 @@ class PrepareInstallation
             return $next($request);
         }
 
-        if ($request->is('install*')) {
-            $this->ensureApplicationKey();
+        $this->ensureApplicationKey();
 
+        if ($request->is('install*')) {
             return $next($request);
         }
 
