@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Services\Admin\UpdateService;
+use App\Services\Admin\UpdateStatusService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -24,6 +25,15 @@ class UpdateController extends Controller
             'update' => $this->updates->check(app()->getLocale()),
             'steps' => $this->updates->steps(),
         ]);
+    }
+
+    /**
+     * Returns cached update availability without delaying control-panel pages.
+     */
+    public function status(UpdateStatusService $status): JsonResponse
+    {
+        return response()->json($status->status(app()->getLocale()))
+            ->header('Cache-Control', 'private, no-store');
     }
 
     /**

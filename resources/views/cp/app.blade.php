@@ -56,6 +56,32 @@
             gap: .55rem;
         }
 
+        .sidebar-menu .update-menu-label {
+            align-items: center;
+            display: inline-flex;
+            gap: .55rem;
+        }
+
+        .update-available-badge {
+            align-items: center;
+            background: #ffc107;
+            border: 1px solid #ffda6a;
+            border-radius: 50%;
+            color: #302400;
+            display: inline-flex;
+            flex: 0 0 1.25rem;
+            font-size: .875rem;
+            font-weight: 800;
+            height: 1.25rem;
+            justify-content: center;
+            line-height: 1;
+            width: 1.25rem;
+        }
+
+        .update-available-badge[hidden] {
+            display: none !important;
+        }
+
         .admin-user-label {
             align-items: center;
             color: var(--bs-secondary-color);
@@ -153,6 +179,9 @@
     @yield('css')
 
     @php
+        $updateStatusKnown = isset($update) && is_array($update);
+        $updateBadgeVersion = $updateStatusKnown ? (string) ($update['upgrade_version'] ?? $update['latest_version'] ?? '') : '';
+        $updateBadgeAvailable = $updateStatusKnown && ($update['success'] ?? false) === true && ($update['available'] ?? false) === true && preg_match('/^\d+\.\d+\.\d+$/', $updateBadgeVersion) === 1;
         $adminI18n = [
             'datatable' => trans('interface.datatable'),
             'datatableLegacy' => trans('interface.datatable_legacy'),
@@ -277,7 +306,15 @@
                     <li class="nav-item">
                         <a href="{{ URL::route('cp.update.index') }}" class="nav-link {{ request()->is('cp/update*') ? 'active' : '' }}">
                             <i class="nav-icon bi bi-cloud-arrow-down"></i>
-                            <p>{{ __('interface.admin.updates.title') }}</p>
+                            <p class="update-menu-label">{{ __('interface.admin.updates.title') }}
+                                <span class="update-available-badge" data-update-status
+                                      data-status-known="{{ $updateStatusKnown ? 'true' : 'false' }}"
+                                      @if(!$updateStatusKnown) data-status-url="{{ route('cp.update.status') }}" @endif
+                                      data-title-template="{{ __('update_status.available', ['version' => '{version}']) }}"
+                                      title="{{ __('update_status.available', ['version' => $updateBadgeVersion]) }}"
+                                      aria-label="{{ __('update_status.available', ['version' => $updateBadgeVersion]) }}"
+                                      role="img" @if(!$updateBadgeAvailable) hidden @endif>!</span>
+                            </p>
                         </a>
                     </li>
                 </ul>
@@ -313,10 +350,10 @@
     </main>
 
     <footer class="app-footer">
-        <strong>
+        <span>
             © {{ date('Y') }} My Links Manager. v{{ config('app.version') }}.
             <a href="https://janickiy.com" target="_blank" rel="noopener noreferrer">Alexander Yanitsky</a>
-        </strong>
+        </span>
     </footer>
 </div>
 
@@ -365,6 +402,7 @@
     };
 </script>
 
+<script src="{{ asset('js/update-status.js') }}?v={{ filemtime(public_path('js/update-status.js')) }}" defer></script>
 @yield('js')
 
 </body>

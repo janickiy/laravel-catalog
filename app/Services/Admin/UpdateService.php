@@ -5,13 +5,24 @@ namespace App\Services\Admin;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Http\Client\RequestException;
 use RuntimeException;
 use Throwable;
-use ZipArchive;
 
 class UpdateService
 {
     private const DEFAULT_VERSION = '4.0.1';
+
+    // Release 4.1.0 contains the broken extractor. Keep this repair when that
+    // exact file is encountered; future versions of the updater can still install.
+    private const PRESERVED_LEGACY_FILES = [
+        'app/Services/Admin/UpdateService.php' => 'b128f811af526f3d291984b144742280ddb79eb714e349ded88f8e79fc40168c',
+        'app/Http/Controllers/Admin/UpdateController.php' => '82dcbe0212f313092599b659c691e4e9a44a069eeb5bfc3fd1e31a8328635a85',
+        'routes/cp.php' => '71cbd1e57230131fec8c67205fbebf55e700cfa208c042378240e61b27f3a8fa',
+        'resources/views/cp/app.blade.php' => 'f6baac98dff13b00f75190b400b57fef4de21ae4ba21ad1a6ed1e96bc6327fdb',
+        'config/update.php' => 'e9b759a42d99a4c5394c7a90fdcd48b4fc233579b1aafa8e9f0e3b86c74d0271',
+    ];
 
     /**
      * Returns the update step list for the step-by-step AJAX process.
@@ -65,9 +76,16 @@ class UpdateService
     {
         $currentVersion = $this->currentVersion();
         $sourceUrl = $this->infoUrl($locale, $currentVersion);
+        $statistics = (new UpdateRequestStatistics())->fromRequest(request());
+        $requestUrl = $sourceUrl.($statistics['query'] ? '&'.http_build_query($statistics['query']) : '');
 
         try {
-            $response = Http::timeout(15)->acceptJson()->get($sourceUrl);
+            $response = Http::connectTimeout(5)->timeout(15)
+                ->retry(2, 250, fn (Throwable $exception) => $exception instanceof ConnectionException
+                    || ($exception instanceof RequestException && ($exception->response->serverError()
+                        || in_array($exception->response->status(), [408, 429], true))), throw: false)
+                ->withHeaders($statistics['headers'])
+                ->acceptJson()->get($requestUrl);
 
             if (! $response->successful()) {
                 throw new RuntimeException('HTTP '.$response->status());
@@ -190,13 +208,7 @@ class UpdateService
         File::ensureDirectoryExists($this->updateDirectory());
 
         $target = $this->archivePath($fileName);
-        $response = Http::timeout(180)->sink($target)->get($updateUrl.'/'.$fileName);
-
-        if (! $response->successful()) {
-            File::delete($target);
-
-            throw new RuntimeException(__('interface.admin.updates.download_missing'));
-        }
+        app(UpdateArchiveDownloader::class)->download($updateUrl.'/'.$fileName, $target);
 
         return __('interface.admin.updates.download_completed', ['file' => $fileName]);
     }
@@ -216,22 +228,7 @@ class UpdateService
             throw new RuntimeException(__('interface.admin.updates.write_error'));
         }
 
-        $zip = new ZipArchive();
-        $result = $zip->open($archive);
-
-        if ($result !== true) {
-            throw new RuntimeException(__('interface.admin.updates.archive_error', ['file' => $fileName]));
-        }
-
-        try {
-            if ($this->archiveHasUnsafeEntries($zip)) {
-                throw new RuntimeException(__('interface.admin.updates.unsafe_archive', ['file' => $fileName]));
-            }
-
-            $zip->extractTo(base_path());
-        } finally {
-            $zip->close();
-        }
+        (new UpdateArchiveExtractor())->extract($archive, base_path(), self::PRESERVED_LEGACY_FILES);
 
         return __('interface.admin.updates.extract_completed', ['file' => $fileName]);
     }
@@ -255,33 +252,13 @@ class UpdateService
      */
     private function clearCache(string $version): string
     {
+        $exitCode = Artisan::call('optimize:clear');
+        if ($exitCode !== 0) {
+            throw new RuntimeException(trim(Artisan::output()) ?: 'Cannot clear application caches.');
+        }
         $this->setEnvironmentValue('VERSION', $version);
-        Artisan::call('optimize:clear');
 
         return __('interface.admin.updates.completed', ['version' => $version]);
-    }
-
-    /**
-     * Checks that the archive has no absolute paths or upward traversal.
-     */
-    private function archiveHasUnsafeEntries(ZipArchive $zip): bool
-    {
-        for ($index = 0; $index < $zip->numFiles; $index++) {
-            $name = str_replace('\\', '/', (string) $zip->getNameIndex($index));
-
-            if (
-                $name === ''
-                || str_contains($name, "\0")
-                || str_starts_with($name, '/')
-                || str_starts_with($name, '../')
-                || str_contains($name, '/../')
-                || preg_match('/^[A-Za-z]:\\//', $name) === 1
-            ) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**
@@ -343,6 +320,10 @@ class UpdateService
         if ($url === '') {
             return '';
         }
+
+        // The official manifest still advertises HTTP, which redirects to HTTPS.
+        // Start with TLS directly and never fall back to an insecure connection.
+        $url = (string) preg_replace('~^http://download\.janickiy\.com(?::80)?(?=/|$)~i', 'https://download.janickiy.com', $url);
 
         $path = (string) parse_url($url, PHP_URL_PATH);
 

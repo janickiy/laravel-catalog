@@ -86,6 +86,7 @@ Route::group(['prefix' => 'cp'], function () {
 
     Route::group(['prefix' => 'update'], function () {
         Route::get('', [UpdateController::class, 'index'])->name('cp.update.index');
+        Route::get('status', [UpdateController::class, 'status'])->name('cp.update.status');
         Route::post('run', [UpdateController::class, 'run'])->name('cp.update.run');
     });
 
