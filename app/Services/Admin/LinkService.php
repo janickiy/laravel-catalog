@@ -7,12 +7,15 @@ use App\Enums\LinkStatus;
 use App\Helpers\FileHelper;
 use App\Repositories\CatalogRepository;
 use App\Repositories\LinksRepository;
+use App\Services\Links\LinkScreenshotService;
+use Illuminate\Http\UploadedFile;
 
 class LinkService
 {
     public function __construct(
         private readonly LinksRepository $links,
         private readonly CatalogRepository $catalogs,
+        private readonly LinkScreenshotService $screenshots,
     ) {}
 
     /**
@@ -38,20 +41,50 @@ class LinkService
      * @param LinkData $data
      * @return void
      */
-    public function create(LinkData $data): void
+    public function create(LinkData $data, ?UploadedFile $screenshot = null): void
     {
-        $this->links->createFromData($data->withImage($this->screenshotName($data->url())));
+        $image = $screenshot ? $this->screenshots->store($screenshot) : $this->screenshotName($data->url());
+        try {
+            $this->links->createFromData($data->withImage($image));
+        } catch (\Throwable $exception) {
+            if ($screenshot) {
+                $this->screenshots->delete($image);
+            }
+            throw $exception;
+        }
     }
 
     /**
-     * Updates a link and regenerates the screenshot from the URL.
+     * Updates a link, preserving its screenshot unless explicitly replaced or removed.
      *
      * @param LinkData $data
      * @return bool
      */
-    public function update(LinkData $data): bool
+    public function update(LinkData $data, ?UploadedFile $screenshot = null, bool $remove = false): bool
     {
-        return $this->links->updateFromData($data->withImage($this->screenshotName($data->url())));
+        $link = $this->links->findAny($data->id());
+        if (! $link) {
+            return false;
+        }
+
+        $previousImage = $link->image;
+        $image = $screenshot ? $this->screenshots->store($screenshot) : ($remove ? '' : $previousImage);
+        try {
+            $saved = $this->links->updateFromData($data->withImage($image));
+        } catch (\Throwable $exception) {
+            if ($screenshot) {
+                $this->screenshots->delete($image);
+            }
+            throw $exception;
+        }
+
+        if ($saved && $image !== $previousImage) {
+            $this->screenshots->delete($previousImage);
+        } elseif (! $saved && $screenshot) {
+            $this->screenshots->delete($image);
+        }
+
+        return $saved;
     }
 
     /**
@@ -62,7 +95,13 @@ class LinkService
      */
     public function delete(int $id): bool
     {
-        return $this->links->delete($id);
+        $link = $this->links->findAny($id);
+        $deleted = $this->links->delete($id);
+        if ($deleted && $link) {
+            $this->screenshots->delete($link->image);
+        }
+
+        return $deleted;
     }
 
     /**

@@ -12,10 +12,13 @@ use App\Helpers\SettingsHelpers;
 use App\Helpers\StringHelper;
 use App\Models\Catalog;
 use App\Models\Links;
+use App\Models\LinkCustomField;
+use App\Services\Links\LinkScreenshotService;
 use App\Repositories\CatalogRepository;
 use App\Repositories\FeedbackRepository;
 use App\Repositories\LinksRepository;
 use Illuminate\Support\Collection;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\URL;
 
 class FrontendService
@@ -24,6 +27,7 @@ class FrontendService
         private readonly CatalogRepository $catalogs,
         private readonly LinksRepository $links,
         private readonly FeedbackRepository $feedback,
+        private readonly LinkScreenshotService $screenshots,
     ) {}
 
     /**
@@ -130,6 +134,7 @@ class FrontendService
 
         return [
             'link' => $link,
+            'publicCustomFields' => LinkCustomField::where('is_active', true)->where('is_public', true)->ordered()->get(),
             'similar_links' => $similarLinks,
             'topLinks' => $this->links->topViewedPublished(5),
             'title' => $link->name,
@@ -150,13 +155,23 @@ class FrontendService
      * @param LinkSubmissionData $data
      * @return string
      */
-    public function submitLink(LinkSubmissionData $data): string
+    public function submitLink(LinkSubmissionData $data, ?UploadedFile $screenshot = null): string
     {
-        $result = FileHelper::getScreenShotMini($data->url(), '1024x768', '1024', 'jpg');
         $status = (int) SettingsHelpers::getSetting('ADD_LINKS_WITHOUT_CHECK') === 1
             ? LinkStatus::Published
             : LinkStatus::Pending;
-        $link = $this->links->createFromData($data->toLinkData($status->value, $result['name'] ?? ''));
+        $image = $screenshot
+            ? $this->screenshots->store($screenshot)
+            : (FileHelper::getScreenShotMini($data->url(), '1024x768', '1024', 'jpg')['name'] ?? '');
+
+        try {
+            $link = $this->links->createFromData($data->toLinkData($status->value, $image));
+        } catch (\Throwable $exception) {
+            if ($screenshot) {
+                $this->screenshots->delete($image);
+            }
+            throw $exception;
+        }
 
         if ($link instanceof Links) {
             event(new NewlinkNotifyEvent($link));

@@ -7,6 +7,7 @@ use App\DTO\Frontend\LinkSubmissionData;
 use App\Http\Requests\Frontend\StoreFeedbackRequest;
 use App\Http\Requests\Frontend\StoreLinkRequest;
 use App\Services\Frontend\FrontendService;
+use App\Services\Links\CustomFieldService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
@@ -46,6 +47,7 @@ class FrontendController extends Controller
     {
         return view('frontend.addurl', [
             'options' => $this->frontend->catalogOptions(),
+            'customFields' => app(CustomFieldService::class)->fields(),
             'title' => __('interface.frontend.add_site_title'),
         ]);
     }
@@ -55,7 +57,9 @@ class FrontendController extends Controller
      */
     public function add(StoreLinkRequest $request): RedirectResponse
     {
-        $message = $this->frontend->submitLink(LinkSubmissionData::fromArray($request->validated()));
+        $data = $request->validated();
+        $data['custom_fields'] = app(CustomFieldService::class)->normalize($data['custom_fields'] ?? []);
+        $message = $this->frontend->submitLink(LinkSubmissionData::fromArray($data), $request->file('screenshot'));
 
         return redirect()->route('addurl')->with('success', $message);
     }

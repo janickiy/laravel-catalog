@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\{
     AdminController,
     DataTableController,
     CatalogController,
+    LinkCustomFieldController,
     LinksController,
     FeedbackController,
     SettingsController,
@@ -49,6 +50,15 @@ Route::group(['prefix' => 'cp'], function () {
         Route::get('edit/{id}',[CatalogController::class, 'edit'])->name('cp.catalog.edit')->where('id', '[0-9]+');
         Route::put('update',[CatalogController::class, 'update'])->name('cp.catalog.update');
         Route::get('delete/{id}',[CatalogController::class, 'delete'])->name('cp.catalog.delete')->where('id', '[0-9]+');
+    });
+
+    Route::prefix('custom-fields')->name('cp.custom-fields.')->group(function () {
+        Route::get('', [LinkCustomFieldController::class, 'index'])->name('index');
+        Route::get('create', [LinkCustomFieldController::class, 'create'])->name('create');
+        Route::post('', [LinkCustomFieldController::class, 'store'])->name('store');
+        Route::get('{customField}/edit', [LinkCustomFieldController::class, 'edit'])->name('edit')->whereNumber('customField');
+        Route::put('{customField}', [LinkCustomFieldController::class, 'update'])->name('update')->whereNumber('customField');
+        Route::delete('{customField}', [LinkCustomFieldController::class, 'destroy'])->name('destroy')->whereNumber('customField');
     });
 
     Route::group(['prefix' => 'feedback'], function () {

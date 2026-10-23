@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Admin;
 
-use App\Models\Catalog;
 use App\Models\Links;
 use App\Rules\DomainOrUrl;
 use Illuminate\Validation\Rule;
@@ -14,21 +13,9 @@ class UpdateLinkRequest extends StoreLinkRequest
      */
     public function rules(): array
     {
-        return [
+        return array_replace(parent::rules(), [
             'id' => 'required|integer|exists:'.Links::getTableName().',id',
-            'name' => 'required',
-            'url' => ['required', new DomainOrUrl(__('interface.validation.url')), 'unique:'.Links::getTableName().',url,'.$this->input('id')],
-            'city' => 'nullable|string',
-            'phone' => 'nullable|string',
-            'email' => 'nullable|email',
-            'description' => 'required',
-            'keywords' => 'nullable|string',
-            'full_description' => 'required',
-            'catalog_id' => [
-                'required',
-                'integer',
-                Rule::when((int) $this->input('catalog_id') > 0, ['exists:'.Catalog::getTableName().',id']),
-            ],
-        ];
+            'url' => ['required', new DomainOrUrl(__('interface.validation.url')), Rule::unique(Links::getTableName(), 'url')->ignore((int) $this->input('id'))],
+        ]);
     }
 }

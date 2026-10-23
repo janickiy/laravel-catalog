@@ -4,12 +4,16 @@ namespace App\Http\Requests\Frontend;
 
 use App\Models\Catalog;
 use App\Models\Links;
+use App\Http\Requests\Concerns\ValidatesLinkExtras;
+use App\Services\Links\CustomFieldService;
 use App\Rules\DomainOrUrl;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 class StoreLinkRequest extends FormRequest
 {
+    use ValidatesLinkExtras;
+
     /**
      * Authorizes website submissions from visitors.
      */
@@ -39,7 +43,12 @@ class StoreLinkRequest extends FormRequest
             ],
             'captcha' => 'required|captcha',
             'agree' => 'required',
-        ];
+        ] + $this->extrasRules();
+    }
+
+    public function attributes(): array
+    {
+        return app(CustomFieldService::class)->attributes();
     }
 
     /**
@@ -61,6 +70,6 @@ class StoreLinkRequest extends FormRequest
             'catalog_id.required' => __('interface.validation.catalog_required'),
             'captcha.required' => __('interface.validation.captcha_required'),
             'agree.required' => __('interface.validation.agree_required'),
-        ];
+        ] + $this->extrasMessages();
     }
 }

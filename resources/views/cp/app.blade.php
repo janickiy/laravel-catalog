@@ -245,6 +245,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="{{ route('cp.custom-fields.index') }}" class="nav-link {{ request()->routeIs('cp.custom-fields.*') ? 'active' : '' }}">
+                            <i class="nav-icon bi bi-ui-checks" aria-hidden="true"></i>
+                            <p>{{ __('custom_fields.title') }}</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ URL::route('cp.catalog.index') }}" class="nav-link {{ request()->is('cp/catalog*') ? 'active' : '' }}">
                             <i class="nav-icon bi bi-list-ul"></i>
                             <p>{{ __('interface.admin.catalog.title') }}</p>

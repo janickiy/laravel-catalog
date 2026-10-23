@@ -14,6 +14,18 @@
             height: 3rem;
             width: 3rem;
         }
+        .screenshot-upload--admin [hidden] { display: none !important; }
+        .screenshot-upload--admin .screenshot-upload__zone { display: flex; align-items: flex-start; gap: 1rem; padding: 1rem; border: 1px dashed var(--bs-border-color); border-radius: .5rem; background: var(--bs-tertiary-bg); }
+        .screenshot-upload--admin .screenshot-upload__symbol { color: var(--bs-primary); padding-top: .25rem; }
+        .screenshot-upload--admin .screenshot-upload__controls { min-width: 0; flex: 1; }
+        .screenshot-upload--admin .screenshot-upload__intro { margin: 0 0 .6rem; }
+        .screenshot-upload--admin .screenshot-upload__hint { font-size: .8125rem; margin: .5rem 0 0; color: var(--bs-secondary-color); }
+        .screenshot-upload--admin .screenshot-upload__preview, .screenshot-upload--admin .screenshot-upload__current { margin: 1rem 0; }
+        .screenshot-upload--admin figure img { max-width: 100%; max-height: 240px; border: 1px solid var(--bs-border-color); border-radius: .5rem; object-fit: contain; }
+        .screenshot-upload--admin figcaption { margin-top: .4rem; font-size: .8125rem; color: var(--bs-secondary-color); }
+        .screenshot-upload--admin .screenshot-upload__selection { display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; margin-top: .75rem; }
+        .screenshot-upload--admin [data-screenshot-filename] { overflow-wrap: anywhere; min-width: 0; font-size: .875rem; }
+        @media (max-width: 575px) { .screenshot-upload--admin .screenshot-upload__symbol { display: none; } }
     </style>
 @endsection
 
@@ -21,6 +33,7 @@
     {!! Form::open([
         'url' => isset($row) ? URL::route('cp.links.update') : URL::route('cp.links.store'),
         'method' => isset($row) ? 'put' : 'post',
+        'files' => true,
     ]) !!}
 
         {!! isset($row) ? Form::hidden('id', $row->id) : '' !!}
@@ -161,6 +174,14 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="link-form-section">
+                            @include('shared.link-screenshot-upload', ['admin' => true, 'currentImage' => $row->image ?? null])
+                        </div>
+                        @if(collect($customFields ?? [])->isNotEmpty())
+                            <div class="link-form-section">
+                                @include('shared.link-custom-fields', ['admin' => true, 'values' => $row->custom_fields ?? []])
+                            </div>
+                        @endif
                     </div>
 
                     <div class="card-footer d-flex flex-column flex-sm-row gap-2 justify-content-between">
@@ -194,12 +215,7 @@
                             </div>
                         </div>
 
-                        @if (isset($row) && !empty($row->image))
-                            <div class="mt-4">
-                                <div class="text-secondary small mb-2">{{ __('interface.admin.links.screenshot') }}</div>
-                                <img class="img-fluid rounded border" src="{{ url('uploads/url/' . $row->image) }}" alt="">
-                            </div>
-                        @endif
+
                     </div>
                 </div>
             </div>
@@ -209,4 +225,5 @@
 @endsection
 
 @section('js')
+    <script src="{{ asset('js/submission.js') }}?v={{ filemtime(public_path('js/submission.js')) }}" defer></script>
 @endsection

@@ -14,6 +14,7 @@ use App\Http\Requests\Admin\UpdateLinkStatusRequest;
 use App\Repositories\LinksRepository;
 use App\Services\Admin\LinkImportExportService;
 use App\Services\Admin\LinkService;
+use App\Services\Links\CustomFieldService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Log;
@@ -50,8 +51,9 @@ class LinksController extends Controller
     public function create(): View
     {
         $options = $this->service->catalogOptions();
+        $customFields = app(CustomFieldService::class)->fields(true);
 
-        return view('cp.links.create_edit', compact('options'))->with('title', __('interface.admin.links.create_title'));
+        return view('cp.links.create_edit', compact('options', 'customFields'))->with('title', __('interface.admin.links.create_title'));
     }
 
     /**
@@ -62,7 +64,9 @@ class LinksController extends Controller
      */
     public function store(StoreLinkRequest $request): RedirectResponse
     {
-        $this->service->create(LinkData::fromArray($request->validated(), LinkStatus::Published->value));
+        $data = $request->validated();
+        $data['custom_fields'] = app(CustomFieldService::class)->normalize($data['custom_fields'] ?? [], admin: true);
+        $this->service->create(LinkData::fromArray($data, LinkStatus::Published->value), $request->file('screenshot'));
 
         return redirect(URL::route('cp.links.index'))->with('success', __('interface.messages.information_successfully_added'));
     }
@@ -77,8 +81,9 @@ class LinksController extends Controller
     {
         $link = $this->links->findForAdmin($id);
         abort_if(! $link, 404);
+        $customFields = app(CustomFieldService::class)->fields(true);
 
-        return view('cp.links.show', compact('link'))->with('title', __('interface.admin.links.show_title'));
+        return view('cp.links.show', compact('link', 'customFields'))->with('title', __('interface.admin.links.show_title'));
     }
 
     /**
@@ -93,8 +98,9 @@ class LinksController extends Controller
         abort_if(! $row, 404);
 
         $options = $this->service->catalogOptions();
+        $customFields = app(CustomFieldService::class)->fields(true);
 
-        return view('cp.links.create_edit', compact('row', 'options'))->with('title', __('interface.admin.links.edit_title'));
+        return view('cp.links.create_edit', compact('row', 'options', 'customFields'))->with('title', __('interface.admin.links.edit_title'));
     }
 
     /**
@@ -105,7 +111,13 @@ class LinksController extends Controller
      */
     public function update(UpdateLinkRequest $request): RedirectResponse
     {
-        $this->service->update(LinkData::fromArray($request->validated()));
+        $data = $request->validated();
+        $link = $this->links->findAny((int) $data['id']);
+        abort_if(! $link, 404);
+        if (array_key_exists('custom_fields', $data)) {
+            $data['custom_fields'] = app(CustomFieldService::class)->normalize($data['custom_fields'] ?? [], $link->custom_fields ?? [], true);
+        }
+        $this->service->update(LinkData::fromArray($data), $request->file('screenshot'), $request->boolean('remove_screenshot'));
 
         return redirect(URL::route('cp.links.index'))->with('success', __('interface.messages.data_updated'));
     }

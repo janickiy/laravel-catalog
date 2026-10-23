@@ -4,12 +4,16 @@ namespace App\Http\Requests\Admin;
 
 use App\Models\Catalog;
 use App\Models\Links;
+use App\Http\Requests\Concerns\ValidatesLinkExtras;
+use App\Services\Links\CustomFieldService;
 use App\Rules\DomainOrUrl;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 class StoreLinkRequest extends FormRequest
 {
+    use ValidatesLinkExtras;
+
     /**
      * Authorizes link creation for an authenticated administrator.
      */
@@ -37,7 +41,12 @@ class StoreLinkRequest extends FormRequest
                 'integer',
                 Rule::when((int) $this->input('catalog_id') > 0, ['exists:'.Catalog::getTableName().',id']),
             ],
-        ];
+        ] + $this->extrasRules(true);
+    }
+
+    public function attributes(): array
+    {
+        return app(CustomFieldService::class)->attributes(true);
     }
 
     /**
@@ -48,6 +57,6 @@ class StoreLinkRequest extends FormRequest
         return [
             'required' => __('interface.validation.required'),
             'url.unique' => __('interface.validation.url_unique'),
-        ];
+        ] + $this->extrasMessages();
     }
 }

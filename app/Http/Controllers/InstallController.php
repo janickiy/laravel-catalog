@@ -21,7 +21,7 @@ use Illuminate\View\View;
 
 class InstallController extends Controller
 {
-    private const APPLICATION_VERSION = '4.0.1';
+    private const APPLICATION_VERSION = '4.1.0';
 
     /**
      * Show the first installer step.

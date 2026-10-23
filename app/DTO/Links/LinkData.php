@@ -19,6 +19,7 @@ final readonly class LinkData implements DataTransferObject
         private ?int $catalogId,
         private ?int $status = null,
         private ?string $image = null,
+        private ?array $customFields = null,
     ) {}
 
     /**
@@ -44,6 +45,7 @@ final readonly class LinkData implements DataTransferObject
             self::normalizeCatalogId($data['catalog_id'] ?? null),
             $status,
             $image,
+            $data['custom_fields'] ?? null,
         );
     }
 
@@ -84,6 +86,7 @@ final readonly class LinkData implements DataTransferObject
             $this->catalogId,
             $this->status,
             $image,
+            $this->customFields,
         );
     }
 
@@ -112,6 +115,10 @@ final readonly class LinkData implements DataTransferObject
 
         if ($this->image !== null) {
             $data['image'] = $this->image;
+        }
+
+        if ($this->customFields !== null) {
+            $data['custom_fields'] = $this->customFields;
         }
 
         return $data;

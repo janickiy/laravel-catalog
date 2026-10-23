@@ -28,8 +28,10 @@ class Links extends Model
         'catalog_id',
         'status',
         'views',
+        'custom_fields',
     ];
 
+    protected $casts = ['custom_fields' => 'array'];
 
     /**
      * @return BelongsTo

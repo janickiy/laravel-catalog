@@ -137,6 +137,25 @@
                         <div class="link-show-text">{{ $link->full_description ?: $empty }}</div>
                     </div>
 
+                    @php
+                        $storedCustomValues = $link->custom_fields ?? [];
+                        $shownCustomFields = collect($customFields ?? [])->filter(fn ($field) => array_key_exists($field->id, $storedCustomValues) && $storedCustomValues[$field->id] !== null && $storedCustomValues[$field->id] !== '' && is_scalar($storedCustomValues[$field->id]));
+                    @endphp
+                    @if($shownCustomFields->isNotEmpty())
+                        <section class="mb-4" aria-labelledby="admin-custom-details-heading">
+                            <h4 class="fs-6 fw-semibold" id="admin-custom-details-heading">{{ __('submission.additional_details') }}</h4>
+                            <dl class="link-show-list mb-0">
+                                @foreach($shownCustomFields as $field)
+                                    <div class="link-show-item">
+                                        <dt class="link-show-label">{{ $field->label }}</dt>
+                                        <dd class="link-show-text mb-0">{{ $field->type === 'checkbox' ? (in_array($storedCustomValues[$field->id], [true, 1, '1', 'true', 'on'], true) ? __('submission.yes') : __('submission.no')) : $storedCustomValues[$field->id] }}</dd>
+                                        @if(!$field->is_active)<p class="small text-secondary mb-0 mt-1">{{ __('submission.field_inactive') }}</p>@endif
+                                    </div>
+                                @endforeach
+                            </dl>
+                        </section>
+                    @endif
+
                     <div>
                         <div class="link-show-label mb-2">{{ __('interface.common.keywords') }}</div>
                         <div class="link-show-text">{{ $link->keywords ?: $empty }}</div>
@@ -151,8 +170,8 @@
                     <h3 class="card-title mb-0">{{ __('interface.admin.links.screenshot') }}</h3>
                 </div>
                 <div class="card-body">
-                    @if (!empty($link->image))
-                        <img class="img-fluid rounded border" src="{{ url('uploads/url/' . $link->image) }}" alt="">
+                    @if ($link->image && is_file(public_path('uploads/url/' . $link->image)))
+                        <img class="img-fluid rounded border" src="{{ url('uploads/url/' . $link->image) }}" alt="{{ __('submission.screenshot_of', ['name' => $link->name]) }}" loading="lazy" decoding="async">
                         <div class="small text-secondary mt-2 link-show-url">{{ $link->image }}</div>
                     @else
                         <div class="text-secondary">{{ __('interface.admin.links.screenshot_missing') }}</div>

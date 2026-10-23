@@ -18,6 +18,7 @@ final readonly class LinkSubmissionData implements DataTransferObject
         private ?string $keywords,
         private string $fullDescription,
         private ?int $catalogId,
+        private array $customFields = [],
     ) {}
 
     /**
@@ -38,6 +39,7 @@ final readonly class LinkSubmissionData implements DataTransferObject
             $data['keywords'] ?? null,
             (string) $data['full_description'],
             self::normalizeCatalogId($data['catalog_id'] ?? null),
+            $data['custom_fields'] ?? [],
         );
     }
 
@@ -68,6 +70,7 @@ final readonly class LinkSubmissionData implements DataTransferObject
             'keywords' => $this->keywords,
             'full_description' => StringHelper::removeHtmlTags($this->fullDescription),
             'catalog_id' => $this->catalogId,
+            'custom_fields' => $this->customFields,
         ], $status, $image);
     }
 
@@ -86,6 +89,7 @@ final readonly class LinkSubmissionData implements DataTransferObject
             'keywords' => $this->keywords,
             'full_description' => $this->fullDescription,
             'catalog_id' => $this->catalogId,
+            'custom_fields' => $this->customFields,
         ];
     }
 

@@ -4,7 +4,7 @@
 
 @section('description', '')
 
-@section('keywords', $link->keywords)
+@section('keywords', $link->keywords ?? '')
 
 @section('content')
     <div class="content-layout">
@@ -16,6 +16,13 @@
                         <h1>{{ $link->name }}</h1>
                     </div>
                 </div>
+
+                @if($link->image && is_file(public_path('uploads/url/' . $link->image)))
+                    <figure class="site-detail-screenshot">
+                        <img src="{{ asset('uploads/url/' . $link->image) }}" alt="{{ __('submission.screenshot_of', ['name' => $link->name]) }}" decoding="async">
+                        <figcaption>{{ __('submission.screenshot') }}</figcaption>
+                    </figure>
+                @endif
 
                 @if($link->full_description)
                     <div class="rich-text">{!! $link->full_description !!}</div>
@@ -67,6 +74,23 @@
                         </noindex>
                     </div>
                 </div>
+                @php
+                    $storedCustomValues = $link->custom_fields ?? [];
+                    $shownCustomFields = collect($publicCustomFields ?? [])->filter(fn ($field) => $field->is_active && $field->is_public && array_key_exists($field->id, $storedCustomValues) && $storedCustomValues[$field->id] !== null && $storedCustomValues[$field->id] !== '' && is_scalar($storedCustomValues[$field->id]));
+                @endphp
+                @if($shownCustomFields->isNotEmpty())
+                    <section class="site-custom-details" aria-labelledby="site-custom-details-heading">
+                        <h2 id="site-custom-details-heading">{{ __('submission.additional_details') }}</h2>
+                        <dl class="details-list">
+                            @foreach($shownCustomFields as $field)
+                                <div class="details-list__item">
+                                    <dt class="details-list__label">{{ $field->label }}</dt>
+                                    <dd class="site-custom-details__value">{{ $field->type === 'checkbox' ? (in_array($storedCustomValues[$field->id], [true, 1, '1', 'true', 'on'], true) ? __('submission.yes') : __('submission.no')) : $storedCustomValues[$field->id] }}</dd>
+                                </div>
+                            @endforeach
+                        </dl>
+                    </section>
+                @endif
             </article>
 
             @if($similar_links && count($similar_links))

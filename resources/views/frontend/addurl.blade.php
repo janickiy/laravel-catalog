@@ -26,7 +26,7 @@
 
         <p class="form-help">{{ __('interface.common.required_fields_frontend') }}</p>
 
-        {!! Form::open(['url' =>  URL::route('add'), 'method' => 'post', 'class' => 'frontend-form add-site-form']) !!}
+        {!! Form::open(['url' =>  URL::route('add'), 'method' => 'post', 'class' => 'frontend-form add-site-form', 'files' => true]) !!}
             <div class="form-group">
                 {!! Form::label('name', __('interface.frontend.site_name'), ['class' => 'form-label']) !!}
                 {!! Form::text('name', old('name', null), [
@@ -160,6 +160,10 @@
                 @endif
             </div>
 
+            @include('shared.link-screenshot-upload', ['admin' => false])
+
+            @include('shared.link-custom-fields', ['admin' => false, 'values' => []])
+
             @include('frontend.partials.captcha')
 
             <div class="form-group add-site-form__agreement">
@@ -184,4 +188,8 @@
             </div>
         {!! Form::close() !!}
     </section>
+@endsection
+
+@section('js')
+    <script src="{{ asset('js/submission.js') }}?v={{ filemtime(public_path('js/submission.js')) }}" defer></script>
 @endsection
