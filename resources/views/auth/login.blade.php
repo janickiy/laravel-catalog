@@ -8,153 +8,91 @@
 
     <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
     <link rel="icon" href="{{ asset('img/my-links-manager-icon.svg') }}" type="image/svg+xml">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@4.0.0/dist/css/adminlte.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
-    <style>
-        body {
-            background:
-                linear-gradient(135deg, rgba(13, 110, 253, .08), rgba(32, 201, 151, .08)),
-                var(--bs-body-bg);
-        }
-
-        .auth-shell {
-            align-items: center;
-            display: flex;
-            justify-content: center;
-            flex: 1 1 auto;
-            min-height: 100vh;
-            padding: 2rem 1rem;
-            width: 100%;
-        }
-
-        .auth-card {
-            border: 1px solid var(--bs-border-color);
-            border-radius: .75rem;
-            box-shadow: 0 1rem 3rem rgba(15, 23, 42, .12);
-            overflow: hidden;
-            width: min(100%, 26rem);
-        }
-
-        .auth-brand {
-            background: #2f363d;
-            border-bottom: 1px solid rgba(255, 255, 255, .08);
-            padding: 1.15rem 1.35rem;
-        }
-
-        .auth-brand a {
-            display: inline-block;
-        }
-
-        .auth-brand img {
-            display: block;
-            height: auto;
-            max-width: 100%;
-            width: 14.25rem;
-        }
-
-        .auth-title {
-            color: var(--bs-emphasis-color);
-            font-size: 1.2rem;
-            font-weight: 650;
-            margin: 0;
-        }
-
-        .input-group-text {
-            background: var(--bs-tertiary-bg);
-            border-color: var(--bs-border-color);
-            color: var(--bs-secondary-color);
-            min-width: 2.85rem;
-            justify-content: center;
-        }
-
-        .form-control {
-            border-color: var(--bs-border-color);
-        }
-
-        .btn-login {
-            align-items: center;
-            display: inline-flex;
-            gap: .45rem;
-            justify-content: center;
-        }
-    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="{{ asset('css/login.css') }}?v={{ filemtime(public_path('css/login.css')) }}">
 </head>
 
-<body class="login-page bg-body-tertiary">
+<body>
     <main class="auth-shell">
-        <div class="card auth-card mb-0">
+        <section class="auth-card" aria-labelledby="auth-title">
             <div class="auth-brand">
-                <a href="{{ URL::route('index') }}">
-                    <img src="{{ asset('img/my-links-manager-admin-logo.svg') }}" alt="My Links Manager Admin Panel">
+                <a class="auth-brand__link" href="{{ URL::route('index') }}" aria-label="My Links Manager">
+                    <span class="auth-brand__mark"><x-directory-icon name="folder" /></span>
+                    <span class="auth-brand__text">
+                        <strong>My Links <span>Manager</span></strong>
+                        <small>{{ __('interface.admin.panel') }}</small>
+                    </span>
                 </a>
             </div>
 
-            <div class="card-body p-4">
-                <div class="mb-4">
-                    <p class="auth-title">{{ __('interface.auth.title') }}</p>
-                </div>
+            <div class="auth-body">
+                <h1 id="auth-title" class="auth-title">{{ __('interface.auth.title') }}</h1>
 
-                {!! Form::open(['url' => URL::route('singin'), 'method' => 'post', 'novalidate' => true]) !!}
+                {!! Form::open(['url' => URL::route('singin'), 'method' => 'post', 'novalidate' => true, 'class' => 'auth-form']) !!}
                     @if ($errors->has('message'))
-                        <div class="alert alert-danger d-flex align-items-center gap-2" role="alert">
-                            <i class="bi bi-exclamation-triangle"></i>
+                        <div class="auth-alert" role="alert">
+                            <x-directory-icon name="alert" />
                             <span>{{ $errors->first('message') }}</span>
                         </div>
                     @endif
 
-                    <div class="mb-3">
-                        {!! Form::label('login', __('interface.common.login'), ['class' => 'form-label fw-semibold']) !!}
-                        <div class="input-group has-validation">
-                            <span class="input-group-text">
-                                <i class="bi bi-person"></i>
-                            </span>
+                    <div class="auth-field">
+                        {!! Form::label('login', __('interface.common.login'), ['class' => 'auth-label']) !!}
+                        <div class="auth-input">
+                            <x-directory-icon name="user" />
                             {!! Form::text('login', old('login'), [
                                 'id' => 'login',
-                                'class' => 'form-control' . ($errors->has('login') ? ' is-invalid' : ''),
+                                'class' => 'auth-control' . ($errors->has('login') ? ' is-invalid' : ''),
                                 'placeholder' => __('interface.auth.login_placeholder'),
                                 'autocomplete' => 'username',
+                                'autocapitalize' => 'none',
+                                'spellcheck' => 'false',
                                 'autofocus' => true,
+                                'aria-required' => 'true',
+                                'aria-invalid' => $errors->has('login') ? 'true' : 'false',
+                                'aria-describedby' => $errors->has('login') ? 'login-error' : null,
                             ]) !!}
-                            @if ($errors->has('login'))
-                                <div class="invalid-feedback">{{ $errors->first('login') }}</div>
-                            @endif
                         </div>
+                        @if ($errors->has('login'))
+                            <p class="auth-error" id="login-error">{{ $errors->first('login') }}</p>
+                        @endif
                     </div>
 
-                    <div class="mb-3">
-                        {!! Form::label('password', __('interface.common.password'), ['class' => 'form-label fw-semibold']) !!}
-                        <div class="input-group has-validation">
-                            <span class="input-group-text">
-                                <i class="bi bi-lock"></i>
-                            </span>
+                    <div class="auth-field">
+                        {!! Form::label('password', __('interface.common.password'), ['class' => 'auth-label']) !!}
+                        <div class="auth-input">
+                            <x-directory-icon name="lock" />
                             {!! Form::password('password', [
                                 'id' => 'password',
-                                'class' => 'form-control' . ($errors->has('password') ? ' is-invalid' : ''),
+                                'class' => 'auth-control' . ($errors->has('password') ? ' is-invalid' : ''),
                                 'placeholder' => __('interface.auth.password_placeholder'),
                                 'autocomplete' => 'current-password',
+                                'aria-required' => 'true',
+                                'aria-invalid' => $errors->has('password') ? 'true' : 'false',
+                                'aria-describedby' => $errors->has('password') ? 'password-error' : null,
                             ]) !!}
-                            @if ($errors->has('password'))
-                                <div class="invalid-feedback">{{ $errors->first('password') }}</div>
-                            @endif
                         </div>
+                        @if ($errors->has('password'))
+                            <p class="auth-error" id="password-error">{{ $errors->first('password') }}</p>
+                        @endif
                     </div>
 
-                    <div class="form-check mb-4">
+                    <div class="auth-remember">
                         {!! Form::checkbox('remember', 1, old('remember') ? true : false, [
                             'id' => 'remember',
-                            'class' => 'form-check-input',
                         ]) !!}
-                        {!! Form::label('remember', __('interface.auth.remember'), ['class' => 'form-check-label']) !!}
+                        {!! Form::label('remember', __('interface.auth.remember')) !!}
                     </div>
 
-                    <button type="submit" class="btn btn-primary btn-login w-100">
-                        <i class="bi bi-box-arrow-in-right"></i>
+                    <button type="submit" class="auth-submit">
+                        <x-directory-icon name="sign-in" />
                         <span>{{ __('interface.auth.submit') }}</span>
                     </button>
                 {!! Form::close() !!}
             </div>
-        </div>
+        </section>
     </main>
 </body>
 </html>

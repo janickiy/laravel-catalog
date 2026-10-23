@@ -20,6 +20,20 @@
             <div class="category-grid">
                 @php
                     $catalogColumns = max(1, (int) \App\Helpers\SettingsHelpers::getSetting('COLUMNS_NUMBER'));
+                    $categoryIcons = [
+                        'test-business-and-finance.svg' => 'business',
+                        'test-education.svg' => 'education',
+                        'test-entertainment-and-arts.svg' => 'entertainment',
+                        'test-food-and-dining.svg' => 'food',
+                        'test-health-and-medicine.svg' => 'health',
+                        'test-home-and-garden.svg' => 'home',
+                        'test-news-and-media.svg' => 'news',
+                        'test-professional-services.svg' => 'services',
+                        'test-shopping.svg' => 'shopping',
+                        'test-sports-and-fitness.svg' => 'sports',
+                        'test-technology.svg' => 'technology',
+                        'test-travel-and-transport.svg' => 'travel',
+                    ];
                 @endphp
                 @for ($i = 0; $i < $number; $i++)
                     @for ($j = 0; $j < $catalogColumns; $j++)
@@ -27,13 +41,18 @@
                             @php
                                 $categoryImage = $arr[$i][$j][2] ?? null;
                                 $categoryImageExists = $categoryImage && file_exists(public_path('uploads/catalog/' . $categoryImage));
-                                $categoryImageUrl = $categoryImageExists ? url('uploads/catalog/' . $categoryImage) : url('/img/catalog-placeholder.svg');
+                                $categoryIcon = $categoryIcons[$categoryImage ?? ''] ?? 'folder';
+                                $customImage = $categoryImageExists && !isset($categoryIcons[$categoryImage]);
                                 $childrenHtml = $arr[$i][$j][4] ?? '';
                                 $hasChildren = $arr[$i][$j][1] > 0 && trim(strip_tags($childrenHtml)) !== '';
                             @endphp
-                            <article class="category-card {{ $hasChildren ? 'category-card--with-children' : 'category-card--without-children' }}">
-                                <a class="category-card__icon" href="{{ URL::route('catalog', ['id' => $arr[$i][$j][1] > 0 ? $arr[$i][$j][1] : '']) }}">
-                                    <img src="{{ $categoryImageUrl }}" alt="{{ $arr[$i][$j][0] }}" decoding="async">
+                            <article class="category-card category-card--{{ $categoryIcon }} {{ $hasChildren ? 'category-card--with-children' : 'category-card--without-children' }}">
+                                <a class="category-card__icon" aria-label="{{ $arr[$i][$j][0] }}" href="{{ URL::route('catalog', ['id' => $arr[$i][$j][1] > 0 ? $arr[$i][$j][1] : '']) }}">
+                                    @if($customImage)
+                                        <img src="{{ asset('uploads/catalog/' . $categoryImage) }}" alt="" loading="lazy" decoding="async">
+                                    @else
+                                        <x-directory-icon :name="$categoryIcon" />
+                                    @endif
                                 </a>
 
                                 <div class="category-card__body">
@@ -69,7 +88,11 @@
                 <div class="section-heading">
                     <div>
                         <span class="eyebrow">{{ __('interface.frontend.sites') }}</span>
-                        <h2>@if(isset($catalog_name) && $catalog_name) {{ $catalog_name }} @else {{ __('interface.frontend.recent_sites') }} @endif</h2>
+                        @if(empty($arr) && isset($catalog_name))
+                            <h1>{{ $catalog_name }}</h1>
+                        @else
+                            <h2>@if(isset($catalog_name) && $catalog_name) {{ $catalog_name }} @else {{ __('interface.frontend.recent_sites') }} @endif</h2>
+                        @endif
                     </div>
                 </div>
 

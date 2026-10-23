@@ -56,18 +56,7 @@
                     @endif
                 </div>
 
-                <div class="form-group captcha-block">
-                    {!! Form::label('captcha', __('interface.frontend.captcha'), ['class'=> 'form-label']) !!}
-                    {!! Form::text('captcha', null, [
-                        'class' => 'form-control' . ($errors->has('captcha') ? ' is-invalid' : ''),
-                        'placeholder' => __('interface.frontend.captcha_placeholder'),
-                        'id' => 'captcha',
-                    ]) !!}
-                    <div>@captcha</div>
-                    @if ($errors->has('captcha'))
-                        <span class="form-error">{{ $errors->first('captcha') }}</span>
-                    @endif
-                </div>
+                @include('frontend.partials.captcha')
 
                 <div>
                     <button type="submit" class="btn btn-primary btn-lg">
